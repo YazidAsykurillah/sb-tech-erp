@@ -1,0 +1,211 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Http\Requests\StoreCashbondRequest;
+use App\Http\Requests\UpdateCashbondRequest;
+//use App\Http\Controllers\Controller;
+
+use App\Cashbond;
+use App\User;
+use App\TheLog;
+
+class CashbondController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('cash-bond.index');
+    }
+
+    public function getPendingCashbond()
+    {
+        return view('cash-bond.pending');
+    }
+
+    public function getCheckedCashbond()
+    {
+        return view('cash-bond.checked');
+    }
+    
+    public function getApprovedCashbond()
+    {
+        return view('cash-bond.approved');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $user_opts = User::lists('name', 'id');
+        return view('cash-bond.create')
+            ->with('user_opts', $user_opts);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(StoreCashbondRequest $request)
+    {
+
+        //Block build next cashbond code
+        $count_cashbond = \DB::table('cashbonds')->count();
+        if($count_cashbond > 0){
+            $max = \DB::table('cashbonds')->max('code');
+            $int_max = ltrim(preg_replace('#[^0-9]#', '', $max),'0');
+            $next_cashbond_code = str_pad(($int_max+1), 5, 0, STR_PAD_LEFT);
+        }
+        else{
+           $next_cashbond_code = str_pad(1, 5, 0, STR_PAD_LEFT);
+        }
+        //ENDBlock build next cashbond code
+
+        $cashbond = new Cashbond;
+        $cashbond->code = 'CB-'.$next_cashbond_code;
+        $cashbond->user_id = $request->user_id;
+        $cashbond->amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
+        $cashbond->description = $request->description;
+        $cashbond->cut_from_salary = $request->cut_from_salary == 'on' ? TRUE : FALSE;
+        $cashbond->term = abs($request->term);
+        $cashbond->save();
+        $last_id = $cashbond->id;
+
+        //register to the_logs table;
+        $log = $this->register_to_the_logs('cashbond', 'create', $last_id);
+
+        return redirect('cash-bond/'.$last_id)
+            ->with('successMessage', "Cashbond has been created");
+    }
+
+    protected function register_to_the_logs($source = NULL,  $mode = NULL, $refference_id = NULL, $description = NULL)
+    {
+        $the_log = new TheLog;
+        $the_log->source = $source;
+        $the_log->mode = $mode;
+        $the_log->refference_id = $refference_id;
+        $the_log->user_id = \Auth::user()->id;
+        $the_log->description = $description;
+        $the_log->save();
+       
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $cashbond = Cashbond::findOrFail($id);
+        $status_opts = ['pending'=>'Pending','checked'=>'Checked', 'approved'=>'Approved', 'rejected'=>'Rejected'];
+
+        $the_logs = TheLog::where('source', '=', 'cashbond')
+                    ->where('refference_id','=', $id)->get();
+
+        return view('cash-bond.show')
+            ->with('cashbond', $cashbond)
+            ->with('the_logs', $the_logs)
+            ->with('status_opts', $status_opts);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $cashbond = Cashbond::findOrFail($id);
+        $user_opts = User::lists('name', 'id');
+        return view('cash-bond.edit')
+            ->with('cashbond', $cashbond)
+            ->with('user_opts', $user_opts);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UpdateCashbondRequest $request, $id)
+    {
+        $cashbond = Cashbond::findOrFail($id);
+        $cashbond->user_id = $request->user_id;
+        $cashbond->amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
+        $cashbond->description = $request->description;
+        $cashbond->cut_from_salary = $request->cut_from_salary == 'on' ? TRUE : FALSE;
+        $cashbond->term = abs($request->term);
+        $cashbond->save();
+        return redirect('cash-bond/'.$id)
+            ->with('successMessage', "Cashbond $cashbond->code has been updated");
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        $cashbond = Cashbond::findOrFail($request->cashbond_id);
+        $cashbond->delete();
+
+        //clear from the_logs table
+        \DB::table('the_logs')->where('source', '=', 'cashbond')->where('refference_id', '=', $request->cashbond_id)->delete();
+
+        return redirect('cash-bond')
+            ->with('successMessage', "Cashbond $cashbond->code has been deleted");
+    }
+
+
+    public function changeStatus(Request $request)
+    {
+        $cashbond = Cashbond::findOrFail($request->cashbond_id);
+         //get old cashbond status.
+        $old_status = $cashbond->status;
+
+        $cashbond->status = $request->status;
+        $cashbond->save();
+
+         //register to the_logs table;
+        $log_description = "Change status from $old_status to $request->status";
+        $log = $this->register_to_the_logs('cashbond', 'update', $request->cashbond_id, $log_description );
+
+        return redirect('cash-bond/'.$request->cashbond_id)
+            ->with('successMessage', "Cashbond $cashbond->code has been changed to $request->status");
+    }
+
+    public function cutFromSalary(Request $request)
+    {
+        $cashbond = Cashbond::findOrFail($request->cashbond_id_to_cut_from_salary);
+
+        $cashbond->cut_from_salary = $request->cut_from_salary;
+        $cashbond->save();
+
+        $cut_from_salary_info = $request->cut_from_salary == TRUE ? 'Yes' : 'NO';
+         //register to the_logs table;
+        $log_description = "Change cut from salary to $cut_from_salary_info";
+        $log = $this->register_to_the_logs('cashbond', 'update', $request->cashbond_id_to_cut_from_salary, $log_description );
+
+        return redirect('cash-bond/'.$request->cashbond_id_to_cut_from_salary)
+            ->with('successMessage', "Cashbond $cashbond->code has been changed to $cut_from_salary_info");
+    }
+}

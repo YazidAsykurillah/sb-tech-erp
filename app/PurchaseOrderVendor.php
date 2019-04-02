@@ -1,0 +1,72 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+use App\Vendor;
+use App\PurchaseRequest;
+
+use App\InvoiceVendor;
+
+class PurchaseOrderVendor extends Model
+{
+    protected $table = 'purchase_order_vendors';
+
+    protected $fillable = ['vendor_id','code', 'purchase_request_id', 'description', 'amount', 'quotation_vendor_id', 'terms'];
+
+    public function vendor()
+    {
+    	return $this->belongsTo('App\Vendor', 'vendor_id');
+    }
+
+    public function purchase_request()
+    {
+    	return $this->belongsTo('App\PurchaseRequest', 'purchase_request_id');
+    }
+
+    public function invoice_vendor()
+    {
+        return $this->hasMany('App\InvoiceVendor');
+    }
+
+    public function quotation_vendor()
+    {
+        return $this->belongsTo('App\QuotationVendor', 'quotation_vendor_id');
+    }
+
+    //paid invoice vendor
+    public function paid_invoice_vendor()
+    {
+        $result = 0;
+        $paid_invoice_vendor = 0;
+        if($this->invoice_vendor->count()){
+
+            //$result = $this->invoice_vendor()->where('status','=','paid')->sum('amount');
+            $result = $this->invoice_vendor;
+            foreach($result as $res){
+                if($res->status == 'paid'){
+                    if($res->type == 'billing'){
+                        $paid_invoice_vendor+=$res->bill_amount;    
+                    }else{
+                        $paid_invoice_vendor+=$res->amount;
+                    }
+                    
+                }
+            }
+            
+        }
+        return floatval($paid_invoice_vendor);
+    }
+
+    //pending invoice vendor
+    public function pending_invoice_vendor()
+    {
+        $result = 0;
+        if($this->invoice_vendor->count()){
+            $result = $this->invoice_vendor()->where('status','=','pending')->sum('amount');
+        }
+        return floatval($result);
+    }
+
+}
