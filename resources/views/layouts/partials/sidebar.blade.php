@@ -273,6 +273,18 @@
         </a>
       </li>
       
+      @if(\Auth::user()->can('run-maintenance'))
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-cogs"></i>
+          <span>Maintenance</span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ url('maintenance/db/export') }}"><i class="fa fa-circle-o"></i> DB Export</a></li>
+          <li><a href="{{ url('maintenance/db/backup') }}"><i class="fa fa-circle-o"></i> DB Backup</a></li>
+        </ul>
+      </li>
+      @endif
 
     </ul><!-- /.sidebar-menu -->
   </section>

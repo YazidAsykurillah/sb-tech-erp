@@ -225,7 +225,7 @@ class Project extends Model
            $settlement_adder_array = [];
            $settlement_subtracter_array = [];
            foreach($this->internal_requests as $internal_request){
-            if(count($internal_request->settlement)){
+            if($internal_request->settlement){
                 if($internal_request->settlement->status == 'approved' || $internal_request->settlement->status == 'pending'){
                     //$settlement_amount_array[] = $internal_request->amount - $internal_request->settlement->amount;
                     if($internal_request->amount - $internal_request->settlement->amount < 0){
