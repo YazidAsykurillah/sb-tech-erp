@@ -195,6 +195,16 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::resource('finance-statistic', 'FinanceStatisticController');
 
+	//Asset Category
+	Route::get('master-data/asset-category/create', 'AssetCategoryController@create');
+	Route::get('master-data/asset-category', 'AssetCategoryController@index');
+	Route::resource('master-data/asset-category','AssetCategoryController');
+
+	//Asset
+	Route::get('master-data/asset/create','AssetController@create');
+	Route::get('master-data/asset','AssetController@index');
+	Route::resource('asset','AssetController');
+
 	//Role
 	Route::post('update-role-permission', 'RoleController@updateRolePermission');
 	Route::resource('role', 'RoleController');
@@ -318,7 +328,12 @@ Route::group(['middleware' => 'auth'], function () {
 		'getAccountingExpense'=>'datatables.getAccountingExpense',
 
 		//Payroll
-		'getPayrolls'=>'datatables.getPayrolls'
+		'getPayrolls'=>'datatables.getPayrolls',
+
+		//Asset Category
+		'getAssetCategories'=>'datatables.getAssetCategories',
+		//Asset
+		'getAssets'=>'datatables.getAssets',
 	]);
 
 	//Select2
@@ -365,6 +380,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 		//Select2 CashbondSite Group
 		Route::get('select2UserForCashbondSite', 'Select2Controller@select2UserForCashbondSite');
+
+		Route::get('select2AssetCategory', 'Select2Controller@select2AssetCategory');
 
 	Route::resource('select2', 'Select2Controller');
 

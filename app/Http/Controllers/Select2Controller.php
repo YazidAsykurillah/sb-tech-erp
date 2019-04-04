@@ -15,6 +15,7 @@ use App\PurchaseOrderVendor;
 use App\Project;
 use App\BankAccount;
 use App\Configuration;
+use App\AssetCategory;
 
 class Select2Controller extends Controller
 {
@@ -514,5 +515,33 @@ class Select2Controller extends Controller
         return response()->json($data);
     }
     //ENDBLock Select2 Bank Account
+
+
+    //Block Select2 Asset Category
+    public function select2AssetCategory(Request $request)
+    {
+        $data = [];
+        if($request->has('q')){
+            $search = $request->q;
+            $data = AssetCategory::where('name','like',"%$search%")
+                    ->get();
+
+        }
+        else{
+            $asset_category = AssetCategory::get();
+            foreach($asset_category as $ac){
+               array_push($data,
+                    [
+                        'name'=>$ac->name,
+                        'id'=>$ac->id,
+                    ]
+                );   
+            }
+        }
+
+
+        return response()->json($data);
+    }
+    //ENDBlock Select2 Asset Category
     
 }

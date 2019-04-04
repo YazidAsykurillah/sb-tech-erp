@@ -246,10 +246,24 @@
           <span>Master Data</span>
         </a>
         <ul class="treeview-menu">
-          <li {{{ (Request::is('master-data/category') ? 'class=active' : '') }}}><a href="{{ url('master-data/category') }}"><i class="fa fa-circle-o"></i> Category</a></li>
-          <li><a href="{{ url('master-data/sub-category') }}"><i class="fa fa-circle-o"></i>Sub Category</a></li>
-          <li {{{ (Request::is('master-data/estimated-cost-margin-limit') ? 'class=active' : '') }}}><a href="{{ url('master-data/estimated-cost-margin-limit') }}"><i class="fa fa-circle-o"></i> Estimated Cost Margin Limit</a></li>
-          <li {{{ (Request::is('master-data/accounting-expense') ? 'class=active' : '') }}}><a href="{{ url('master-data/accounting-expense') }}"><i class="fa fa-circle-o"></i> Accounting Expenses</a></li>
+          <li {{{ (Request::is('master-data/category') ? 'class=active' : '') }}}>
+            <a href="{{ url('master-data/category') }}"><i class="fa fa-circle-o"></i> Category</a>
+          </li>
+          <li>
+            <a href="{{ url('master-data/sub-category') }}"><i class="fa fa-circle-o"></i>Sub Category</a>
+          </li>
+          <li {{{ (Request::is('master-data/estimated-cost-margin-limit') ? 'class=active' : '') }}}>
+            <a href="{{ url('master-data/estimated-cost-margin-limit') }}"><i class="fa fa-circle-o"></i> Estimated Cost Margin Limit</a>
+          </li>
+          <li {{{ (Request::is('master-data/accounting-expense') ? 'class=active' : '') }}}>
+            <a href="{{ url('master-data/accounting-expense') }}"><i class="fa fa-circle-o"></i> Accounting Expenses</a>
+          </li>
+          <li {{{ (Request::is('master-data/asset-category') ? 'class=active' : '') }}}>
+            <a href="{{ url('master-data/asset-category') }}"><i class="fa fa-circle-o"></i> Asset Category</a>
+          </li>
+          <li {{{ (Request::is('master-data/asset') ? 'class=active' : '') }}}>
+            <a href="{{ url('master-data/asset') }}"><i class="fa fa-circle-o"></i> Asset</a>
+          </li>
         </ul>
       </li>
       @endif
