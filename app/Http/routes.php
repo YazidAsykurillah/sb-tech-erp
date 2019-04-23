@@ -60,11 +60,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('quotation-customer/getCustomerFromQuotationOrderCustomer', 'QuotationCustomerController@getCustomerFromQuotationOrderCustomer');
 	Route::post('setSubmittedQuotationCustomer', 'QuotationCustomerController@setSubmittedQuotationCustomer');
 	Route::post('deleteQuotationCustomer', 'QuotationCustomerController@destroy');
+	Route::resource('quotation-customer/dataTables', 'QuotationCustomerController@dataTables');
 	Route::resource('quotation-customer', 'QuotationCustomerController');
 
 	//Quotation Vendor
 	Route::post('deleteQuotationVendor', 'QuotationVendorController@destroy');
 	Route::post('quotation-vendor/saveFromPurchaseRequest', 'QuotationVendorController@saveFromPurchaseRequest');
+	Route::resource('quotation-vendor/dataTables', 'QuotationVendorController@dataTables');
 	Route::resource('quotation-vendor', 'QuotationVendorController');
 
 	//Project

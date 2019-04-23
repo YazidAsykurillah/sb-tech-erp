@@ -127,7 +127,7 @@
     var tableQuotationCustomer =  $('#quotation-customer').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getQuotationCustomers') !!}',
+      ajax : '{!! url('quotation-customer/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },

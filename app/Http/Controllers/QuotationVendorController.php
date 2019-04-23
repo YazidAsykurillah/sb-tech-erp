@@ -9,6 +9,9 @@ use App\Http\Requests\StoreQuotationVendorRequest;
 use App\Http\Requests\StoreQuotationVendorFromPurchaseRequest;
 use App\Http\Requests\UpdateQuotationVendorRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\QuotationVendor;
 use App\PurchaseRequest;
 use App\Vendor;
@@ -143,4 +146,61 @@ class QuotationVendorController extends Controller
         return redirect('quotation-vendor')
             ->with('successMessage', "Deleted 1 quotation vendor");
     }
+
+
+    //Quotation Vendor dataTables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $quotation_vendors = QuotationVendor::with('vendor', 'purchase_request', 'user')->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'quotation_vendors.*',
+        ]);
+
+        $data_quotation_vendors = Datatables::of($quotation_vendors)
+            ->editColumn('purchase_request', function($quotation_vendors){
+                if($quotation_vendors->purchase_request){
+                    return $quotation_vendors->purchase_request->code;
+                }else{
+                    return NULL;
+                }
+                
+            })
+            ->editColumn('vendor', function($quotation_vendors){
+                return $quotation_vendors->vendor->name;
+            })
+            ->editColumn('amount', function($quotation_vendors){
+                return number_format($quotation_vendors->amount, 2);
+            })
+            ->editColumn('description', function($quotation_vendors){
+                if(strlen($quotation_vendors->description) > 100){
+                    return nl2br(substr($quotation_vendors->description, 0, 100))." ...";
+                }else{
+                    return $quotation_vendors->description;
+                }
+            })
+            ->editColumn('user', function($quotation_vendors){
+                return $quotation_vendors->user ? $quotation_vendors->user->name : "";
+            })
+            ->addColumn('actions', function($quotation_vendors){
+                    $actions_html ='<a href="'.url('quotation-vendor/'.$quotation_vendors->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('quotation-vendor/'.$quotation_vendors->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this quotation">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-quotation-vendor" data-id="'.$quotation_vendors->id.'" data-text="'.$quotation_vendors->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_quotation_vendors->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_quotation_vendors->make(true);
+    }
+    //END Quotation Vendor dataTables
 }

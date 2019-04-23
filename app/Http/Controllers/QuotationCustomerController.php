@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\Http\Requests\StoreQuotationCustomerRequest;
 use App\Http\Requests\UpdateQuotationCustomerRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\QuotationCustomer;
 use App\Customer;
 use App\User;
@@ -286,4 +289,75 @@ class QuotationCustomerController extends Controller
         }
 
     }
+
+
+    //Quotation Customer dataTables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $user_role = \Auth::user()->roles->first()->code;
+        if($user_role == 'SUP' || $user_role == 'ADM' || $user_role=='FIN'){
+            $quotation_customers = QuotationCustomer::with('customer', 'sales', 'po_customer')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'quotation_customers.*',
+            ]);
+        }
+        else{
+            $quotation_customers = QuotationCustomer::with('customer', 'sales', 'po_customer')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'quotation_customers.*',
+            ])
+            ->where('sales_id', '=', \Auth::user()->id);
+        }
+
+        $data_quotation_customers = Datatables::of($quotation_customers)
+            ->editColumn('customer', function($quotation_customers){
+                return $quotation_customers->customer ? $quotation_customers->customer->name : null;
+            })
+            ->editColumn('sales', function($quotation_customers){
+                if($quotation_customers->sales){
+                    return $quotation_customers->sales->name;
+                }
+                else{
+                    return NULL;
+                }
+                
+            })
+            ->editColumn('amount', function($quotation_customers){
+                return number_format($quotation_customers->amount, 2);
+            })
+            ->editColumn('description', function($quotation_customers){
+              return substr($quotation_customers->description, 0, 30)."....<p><i>[Click detail icon for more information]</i></p>";
+            })
+            ->editColumn('created_at', function($quotation_customers){
+                return jakarta_date_time($quotation_customers->created_at);
+            })
+            ->editColumn('po_customer_code', function($quotation_customers){
+                if($quotation_customers->po_customer){
+                    return $quotation_customers->po_customer->code;
+                }else{
+                    return NULL;
+                }
+            })
+            ->addColumn('actions', function($quotation_customers){
+                    $actions_html ='<a href="'.url('quotation-customer/'.$quotation_customers->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('quotation-customer/'.$quotation_customers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this quotation">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-quotation-customer" data-id="'.$quotation_customers->id.'" data-text="'.$quotation_customers->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_quotation_customers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_quotation_customers->make(true);
+    }
+    //END Quotation Customer dataTables
 }
