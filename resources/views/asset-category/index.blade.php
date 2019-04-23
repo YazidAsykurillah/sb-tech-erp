@@ -97,7 +97,7 @@
     var tableAssetCategory =  $('#table-asset-category').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getAssetCategories') !!}',
+      ajax : '{!! url('master-data/asset-category/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'name', name: 'name' },

@@ -30,12 +30,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Customer
 	Route::post('deleteCustomer', 'CustomerController@destroy');
-	Route::resource('customer/dataTables', 'CustomerController@dataTables');
+	Route::get('customer/dataTables', 'CustomerController@dataTables');
 	Route::resource('customer', 'CustomerController');
 
 	//Vendor
 	Route::post('deleteVendor', 'TheVendorController@destroy');
-	Route::resource('the-vendor/dataTables', 'TheVendorController@dataTables');
+	Route::get('the-vendor/dataTables', 'TheVendorController@dataTables');
 	Route::resource('the-vendor', 'TheVendorController');
 
 
@@ -47,13 +47,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('user/unlock_create_internal_request', 'UserController@unlock_create_internal_request');
 	Route::post('deleteUser', 'UserController@destroy');
 	Route::post('resetPassword', 'UserController@resetPassword');
-	Route::resource('user/dataTables', 'UserController@dataTables');
+	Route::get('user/dataTables', 'UserController@dataTables');
 	Route::resource('user', 'UserController');
 
 	//Purchase Order Customer
 	Route::get('purchase-order-customer/file', 'PurchaseOrderCustomerController@downloadFile');
 	Route::post('deletePOCustomer', 'PurchaseOrderCustomerController@destroy');
-	Route::resource('purchase-order-customer/dataTables', 'PurchaseOrderCustomerController@dataTables');
+	Route::get('purchase-order-customer/dataTables', 'PurchaseOrderCustomerController@dataTables');
 	Route::resource('purchase-order-customer', 'PurchaseOrderCustomerController');
 
 
@@ -64,19 +64,19 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('quotation-customer/getCustomerFromQuotationOrderCustomer', 'QuotationCustomerController@getCustomerFromQuotationOrderCustomer');
 	Route::post('setSubmittedQuotationCustomer', 'QuotationCustomerController@setSubmittedQuotationCustomer');
 	Route::post('deleteQuotationCustomer', 'QuotationCustomerController@destroy');
-	Route::resource('quotation-customer/dataTables', 'QuotationCustomerController@dataTables');
+	Route::get('quotation-customer/dataTables', 'QuotationCustomerController@dataTables');
 	Route::resource('quotation-customer', 'QuotationCustomerController');
 
 	//Quotation Vendor
 	Route::post('deleteQuotationVendor', 'QuotationVendorController@destroy');
 	Route::post('quotation-vendor/saveFromPurchaseRequest', 'QuotationVendorController@saveFromPurchaseRequest');
-	Route::resource('quotation-vendor/dataTables', 'QuotationVendorController@dataTables');
+	Route::get('quotation-vendor/dataTables', 'QuotationVendorController@dataTables');
 	Route::resource('quotation-vendor', 'QuotationVendorController');
 
 	//Project
 	Route::post('project/getSalesFromPurchaseOrderCustomer', 'ProjectController@getSalesFromPurchaseOrderCustomer');
 	Route::post('deleteProject', 'ProjectController@destroy');
-	Route::resource('project/dataTables', 'ProjectController@dataTables');
+	Route::get('project/dataTables', 'ProjectController@dataTables');
 	Route::resource('project', 'ProjectController');
 
 
@@ -85,7 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('getPurchaseRequestItems', 'PurchaseRequestController@getPurchaseRequestItems');
 	Route::post('changePurchaseRequestStatus', 'PurchaseRequestController@changeStatus');
 	Route::post('deletePurchaseRequest', 'PurchaseRequestController@destroy');
-	Route::resource('purchase-request/dataTables', 'PurchaseRequestController@dataTables');
+	Route::get('purchase-request/dataTables', 'PurchaseRequestController@dataTables');
 	Route::resource('purchase-request', 'PurchaseRequestController');
 
 
@@ -105,14 +105,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('invoice-vendor/in_week_overdue', 'InvoiceVendorController@in_week_overdue');
 	Route::post('deleteInvoiceVendor', 'InvoiceVendorController@destroy');
 	Route::get('invoice-vendor/create-from-pov', 'InvoiceVendorController@createFromPOV');
-	Route::resource('invoice-vendor/dataTables', 'InvoiceVendorController@dataTables');
+	Route::get('invoice-vendor/dataTables', 'InvoiceVendorController@dataTables');
 	Route::resource('invoice-vendor', 'InvoiceVendorController');
 
 	//Purchase Order Vendor
 	Route::get('purchase-order-vendor/{id}/print_pdf', 'PurchaseOrderVendorController@print_pdf');
 	Route::post('purchase-order-vendor/change-status', 'PurchaseOrderVendorController@changeStatus');
 	Route::post('deletePOVendor', 'PurchaseOrderVendorController@destroy');
-	Route::resource('purchase-order-vendor/dataTables', 'PurchaseOrderVendorController@dataTables');
+	Route::get('purchase-order-vendor/dataTables', 'PurchaseOrderVendorController@dataTables');
 	Route::resource('purchase-order-vendor', 'PurchaseOrderVendorController');
 
 	//Internal Request
@@ -122,7 +122,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('internal-request/approved', 'InternalRequestController@getApprovedIR');
 	Route::get('internal-request/checked', 'InternalRequestController@getCheckedIR');
 	Route::get('internal-request/pending', 'InternalRequestController@getPendingIR');
-	Route::resource('internal-request/dataTables', 'InternalRequestController@dataTables');
+	Route::get('internal-request/dataTables', 'InternalRequestController@dataTables');
 	Route::resource('internal-request', 'InternalRequestController');
 
 
@@ -137,7 +137,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('settlement/pending', 'SettlementController@getPendingSettlement');
 	Route::get('settlement/checked', 'SettlementController@getCheckedSettlement');
 	Route::get('settlement/approved', 'SettlementController@getApprovedSettlement');
-	Route::resource('settlement/dataTables', 'SettlementController@dataTables');
+	Route::get('settlement/dataTables', 'SettlementController@dataTables');
 	Route::resource('settlement', 'SettlementController');
 
 
@@ -148,7 +148,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('cash-bond/pending', 'CashbondController@getPendingCashbond');
 	Route::get('cash-bond/checked', 'CashbondController@getCheckedCashbond');
 	Route::get('cash-bond/approved', 'CashbondController@getApprovedCashbond');
-	Route::resource('cash-bond/dataTables', 'CashbondController@dataTables');
+	Route::get('cash-bond/dataTables', 'CashbondController@dataTables');
 	Route::resource('cash-bond', 'CashbondController');
 
 	//Cashbond Site
@@ -212,11 +212,13 @@ Route::group(['middleware' => 'auth'], function () {
 	//Asset Category
 	Route::get('master-data/asset-category/create', 'AssetCategoryController@create');
 	Route::get('master-data/asset-category', 'AssetCategoryController@index');
+	Route::get('master-data/asset-category/dataTables','AssetCategoryController@dataTables');
 	Route::resource('master-data/asset-category','AssetCategoryController');
 
 	//Asset
 	Route::get('master-data/asset/create','AssetController@create');
 	Route::get('master-data/asset','AssetController@index');
+	Route::get('master-data/asset/dataTables','AssetController@dataTables');
 	Route::resource('asset','AssetController');
 
 	//Role
@@ -283,7 +285,6 @@ Route::group(['middleware' => 'auth'], function () {
 		'getVendors'=>'datatables.getVendors',
 		'getUsers'=>'datatables.getUsers',
 		'getPOCustomers'=>'datatables.getPOCustomers',
-		'getProjects'=>'datatables.getProjects',
 		'getPurchaseRequests'=>'datatables.getPurchaseRequests',
 		//get all the invoice customers
 		'getInvoiceCustomers'=>'datatables.getInvoiceCustomers',
@@ -343,11 +344,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 		//Payroll
 		'getPayrolls'=>'datatables.getPayrolls',
-
-		//Asset Category
-		'getAssetCategories'=>'datatables.getAssetCategories',
-		//Asset
-		'getAssets'=>'datatables.getAssets',
 	]);
 
 	//Select2

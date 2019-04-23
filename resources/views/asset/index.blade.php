@@ -105,7 +105,7 @@
     var tableAsset =  $('#table-asset').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getAssets') !!}',
+      ajax : '{!! url('master-data/asset/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
