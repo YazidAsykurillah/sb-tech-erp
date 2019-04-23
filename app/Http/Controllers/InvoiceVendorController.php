@@ -8,12 +8,13 @@ use App\Http\Requests;
 use App\Http\Requests\StoreInvoiceVendorRequest;
 use App\Http\Requests\UpdateInvoiceVendorRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 use App\InvoiceVendor;
 use App\InvoiceVendorTax;
 use App\Project;
 use App\PurchaseOrderVendor;
-use Carbon\Carbon;
 use App\TheLog;
 
 class InvoiceVendorController extends Controller
@@ -223,4 +224,96 @@ class InvoiceVendorController extends Controller
        
     }
     
+
+    //INVOICE VENDOR datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $invoice_vendors = InvoiceVendor::with('project', 'purchase_order_vendor', 'purchase_order_vendor.vendor')->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'invoice_vendors.*',
+        ]);
+
+        $data_invoice_vendors = Datatables::of($invoice_vendors)
+            ->editColumn('type', function($invoice_vendors){
+                $disp = '';
+                $disp .= '<p>';
+                $disp .=    ucwords($invoice_vendors->type);     
+                $disp .= '</p>';
+                if($invoice_vendors->type == 'billing'){
+                    $disp .= number_format($invoice_vendors->bill_amount);
+                }else{
+                    $disp .= $invoice_vendors->type_percent .'%';
+                }
+                return $disp;
+            })
+            ->editColumn('project_id', function($invoice_vendors){
+                if($invoice_vendors->project){
+                    return $invoice_vendors->project->code;
+                }
+                
+            })
+            ->editColumn('purchase_order_vendor_id', function($invoice_vendors){
+                if($invoice_vendors->purchase_order_vendor){
+                    return $invoice_vendors->purchase_order_vendor->code;
+                }
+            })
+            ->editColumn('amount', function($invoice_vendors){
+                return number_format($invoice_vendors->amount,2);
+            })
+            ->addColumn('vendor', function($invoice_vendors){
+                if($invoice_vendors->purchase_order_vendor){
+                    if($invoice_vendors->purchase_order_vendor->vendor){
+                        return $invoice_vendors->purchase_order_vendor->vendor->name;
+                    }
+                    return NULL;
+                }
+                return NULL;
+
+                
+            })
+            ->editColumn('status', function($invoice_vendors){
+                $status_disp = "";
+                if($invoice_vendors->status == 'paid'){
+                    $status_disp .= $invoice_vendors->status .'<br/>';
+                    if($invoice_vendors->remitter_bank){
+                        $status_disp .= "(";
+                        $status_disp .= $invoice_vendors->remitter_bank->name;
+                        $status_disp .= ")";
+                    }
+                    
+
+                }
+                else{
+                    $status_disp = $invoice_vendors->status;
+                }
+                return $status_disp;
+            })
+            ->editColumn('accounted', function($invoice_vendors){
+                return $invoice_vendors->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
+            })
+            ->addColumn('actions', function($invoice_vendors){
+                    $actions_html ='<a href="'.url('invoice-vendor/'.$invoice_vendors->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    if($invoice_vendors->status !='paid'){
+                        $actions_html .='<a href="'.url('invoice-vendor/'.$invoice_vendors->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this invoice-vendor">';
+                        $actions_html .=    '<i class="fa fa-edit"></i>';
+                        $actions_html .='</a>&nbsp;';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-invoice-vendor" data-id="'.$invoice_vendors->id.'" data-text="'.$invoice_vendors->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
+                    
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_invoice_vendors->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_invoice_vendors->make(true);
+    }
+    //END INVOICE VENDOR datatables
 }

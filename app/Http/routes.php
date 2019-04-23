@@ -102,6 +102,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('invoice-vendor/in_week_overdue', 'InvoiceVendorController@in_week_overdue');
 	Route::post('deleteInvoiceVendor', 'InvoiceVendorController@destroy');
 	Route::get('invoice-vendor/create-from-pov', 'InvoiceVendorController@createFromPOV');
+	Route::resource('invoice-vendor/dataTables', 'InvoiceVendorController@dataTables');
 	Route::resource('invoice-vendor', 'InvoiceVendorController');
 
 	//Purchase Order Vendor
@@ -118,6 +119,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('internal-request/approved', 'InternalRequestController@getApprovedIR');
 	Route::get('internal-request/checked', 'InternalRequestController@getCheckedIR');
 	Route::get('internal-request/pending', 'InternalRequestController@getPendingIR');
+	Route::resource('internal-request/dataTables', 'InternalRequestController@dataTables');
 	Route::resource('internal-request', 'InternalRequestController');
 
 
@@ -132,6 +134,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('settlement/pending', 'SettlementController@getPendingSettlement');
 	Route::get('settlement/checked', 'SettlementController@getCheckedSettlement');
 	Route::get('settlement/approved', 'SettlementController@getApprovedSettlement');
+	Route::resource('settlement/dataTables', 'SettlementController@dataTables');
 	Route::resource('settlement', 'SettlementController');
 
 

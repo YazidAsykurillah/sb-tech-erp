@@ -146,7 +146,7 @@
     var tableSettlement =  $('#table-settlement').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getSettlements') !!}',
+      ajax : '{!! url('settlement/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },

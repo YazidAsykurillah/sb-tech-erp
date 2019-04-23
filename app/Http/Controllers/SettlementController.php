@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\Http\Requests\StoreSettlementRequest;
 use App\Http\Requests\UpdateSettlementRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\Settlement;
 use App\InternalRequest;
 use App\Category;
@@ -261,4 +264,94 @@ class SettlementController extends Controller
         return redirect()->back()
             ->with('successMessage', "$approved settlement(s) has been approved");
     }
+
+
+    //Settlement datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $user_role = \Auth::user()->roles->first()->code;
+        if($user_role == 'SUP' || $user_role == 'ADM' || $user_role == 'FIN'){
+            $settlements = Settlement::with('internal_request', 'internal_request.requester', 'internal_request.project' ,'category', 'sub_category', 'last_updater')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'settlements.*',
+            ]);
+        }
+        else{
+            $settlements = Settlement::with('internal_request', 'internal_request.project', 'category', 'sub_category', 'last_updater')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'settlements.*',
+            ])
+            ->whereHas('internal_request', function($query){
+                $query->where('requester_id', '=', \Auth::user()->id);
+            });
+        }
+        
+
+        $data_settlements = Datatables::of($settlements)
+            ->editColumn('internal_request', function($settlements){
+                if($settlements->internal_request){
+                    return $settlements->internal_request->code;
+                }else{
+                    return NULL;
+                }
+            })
+            ->editColumn('project', function($settlements){
+                if($settlements->internal_request){
+                    return $settlements->internal_request->project->code;
+                }else{
+                    return NULL;
+                }
+            })
+            ->addColumn('member_name', function($settlements){
+                if($settlements->internal_request){
+                    return $settlements->internal_request->requester->name;
+                }
+            })
+            ->editColumn('category', function($settlements){
+                return $settlements->category->name;
+            })
+            ->editColumn('sub_category', function($settlements){
+                return $settlements->sub_category->name;
+            })
+            ->editColumn('amount', function($settlements){
+                return number_format($settlements->amount, 2);
+            })
+            ->addColumn('balance', function($settlements){
+                if($settlements->internal_request){
+                    return number_format($settlements->internal_request->amount - $settlements->amount, 2);
+                }else{
+                    return NULL;
+                }
+            })
+            ->editColumn('accounted', function($settlements){
+                return $settlements->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
+            })
+            ->editColumn('created_at', function($settlements){
+                return jakarta_date_time($settlements->created_at);
+            })
+            ->addColumn('actions', function($settlements){
+                    $actions_html ='<a href="'.url('settlement/'.$settlements->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    if($settlements->status != 'approved'){
+                        $actions_html .='<a href="'.url('settlement/'.$settlements->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this settlement">';
+                        $actions_html .=    '<i class="fa fa-edit"></i>';
+                        $actions_html .='</a>&nbsp;';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-settlement" data-id="'.$settlements->id.'" data-text="'.$settlements->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
+                    
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_settlements->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_settlements->make(true);
+    }
+    //END Settlement datatables
 }

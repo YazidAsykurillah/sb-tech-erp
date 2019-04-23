@@ -169,7 +169,7 @@
     var tableInternalRequest =  $('#table-internal-request').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getInternalRequests') !!}',
+      ajax : '{!! url('internal-request/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },

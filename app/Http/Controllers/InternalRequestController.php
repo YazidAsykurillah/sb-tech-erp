@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Requests\StoreInternalRequestRequest;
 use App\Http\Requests\UpdateInternalRequestRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 use App\InternalRequest;
 use App\BankAccount;
@@ -271,4 +273,147 @@ class InternalRequestController extends Controller
         return view('internal-request.approved');
     }
 
+
+    //INTERNAL REQUEST datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $user_role = \Auth::user()->roles()->first()->code; 
+        if( $user_role == 'SUP' || $user_role == 'ADM' || $user_role == 'FIN'){
+            $internal_requests = InternalRequest::with('remitter_bank', 'beneficiary_bank', 'project', 'requester', 'vendor', 'settlement')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'internal_requests.*',
+            ]);
+        }
+        else{
+            $internal_requests = InternalRequest::where('requester_id','=',\Auth::user()->id)->with('remitter_bank', 'beneficiary_bank', 'project', 'requester', 'vendor', 'settlement')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'internal_requests.*',
+            ]);
+        }
+
+        $data_internal_requests = Datatables::of($internal_requests)
+            ->editColumn('code', function($internal_requests){
+                $link  = '<a href="'.url('internal-request/'.$internal_requests->id).'">';
+                $link .=    $internal_requests->code;
+                $link .= '</a>';
+                return $link;
+            })
+            ->addColumn('vendor', function($internal_requests){
+                if($internal_requests->vendor){
+                    return $internal_requests->vendor->name;
+                }else{
+                    return NULL;
+                }
+            })
+            ->editColumn('remitter_bank', function($internal_requests){
+                if($internal_requests->remitter_bank){
+                    return $internal_requests->remitter_bank->name;
+                }else{
+                    return NULL;
+                }
+                
+            })
+            ->editColumn('beneficiary_bank', function($internal_requests){
+                if($internal_requests->type != 'pindah_buku'){
+                    if($internal_requests->beneficiary_bank){
+                        return $internal_requests->beneficiary_bank->name;
+                    }else{
+                        return NULL;
+                    }    
+                }
+                else{
+                    if($internal_requests->bank_target){
+                        return $internal_requests->bank_target->name;
+                    }else{
+                        return NULL;
+                    }   
+                }
+                
+            })
+            ->editColumn('description', function($internal_requests){
+                return substr($internal_requests->description, 0, 20)."...<p><i>[Click icon detail for more information</i></p>";
+            })
+            ->editColumn('amount', function($internal_requests){
+                return number_format($internal_requests->amount);
+            })
+            ->editColumn('is_petty_cash', function($internal_requests){
+                $is_petty_cash_disp = "";
+                if($internal_requests->is_petty_cash == TRUE){
+                    $is_petty_cash_disp = '<i class="fa fa-check"></i>';
+                }else{
+                    $is_petty_cash_disp = '<i class="fa fa-times"></i>';
+                }
+                return $is_petty_cash_disp;
+            })
+            ->editColumn('project', function($internal_requests){
+                if($internal_requests->project){
+                    return $internal_requests->project->code;
+                }
+                
+            })
+            ->editColumn('requester', function($internal_requests){
+                return $internal_requests->requester->name;
+            })
+            ->editColumn('status', function($internal_requests){
+                return ucwords($internal_requests->status);
+            })
+            ->editColumn('settled', function($internal_requests){
+                $returned = '';
+                if($internal_requests->settled == true){
+                    $returned = "Ada";
+                }else{
+                    $returned = "Tidak Ada";
+                }
+                /*if($internal_requests->type == 'pindah_buku'){
+
+                }else{
+                    if($internal_requests->settlement){
+                    $returned  = '<p>';
+                    $returned .=    'Ada';
+                    //$returned .=    '['.$internal_requests->settlement->result.']';
+                    $returned .= '</p>';
+                    }
+                    else{
+                        $returned = 'Tidak Ada';
+                    }
+                }*/
+                
+                return $returned;
+            })
+            ->addColumn('settlement_status', function($internal_requests){
+                if($internal_requests->settlement){
+                    return $internal_requests->settlement->status;
+                }
+                return NULL;
+            })
+            ->editColumn('accounted', function($internal_requests){
+                return $internal_requests->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
+            })
+            ->addColumn('actions', function($internal_requests){
+                    $actions_html ='<a href="'.url('internal-request/'.$internal_requests->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    if($internal_requests->status == 'pending' || $internal_requests->status == 'rejected'){
+                        $actions_html .='<a href="'.url('internal-request/'.$internal_requests->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this internal-request">';
+                        $actions_html .=    '<i class="fa fa-edit"></i>';
+                        $actions_html .='</a>&nbsp;';    
+                    }
+                    if($internal_requests->status != 'approved'){
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-internal-request" data-id="'.$internal_requests->id.'" data-text="'.$internal_requests->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
+                    
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_internal_requests->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_internal_requests->make(true);
+    }
+    //END INTERNAL REQUEST datatables
 }

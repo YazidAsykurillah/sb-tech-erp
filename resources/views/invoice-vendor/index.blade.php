@@ -141,7 +141,7 @@
     var tableInvoiceVendor =  $('#table-invoice-vendor').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getInvoiceVendors') !!}',
+      ajax : '{!! url('invoice-vendor/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
