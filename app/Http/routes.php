@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//Purchase Order Customer
 	Route::get('purchase-order-customer/file', 'PurchaseOrderCustomerController@downloadFile');
 	Route::post('deletePOCustomer', 'PurchaseOrderCustomerController@destroy');
+	Route::resource('purchase-order-customer/dataTables', 'PurchaseOrderCustomerController@dataTables');
 	Route::resource('purchase-order-customer', 'PurchaseOrderCustomerController');
 
 
@@ -72,6 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//Project
 	Route::post('project/getSalesFromPurchaseOrderCustomer', 'ProjectController@getSalesFromPurchaseOrderCustomer');
 	Route::post('deleteProject', 'ProjectController@destroy');
+	Route::resource('project/dataTables', 'ProjectController@dataTables');
 	Route::resource('project', 'ProjectController');
 
 
@@ -106,6 +108,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('purchase-order-vendor/{id}/print_pdf', 'PurchaseOrderVendorController@print_pdf');
 	Route::post('purchase-order-vendor/change-status', 'PurchaseOrderVendorController@changeStatus');
 	Route::post('deletePOVendor', 'PurchaseOrderVendorController@destroy');
+	Route::resource('purchase-order-vendor/dataTables', 'PurchaseOrderVendorController@dataTables');
 	Route::resource('purchase-order-vendor', 'PurchaseOrderVendorController');
 
 	//Internal Request

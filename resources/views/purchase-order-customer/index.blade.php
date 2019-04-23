@@ -120,7 +120,7 @@
     var tablePOCustomer =  $('#table-purchase-order-customer').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getPOCustomers') !!}',
+      ajax : '{!! url('purchase-order-customer/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },

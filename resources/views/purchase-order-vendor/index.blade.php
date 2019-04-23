@@ -127,7 +127,7 @@
     var tablePOVendor =  $('#table-purchase-order-vendor').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getPOVendors') !!}',
+      ajax : '{!! url('purchase-order-vendor/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false, orderable:true},
         { data: 'code', name: 'code' },

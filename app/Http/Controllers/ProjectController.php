@@ -8,10 +8,12 @@ use App\Http\Requests;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\Project;
 use App\PurchaseOrderCustomer;
 use App\User;
-use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -239,6 +241,156 @@ class ProjectController extends Controller
     }
 
 
+   //PROJECT datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'projects.*',
+        ])->get();
+        
+                if ($request->get('cost_margin_value')) {
 
+            $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'projects.*',
+            ])
+            ->get()
+            ->filter(function($projects) use($request){
+                $cost_margin_operator = $request->get('cost_margin_operator');
+                
+                if($cost_margin_operator == "="){
+                    
+                    return $projects->cost_margin == $request->get('cost_margin_value');
+                }
+                else if($cost_margin_operator == ">="){
+                    
+                    return $projects->cost_margin >= $request->get('cost_margin_value');
+                }
+                else if($cost_margin_operator == ">"){
+                    
+                    return $projects->cost_margin > $request->get('cost_margin_value');
+                }
+                else if($cost_margin_operator == "<"){
+                    
+                    return $projects->cost_margin < $request->get('cost_margin_value');
+                }
+                else{
+                    
+                }
+            });
+        }
+
+        if ($request->get('invoiced_value')) {
+
+            $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'projects.*',
+            ])
+            ->get()
+            ->filter(function($projects) use($request){
+                $invoiced_operator = $request->get('invoiced_operator');
+                
+                if($invoiced_operator == "="){
+                    
+                    return $projects->invoiced == $request->get('invoiced_value');
+                }
+                else if($invoiced_operator == ">="){
+                    
+                    return $projects->invoiced >= $request->get('invoiced_value');
+                }
+                else if($invoiced_operator == ">"){
+                    
+                    return $projects->invoiced > $request->get('invoiced_value');
+                }
+                else if($invoiced_operator == "<"){
+                    
+                    return $projects->invoiced < $request->get('invoiced_value');
+                }
+                else{
+                    
+                }
+            });
+        }
+        else{
+
+        }
+        
+        $data_projects = Datatables::of($projects)
+            ->editColumn('code', function($projects){
+                $code_link  = '<a href="'.url('project/'.$projects->id.'').'">';
+                $code_link .=   $projects->code;
+                $code_link .= '</a>';
+                return $code_link;
+            })
+            ->editColumn('name', function($projects){
+                if(strlen($projects->name) > 99){
+                    return substr($projects->name, 0, 100)."...";
+                }
+                return $projects->name;
+            })
+            ->editColumn('purchase_order_customer_id', function($projects){
+                if($projects->purchase_order_customer){
+                    return $projects->purchase_order_customer->code;
+                }
+                return NULL;
+            })
+            ->editColumn('sales_id', function($projects){
+                if($projects->sales){
+                    return $projects->sales->name;
+                }
+                return NULL;
+            })
+            ->addColumn('customer_id', function($projects){
+                if($projects->purchase_order_customer){
+
+                    return $projects->purchase_order_customer->customer ? $projects->purchase_order_customer->customer->name : NULL;
+                }
+                return NULL;
+            })
+            ->addColumn('purchase_order_customer_amount', function($projects){
+                return $projects->purchase_order_customer ? number_format($projects->purchase_order_customer->amount, 2) : 0;
+            })
+            ->addColumn('invoiced', function($projects){
+               
+                return $projects->invoiced ." %";
+            })
+            ->addColumn('pending_invoice_customer_amount', function($projects){
+                return $projects->pending_invoice_customer() ? number_format($projects->pending_invoice_customer(), 2) : 0 ;
+            })
+            ->addColumn('paid_invoice_customer_amount', function($projects){
+                return $projects->paid_invoice_customer() ? number_format($projects->paid_invoice_customer(), 2) : 0;
+            })
+            ->editColumn('cost_margin', function($projects){
+                return round($projects->cost_margin, 2).' %';
+            })
+            ->addColumn('created_at', function($projects){
+                return $projects->created_at != NULL ? Carbon::parse($projects->created_at)->format('Y-m-d') : '';
+            })
+            ->addColumn('actions', function($projects){
+                    $actions_html ='<a href="'.url('project/'.$projects->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('project/'.$projects->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this project">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    if(\Auth::user()->can('delete-project')){
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-project" data-id="'.$projects->id.'" data-text="'.$projects->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';
+                    }
+                    
+                    return $actions_html;
+            });
+        
+    
+        if ($keyword = $request->get('search')['value']) {
+            $data_projects->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+            //$data_projects->filterColumn('cost_margin', 'whereRaw', '@cost_margin  like ?', ["%{$keyword}%"]);
+        }
+        return $data_projects->make(true);
+    }
+    //END PROJECT dataables
     
 }

@@ -169,7 +169,7 @@
       processing :true,
       serverSide : true,
       ajax : {
-        url : '{!! route('datatables.getProjects') !!}',
+        url : '{!! url('project/dataTables') !!}',
         data: function(d){
           d.cost_margin_operator = $('select[name=cost_margin_operator]').val();
           d.cost_margin_value = $('input[name=cost_margin_value]').val();

@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\Http\Requests\StorePurchaseOrderVendorRequest;
 use App\Http\Requests\UpdatePurchaseOrderVendorRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\PurchaseOrderVendor;
 use App\Vendor;
 use App\PurchaseRequest;
@@ -277,4 +280,98 @@ class PurchaseOrderVendorController extends Controller
         return $pdf->stream($purchase_order_vendor->code.'.pdf');
     }
     
+
+    //PURCHASE ORDER VENDOR datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $po_vendors = PurchaseOrderVendor::with('vendor', 'purchase_request', 'purchase_request.project', 'quotation_vendor')->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'purchase_order_vendors.*'
+        ]);
+
+        $data_po_vendors = Datatables::of($po_vendors)
+            ->editColumn('vendor_id', function($po_vendors){
+                return $po_vendors->vendor ? $po_vendors->vendor->name : NULL;
+            })
+            ->addColumn('project_code', function($po_vendors){
+                if($po_vendors->purchase_request){
+                    return $po_vendors->purchase_request->project ? $po_vendors->purchase_request->project->code : NULL;    
+                }
+                return NULL;
+                
+            })
+            ->addColumn('project_name', function($po_vendors){
+                if($po_vendors->purchase_request){
+                    $project_name = $po_vendors->purchase_request->project ? $po_vendors->purchase_request->project->name : NULL;
+                    return substr($project_name, 0, 100);
+                }
+                return NULL;
+                
+            })
+            ->editColumn('purchase_request', function($po_vendors){
+                if($po_vendors->purchase_request){
+                    $link  ='<a href="'.url('purchase-request/'.$po_vendors->purchase_request->id).'">';
+                    $link .=    $po_vendors->purchase_request->code;
+                    $link .= '</a>';
+                    return $link;
+                }
+                
+            })
+            ->editColumn('quotation_vendor', function($po_vendors){
+                if($po_vendors->quotation_vendor){
+                    return $po_vendors->quotation_vendor->code;
+                }
+                
+            })
+            ->editColumn('description', function($po_vendors){
+               return str_limit($po_vendors->description, 100);
+            })
+            ->editColumn('amount', function($po_vendors){
+                //return $po_vendors->purchase_request ? number_format($po_vendors->purchase_request->amount) : 0;
+                //return number_format($po_vendors->amount);
+                $amount = 0;
+                if($po_vendors->amount != NULL){
+                    $amount=$po_vendors->amount;
+                }else{
+                    $amount = $po_vendors->purchase_request->amount;
+                }
+                
+                return number_format($amount);
+            })
+            ->addColumn('paid_invoice_vendor', function($po_vendors){
+                return $po_vendors->paid_invoice_vendor() ? number_format($po_vendors->paid_invoice_vendor()) : 0;
+            })
+            ->addColumn('balance', function($po_vendors){
+                $amount = $po_vendors->purchase_request ?($po_vendors->purchase_request->amount) : 0;
+                $paid_invoice_vendor = $po_vendors->paid_invoice_vendor() ?($po_vendors->paid_invoice_vendor()) : 0;
+                $balance = $amount - $paid_invoice_vendor;
+                return number_format($balance, 2);
+
+            })
+            ->addColumn('actions', function($po_vendors){
+                    $actions_html ='<a href="'.url('purchase-order-vendor/'.$po_vendors->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    if($po_vendors->status != 'completed'){
+                        $actions_html .='<a href="'.url('purchase-order-vendor/'.$po_vendors->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this purchase-order-vendor">';
+                        $actions_html .=    '<i class="fa fa-edit"></i>';
+                        $actions_html .='</a>&nbsp;';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-vendor" data-id="'.$po_vendors->id.'" data-text="'.$po_vendors->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';    
+                    }
+                    
+
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_po_vendors->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_po_vendors->make(true);
+    }
+    //END PURCHASE ORDER VENDOR datatables
 }

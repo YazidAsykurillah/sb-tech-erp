@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\Http\Requests\StorePurchaseOrderCustomer;
 use App\Http\Requests\UpdatePurchaseOrderCustomer;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\PurchaseOrderCustomer;
 use App\Customer;
 use App\QuotationCustomer;
@@ -165,4 +168,75 @@ class PurchaseOrderCustomerController extends Controller
         
     }
     
+
+
+    //PURCHASE ORDER CUSTOMER datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $user_role = \Auth::user()->roles->first()->code;
+        if($user_role == 'SUP' || $user_role == 'ADM' || $user_role == 'FIN'){
+            $po_customers = PurchaseOrderCustomer::with('customer', 'quotation_customer', 'quotation_customer.sales', 'project')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_order_customers.*'
+            ]);  
+        }
+        else{
+            $po_customers = PurchaseOrderCustomer::with('customer', 'quotation_customer', 'quotation_customer.sales', 'project')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_order_customers.*'
+            ])
+            ->whereHas('quotation_customer', function($query){
+                $query->where('sales_id', '=', \Auth::user()->id);
+            });
+        }
+        
+
+        $data_po_customers = Datatables::of($po_customers)
+            ->editColumn('customer_id', function($po_customers){
+                return $po_customers->customer ? $po_customers->customer->name : '';
+            })
+            ->editColumn('amount', function($po_customers){
+                return number_format($po_customers->amount);
+            })
+            ->editColumn('quotation_customer', function($po_customers){
+                if($po_customers->quotation_customer){
+                    return $po_customers->quotation_customer->code;
+                }
+                return NULL;
+            })
+            ->editColumn('sales', function($po_customers){
+                if($po_customers->quotation_customer && $po_customers->quotation_customer->sales){
+                    return $po_customers->quotation_customer->sales->name;
+                }
+                return NULL;
+            })
+            ->editColumn('project_code', function($po_customers){
+                if($po_customers->project){
+                    return $po_customers->project->code;
+                }else{
+                    return NULL;
+                }
+            })
+            ->addColumn('actions', function($po_customers){
+                    $actions_html ='<a href="'.url('purchase-order-customer/'.$po_customers->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('purchase-order-customer/'.$po_customers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this purchase-order-customer">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-customer" data-id="'.$po_customers->id.'" data-text="'.$po_customers->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_po_customers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_po_customers->make(true);
+    }
+    //END PURCHASE ORDER CUSTOMER datatables
 }
