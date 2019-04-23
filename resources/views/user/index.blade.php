@@ -106,7 +106,7 @@
     var tableUser =  $('#table-user').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getUsers') !!}',
+      ajax : '{!! url('user/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'nik', name: 'nik' },

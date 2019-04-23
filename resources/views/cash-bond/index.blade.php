@@ -131,7 +131,7 @@
     var tableCashBond =  $('#table-cash-bond').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getCashbonds') !!}',
+      ajax : '{!! url('cash-bond/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },

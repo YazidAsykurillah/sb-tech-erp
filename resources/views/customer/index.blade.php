@@ -98,7 +98,7 @@
     var tableCustomer =  $('#table-customer').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getCustomers') !!}',
+      ajax : '{!! url('customer/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false, orderable:true},
         { data: 'name', name: 'name' },

@@ -30,10 +30,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Customer
 	Route::post('deleteCustomer', 'CustomerController@destroy');
+	Route::resource('customer/dataTables', 'CustomerController@dataTables');
 	Route::resource('customer', 'CustomerController');
 
 	//Vendor
 	Route::post('deleteVendor', 'TheVendorController@destroy');
+	Route::resource('the-vendor/dataTables', 'TheVendorController@dataTables');
 	Route::resource('the-vendor', 'TheVendorController');
 
 
@@ -45,6 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('user/unlock_create_internal_request', 'UserController@unlock_create_internal_request');
 	Route::post('deleteUser', 'UserController@destroy');
 	Route::post('resetPassword', 'UserController@resetPassword');
+	Route::resource('user/dataTables', 'UserController@dataTables');
 	Route::resource('user', 'UserController');
 
 	//Purchase Order Customer
@@ -145,6 +148,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('cash-bond/pending', 'CashbondController@getPendingCashbond');
 	Route::get('cash-bond/checked', 'CashbondController@getCheckedCashbond');
 	Route::get('cash-bond/approved', 'CashbondController@getApprovedCashbond');
+	Route::resource('cash-bond/dataTables', 'CashbondController@dataTables');
 	Route::resource('cash-bond', 'CashbondController');
 
 	//Cashbond Site

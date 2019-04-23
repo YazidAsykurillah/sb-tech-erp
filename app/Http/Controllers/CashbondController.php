@@ -9,6 +9,9 @@ use App\Http\Requests\StoreCashbondRequest;
 use App\Http\Requests\UpdateCashbondRequest;
 //use App\Http\Controllers\Controller;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\Cashbond;
 use App\User;
 use App\TheLog;
@@ -208,4 +211,69 @@ class CashbondController extends Controller
         return redirect('cash-bond/'.$request->cashbond_id_to_cut_from_salary)
             ->with('successMessage', "Cashbond $cashbond->code has been changed to $cut_from_salary_info");
     }
+
+
+    //Cashbond datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $user_role = \Auth::user()->roles()->first()->code;
+        if($user_role == 'SUP' || $user_role == 'ADM' || $user_role == 'FIN'){
+            $cashbonds = Cashbond::with('user')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'cashbonds.*',
+            ]);
+        }
+        else{
+             $cashbonds = Cashbond::with('user')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'cashbonds.*',
+            ])->where('user_id', '=', \Auth::user()->id);
+        }
+
+        $data_cashbonds = Datatables::of($cashbonds)
+            ->editColumn('user', function($cashbonds){
+                if($cashbonds->user){
+                    return $cashbonds->user->name;    
+                }else{
+                    return "";
+                }
+                
+            })
+            ->editColumn('amount', function($cashbonds){
+                return number_format($cashbonds->amount, 2);
+            })
+            ->editColumn('accounted', function($cashbonds){
+                return $cashbonds->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
+            })
+            ->editColumn('cut_from_salary', function($cashbonds){
+                return $cashbonds->cut_from_salary == TRUE ? 'Yes' : 'No';
+            })
+            ->editColumn('payment_status', function($cashbonds){
+                return $cashbonds->payment_status == TRUE ? 'Lunas' : 'Belum Lunas';
+            })
+            ->editColumn('created_at', function($settlements){
+                return jakarta_date_time($settlements->created_at);
+            })
+            ->addColumn('actions', function($cashbonds){
+                    $actions_html ='<a href="'.url('cash-bond/'.$cashbonds->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('cash-bond/'.$cashbonds->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this cash-bond">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-cash-bond" data-id="'.$cashbonds->id.'" data-text="'.$cashbonds->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_cashbonds->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_cashbonds->make(true);
+    }
+    //END Cashbond datatables
 }

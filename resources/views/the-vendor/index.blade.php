@@ -102,7 +102,7 @@
     var tableVendor =  $('#table-vendor').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getVendors') !!}',
+      ajax : '{!! url('the-vendor/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false, orderable:true},
         { data: 'name', name: 'name' },

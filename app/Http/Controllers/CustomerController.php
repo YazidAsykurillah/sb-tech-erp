@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\Customer;
 use App\PurchaseOrderCustomer;
 use App\Project;
@@ -128,5 +131,43 @@ class CustomerController extends Controller
             ->with('successMessage', "Customer has been deleted");
     }
 
+
+
+    //CUSTOMER datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $customers = Customer::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'id',
+            'name',
+            'contact_number',
+            'address',
+            'created_at',
+            'updated_at',
+        ]);
+
+        $data_customers = Datatables::of($customers)
+            ->addColumn('actions', function($customers){
+                    $actions_html ='<a href="'.url('customer/'.$customers->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<a href="'.url('customer/'.$customers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this customer">';
+                    $actions_html .=    '<i class="fa fa-edit"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-customer" data-id="'.$customers->id.'" data-text="'.$customers->name.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_customers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_customers->make(true);
+    }
+    //END CUSTOMER datatables
     
 }

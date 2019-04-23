@@ -88,139 +88,9 @@ class DatatablesController extends Controller
     }
     //END BANK ACCOUNT datatables
 
-    //CUSTOMER datatables
-    public function getCustomers(Request $request)
-    {
-        \DB::statement(\DB::raw('set @rownum=0'));
-        $customers = Customer::select([
-            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id',
-            'name',
-            'contact_number',
-            'address',
-            'created_at',
-            'updated_at',
-        ]);
+    
 
-        $data_customers = Datatables::of($customers)
-            ->addColumn('actions', function($customers){
-                    $actions_html ='<a href="'.url('customer/'.$customers->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
-                    $actions_html .=    '<i class="fa fa-external-link"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('customer/'.$customers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this customer">';
-                    $actions_html .=    '<i class="fa fa-edit"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-customer" data-id="'.$customers->id.'" data-text="'.$customers->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
-
-                    return $actions_html;
-            });
-
-        if ($keyword = $request->get('search')['value']) {
-            $data_customers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
-        }
-
-        return $data_customers->make(true);
-    }
-    //END CUSTOMER datatables
-
-
-    //VENDOR datatables
-    public function getVendors(Request $request)
-    {
-        \DB::statement(\DB::raw('set @rownum=0'));
-        $vendors = Vendor::select([
-            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'id',
-            'name',
-            'phone',
-            'address',
-            'product_name',
-            'bank_account',
-            'created_at',
-            'updated_at',
-        ]);
-
-        $data_vendors = Datatables::of($vendors)
-            ->addColumn('actions', function($vendors){
-                    $actions_html ='<a href="'.url('the-vendor/'.$vendors->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
-                    $actions_html .=    '<i class="fa fa-external-link"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('the-vendor/'.$vendors->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this vendor">';
-                    $actions_html .=    '<i class="fa fa-edit"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-vendor" data-id="'.$vendors->id.'" data-text="'.$vendors->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
-
-                    return $actions_html;
-            });
-
-        if ($keyword = $request->get('search')['value']) {
-            $data_vendors->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
-        }
-
-        return $data_vendors->make(true);
-    }
-    //END VENDOR datatables
-
-
-    //USER datatables
-    public function getUsers(Request $request)
-    {
-        \DB::statement(\DB::raw('set @rownum=0'));
-        if(\Auth::user()->can('index-user-office') && \Auth::user()->can('index-user-outsource')){
-            $users = User::with('roles')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'users.*'
-            ]);    
-        }else if(\Auth::user()->can('index-user-outsource')){
-            $users = User::with('roles')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'users.*'
-            ])
-            ->where('users.type', '=', 'outsource');
-        }
-        else{
-            $users = [];
-        }
-        
-        $data_users = Datatables::of($users)
-            ->editColumn('salary', function($users){
-                return number_format($users->salary);
-            })
-            ->addColumn('roles', function (User $user) {
-                    return $user->roles->map(function($role) {
-                        return str_limit($role->name, 30, '...');
-                    })->implode('<br>');
-            })
-            ->editColumn('status', function($users){
-                if($users->status == 'active'){
-                    return '<i class="fa fa-check"></i>';
-                }
-            })
-            ->addColumn('actions', function($users){
-                    $actions_html ='<a href="'.url('user/'.$users->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
-                    $actions_html .=    '<i class="fa fa-external-link"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('user/'.$users->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this user">';
-                    $actions_html .=    '<i class="fa fa-edit"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-user" data-id="'.$users->id.'" data-text="'.$users->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
-
-                    return $actions_html;
-            });
-
-        if ($keyword = $request->get('search')['value']) {
-            $data_users->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
-        }
-
-        return $data_users->make(true);
-    }
-    //END USER datatables
+    
 
 
     //Permission datatables
@@ -915,14 +785,6 @@ class DatatablesController extends Controller
     //END CATEGORY datatables
 
 
-    
-
-
-    
-
-    
-
-
     // Pending Settlement datatables
     public function getPendingSettlements(Request $request)
     {
@@ -1102,69 +964,7 @@ class DatatablesController extends Controller
     }
     //END Approved Settlement datatables
 
-    //Cashbond datatables
-    public function getCashbonds(Request $request)
-    {
-        \DB::statement(\DB::raw('set @rownum=0'));
-        $user_role = \Auth::user()->roles()->first()->code;
-        if($user_role == 'SUP' || $user_role == 'ADM' || $user_role == 'FIN'){
-            $cashbonds = Cashbond::with('user')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'cashbonds.*',
-            ]);
-        }
-        else{
-             $cashbonds = Cashbond::with('user')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'cashbonds.*',
-            ])->where('user_id', '=', \Auth::user()->id);
-        }
-
-        $data_cashbonds = Datatables::of($cashbonds)
-            ->editColumn('user', function($cashbonds){
-                if($cashbonds->user){
-                    return $cashbonds->user->name;    
-                }else{
-                    return "";
-                }
-                
-            })
-            ->editColumn('amount', function($cashbonds){
-                return number_format($cashbonds->amount, 2);
-            })
-            ->editColumn('accounted', function($cashbonds){
-                return $cashbonds->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
-            })
-            ->editColumn('cut_from_salary', function($cashbonds){
-                return $cashbonds->cut_from_salary == TRUE ? 'Yes' : 'No';
-            })
-            ->editColumn('payment_status', function($cashbonds){
-                return $cashbonds->payment_status == TRUE ? 'Lunas' : 'Belum Lunas';
-            })
-            ->editColumn('created_at', function($settlements){
-                return jakarta_date_time($settlements->created_at);
-            })
-            ->addColumn('actions', function($cashbonds){
-                    $actions_html ='<a href="'.url('cash-bond/'.$cashbonds->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
-                    $actions_html .=    '<i class="fa fa-external-link"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('cash-bond/'.$cashbonds->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this cash-bond">';
-                    $actions_html .=    '<i class="fa fa-edit"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-cash-bond" data-id="'.$cashbonds->id.'" data-text="'.$cashbonds->code.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
-
-                    return $actions_html;
-            });
-
-        if ($keyword = $request->get('search')['value']) {
-            $data_cashbonds->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
-        }
-
-        return $data_cashbonds->make(true);
-    }
-    //END Cashbond datatables
+    
 
 
     //Pending Cashbond datatables
