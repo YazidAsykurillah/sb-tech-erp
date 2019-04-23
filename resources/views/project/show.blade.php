@@ -96,7 +96,7 @@
           <a href="{{ URL::to('invoice-customer/create/?project_id='.$project->id.'')}}" class="btn btn-default btn-xs" title="Create new Invoice Customer">
             <i class="fa fa-plus"></i>&nbsp;Invoice Customer
           </a>&nbsp;
-          @if(count($project->purchase_request) == 0)
+          @if($project->purchase_request && $project->purchase_request->count() == 0)
           <a href="{{ URL::to('purchase-request/create/?project_id='.$project->id.'')}}" class="btn btn-default btn-xs" title="Register Purchase Request to this project">
             <i class="fa fa-plus"></i>&nbsp;Purchase Request
           </a>

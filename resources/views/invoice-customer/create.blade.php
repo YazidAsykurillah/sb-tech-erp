@@ -183,7 +183,7 @@
               <p>{!! Form::radio('type','term') !!} Term</p>
               <p>{!! Form::radio('type','pelunasan') !!} Pelunasan</p>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-4">
               <div class="input-group">
                 {!! Form::text('down_payment',null,['class'=>'form-control', 'placeholder'=>'(%)', 'id'=>'down_payment']) !!}
                 <span class="input-group-btn">
@@ -399,16 +399,29 @@
   <script type="text/javascript">
 
     //Block initialize autonumerical inputs
-    $('#amount, .quantity, #vat, #wht, .price, .sub_amount, #total_sub_amount, #after_discount, #down_payment, #down_payment_value, #vat_value').autoNumeric('init',{
+    $('#amount, .quantity, #vat, #wht, .price, .sub_amount, #total_sub_amount, #after_discount, #down_payment_value, #vat_value').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });
+
+    //Custom autonumerical inputs
+
+    //Discount
     $('#discount').autoNumeric('init',{
         aSep:',',
         aDec:'.',
         mDec : 20,
         vMax:99
     });
+
+    //Down Payment
+    $('#down_payment').autoNumeric('init',{
+        aSep:',',
+        aDec:'.',
+        mDec : 20,
+        vMax:99
+    });
+
     //ENDBLock initialize autonumerical inputs
 
     //Block price input

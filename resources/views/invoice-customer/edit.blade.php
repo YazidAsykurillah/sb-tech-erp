@@ -448,7 +448,7 @@
     //ENDBlock purchase order customer selection
     
     //Block initialize autonumerical inputs
-    $('#amount, .quantity, #vat, #wht, .price, .sub_amount, #total_sub_amount, #after_discount, #down_payment, #down_payment_value, #vat_value').autoNumeric('init',{
+    $('#amount, .quantity, #vat, #wht, .price, .sub_amount, #total_sub_amount, #after_discount, #down_payment_value, #vat_value').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });
@@ -459,6 +459,14 @@
         mDec : 20,
         vMax:99
     });
+
+    $('#down_payment').autoNumeric('init',{
+        aSep:',',
+        aDec:'.',
+        mDec : 10,
+        vMax:100
+    });
+
     //ENDBLock initialize autonumerical inputs
 
     //Block price input
