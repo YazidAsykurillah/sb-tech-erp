@@ -403,7 +403,6 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'CategoryTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CategoryTableSeeder.php',
         'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'CreateAssetCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_04_141735_create_asset_categories_table.php',
-        'CreateAssetTypesTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_04_141725_create_asset_types_table.php',
         'CreateAssetsTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_04_140443_create_assets_table.php',
         'CreateBankAccountsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_25_191644_create_bank_accounts_table.php',
         'CreateBankAdministrationsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_22_100504_create_bank_administrations_table.php',

@@ -129,7 +129,7 @@
       lengthMenu: [[10, 25, 100, 500, -1], [10, 25, 100, 500, "All"]],
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getPurchaseRequests') !!}',
+      ajax : '{!! url('purchase-request/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false, orderable:true},
         { data: 'user', name: 'user.name' },

@@ -78,10 +78,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('getPurchaseRequestItems', 'PurchaseRequestController@getPurchaseRequestItems');
 	Route::post('changePurchaseRequestStatus', 'PurchaseRequestController@changeStatus');
 	Route::post('deletePurchaseRequest', 'PurchaseRequestController@destroy');
+	Route::resource('purchase-request/dataTables', 'PurchaseRequestController@dataTables');
 	Route::resource('purchase-request', 'PurchaseRequestController');
 
 
 	//Invoice Customer
+	Route::get('invoice-customer/dataTables', 'InvoiceCustomerController@dataTables');
 	Route::get('invoice-customer/file', 'InvoiceCustomerController@downloadFile');
 	Route::get('invoice-customer/{id}/print_pdf', 'InvoiceCustomerController@print_pdf');
 	Route::get('invoice-customer/in_week_overdue', 'InvoiceCustomerController@in_week_overdue');
@@ -418,4 +420,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('medical-allowance/update-multiplier', 'MedicalAllowanceController@updateMultiplier');
 	Route::post('medical-allowance/update-amount', 'MedicalAllowanceController@updateAmount');
 	Route::resource('medical-allowance', 'MedicalAllowanceController');
+
+
+
+	//REST APIs
+	//Preparing rest, for now it's still not used
+	Route::get('api/invoice-customer', 'Api\InvoiceCustomerController@index');
 });

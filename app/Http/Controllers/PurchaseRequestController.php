@@ -8,6 +8,9 @@ use App\Http\Requests;
 use App\Http\Requests\StorePurchaseRequestRequest;
 use App\Http\Requests\UpdatePurchaseRequestRequest;
 
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
+
 use App\PurchaseRequest;
 use App\Project;
 
@@ -230,5 +233,101 @@ class PurchaseRequestController extends Controller
            return \DB::table('item_purchase_request')->where('id', $id)->update(['is_received'=>FALSE]);
         }
     }
+
+    //PURCHASE REQUEST dataTables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $user_role = \Auth::user()->roles->first()->code;
+        if($user_role == 'SUP' || $user_role == 'ADM' || $user_role =='FIN'){
+           $purchase_requests = PurchaseRequest::with('project', 'project.purchase_order_customer.customer', 'user', 'quotation_vendor', 'quotation_vendor.vendor', 'purchase_order_vendor')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_requests.*',
+            ]);
+       }else{
+            //exit();
+            $purchase_requests = PurchaseRequest::with('project', 'project.purchase_order_customer.customer', 'user', 'quotation_vendor', 'quotation_vendor.vendor', 'purchase_order_vendor')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_requests.*',
+            ])->where('purchase_requests.user_id', \Auth::user()->id);
+       }
+        
+
+        $data_purchase_requests = Datatables::of($purchase_requests)
+            ->addColumn('user', function($purchase_requests){
+                if($purchase_requests->user){
+                    return $purchase_requests->user->name;
+                }
+                else{
+                    return NULL;
+                }
+                
+            })
+            ->editColumn('code', function($purchase_requests){
+                $link  = '';
+                $link .= '<a href="'.url('purchase-request/'.$purchase_requests->id.'').'">';
+                $link .=    $purchase_requests->code;
+                $link .= '</a>';
+                return $link;
+            })
+            ->editColumn('project_id', function($purchase_requests){
+                if($purchase_requests->project){
+                    return $purchase_requests->project->code;
+                }
+                
+            })
+            ->addColumn('quotation_vendor', function($purchase_requests){
+                if($purchase_requests->quotation_vendor){
+                    return $purchase_requests->quotation_vendor->code;
+                }else{
+                    return NULL;
+                }
+            })
+            ->addColumn('vendor_name', function($purchase_requests){
+                if($purchase_requests->quotation_vendor){
+                    return $purchase_requests->quotation_vendor->vendor->name;
+                }else{
+                    return NULL;
+                }
+            })
+            ->editColumn('description', function($purchase_requests){
+                return str_limit($purchase_requests->description, 50);
+            })
+            ->editColumn('amount', function($purchase_requests){
+                return number_format($purchase_requests->amount);
+            })
+            ->editColumn('created_at', function($settlements){
+                return jakarta_date_time($settlements->created_at);
+            })
+            ->addColumn('purchase_order_vendor', function($purchase_requests){
+                if($purchase_requests->purchase_order_vendor){
+                    return $purchase_requests->purchase_order_vendor->code;    
+                }
+                return NULL;
+                
+            })
+            ->addColumn('actions', function($purchase_requests){
+                    $actions_html ='<a href="'.url('purchase-request/'.$purchase_requests->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    if($purchase_requests->status == 'pending'){
+                        $actions_html .='<a href="'.url('purchase-request/'.$purchase_requests->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this purchase-request">';
+                        $actions_html .=    '<i class="fa fa-edit"></i>';
+                        $actions_html .='</a>&nbsp;';
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-request" data-id="'.$purchase_requests->id.'" data-text="'.$purchase_requests->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';    
+                    }
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_purchase_requests->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_purchase_requests->make(true);
+    }
+    //END PURCHASE REQUEST dataTables
 
 }

@@ -129,7 +129,7 @@
       "lengthMenu": [[10, 25, 100, 500, -1], [10, 25, 100, 500, "All"]],
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getInvoiceCustomers') !!}',
+      ajax : '{!! url('invoice-customer/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },

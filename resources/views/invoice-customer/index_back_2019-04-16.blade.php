@@ -126,6 +126,7 @@
 @section('additional_scripts')
    <script type="text/javascript">
     var tableInvoiceCustomer =  $('#table-invoice-customer').DataTable({
+      "lengthMenu": [[10, 25, 100, 500, -1], [10, 25, 100, 500, "All"]],
       processing :true,
       serverSide : true,
       ajax : '{!! route('datatables.getInvoiceCustomers') !!}',

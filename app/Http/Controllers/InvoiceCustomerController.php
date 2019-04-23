@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 
 use App\Http\Requests\StoreInvoiceCustomerRequest;
 use App\Http\Requests\UpdateInvoiceCustomerRequest;
+
+
 
 use App\InvoiceCustomer;
 use App\Project;
@@ -423,4 +426,71 @@ class InvoiceCustomerController extends Controller
         }
         
     }
+
+    //INVOICE CUSTOMER datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $invoice_customers = InvoiceCustomer::with('project','project.purchase_order_customer', 'project.purchase_order_customer.customer')->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'invoice_customers.*',
+        ]);
+
+
+        $data_invoice_customers = Datatables::of($invoice_customers)
+            ->editColumn('project_id', function($invoice_customers){
+
+                //return $invoice_customers->project->code;return $invoice_customers->project->code;
+                if($invoice_customers->project){
+                    return $invoice_customers->project->code;
+                }
+
+            })
+            ->addColumn('po_customer', function($invoice_customers){
+                if($invoice_customers->project){
+                    return $invoice_customers->project->purchase_order_customer ? $invoice_customers->project->purchase_order_customer->code : null;
+                }
+                
+            })
+            ->addColumn('customer_name', function($invoice_customers){
+                if($invoice_customers->project){
+                    if($invoice_customers->project->purchase_order_customer){
+                        return $invoice_customers->project->purchase_order_customer->customer ? $invoice_customers->project->purchase_order_customer->customer->name : '';
+                    }
+                    return null;
+                    
+                }
+            })
+            ->editColumn('sub_amount', function($invoice_customers){
+                return number_format($invoice_customers->sub_amount);
+            })
+            ->editColumn('amount', function($invoice_customers){
+                return number_format($invoice_customers->amount);
+            })
+            ->editColumn('accounted', function($invoice_customers){
+                return $invoice_customers->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
+            })
+            ->addColumn('actions', function($invoice_customers){
+                    $actions_html ='<a href="'.url('invoice-customer/'.$invoice_customers->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    if($invoice_customers->status !='paid'){
+                        $actions_html .='<a href="'.url('invoice-customer/'.$invoice_customers->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this invoice-customer">';
+                        $actions_html .=    '<i class="fa fa-edit"></i>';
+                        $actions_html .='</a>&nbsp;';
+                    }
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-invoice-customer" data-id="'.$invoice_customers->id.'" data-text="'.$invoice_customers->code.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_invoice_customers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_invoice_customers->make(true);
+    }
+    //END INVOICE CUSTOMER datatables
 }

@@ -59,7 +59,6 @@ return array(
     'CategoryTableSeeder' => $baseDir . '/database/seeds/CategoryTableSeeder.php',
     'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
     'CreateAssetCategoriesTable' => $baseDir . '/database/migrations/2019_04_04_141735_create_asset_categories_table.php',
-    'CreateAssetTypesTable' => $baseDir . '/database/migrations/2019_04_04_141725_create_asset_types_table.php',
     'CreateAssetsTable' => $baseDir . '/database/migrations/2019_04_04_140443_create_assets_table.php',
     'CreateBankAccountsTable' => $baseDir . '/database/migrations/2017_03_25_191644_create_bank_accounts_table.php',
     'CreateBankAdministrationsTable' => $baseDir . '/database/migrations/2017_05_22_100504_create_bank_administrations_table.php',
