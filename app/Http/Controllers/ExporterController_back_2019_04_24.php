@@ -12,7 +12,7 @@ use App\Transaction;
 //User Maatwebsite Excel package
 use Excel;
 
-class ExporterController extends Controller
+class ExporterController_back_2019_04_24 extends Controller
 {
     public function exportCashTransaction(Request $request)
     {
@@ -43,7 +43,6 @@ class ExporterController extends Controller
     protected function exportCashTransactionAnnual($request)
     {
         $dataExport = [];
-        $dataReport = [];
 
     	$cash = Cash::findOrFail($request->cash_id_to_export);
     	$data = Transaction::select('cash_id','refference','refference_id','refference_number','type', 'amount', 'notes', 'transaction_date')
@@ -52,7 +51,6 @@ class ExporterController extends Controller
     			->get()->toArray();
 
         foreach($data as $key=>$value){
-            //BLOCK Data export
             $dataExport[$key]['cash_id'] = $data[$key]['cash_id'];
             $dataExport[$key]['refference'] = $data[$key]['refference'];
             $dataExport[$key]['refference_id'] = $data[$key]['refference_id'];
@@ -68,31 +66,13 @@ class ExporterController extends Controller
             }
             $dataExport[$key]['notes'] = $data[$key]['notes'];
             $dataExport[$key]['transaction_date'] = $data[$key]['transaction_date'];
-
-            //BLOCK Data Report
-            $dataReport[$key]['refference'] = $data[$key]['refference'];
-            $dataReport[$key]['refference_number'] = $data[$key]['refference_number'];
-            $dataReport[$key]['amount'] = $data[$key]['amount'];
-            if($data[$key]['type'] == 'credit'){
-                $dataReport[$key]['credit'] = $data[$key]['amount'];
-                $dataReport[$key]['debit'] = '';
-            }else{
-                $dataReport[$key]['credit'] = '';
-                $dataReport[$key]['debit'] = $data[$key]['amount'];
-            }
-            $dataReport[$key]['notes'] = $data[$key]['notes'];
-            $dataReport[$key]['transaction_date'] = $data[$key]['transaction_date'];
             
         }
 
-        return Excel::create($request->year.'_annual_transaction_report_'.$cash->name.'', function($excel) use ($dataExport, $dataReport) {
-            $excel->sheet('Export', function($sheet) use ($dataExport)
+        return Excel::create($request->year.'_annual_transaction_report_'.$cash->name.'', function($excel) use ($dataExport) {
+            $excel->sheet('Sheet-01', function($sheet) use ($dataExport)
             {
                 $sheet->fromArray($dataExport);
-            });
-            $excel->sheet('Report', function($sheet) use ($dataReport)
-            {
-                $sheet->fromArray($dataReport);
             });
         })->download('xlsx');
     }
@@ -100,7 +80,6 @@ class ExporterController extends Controller
     protected function exportCashTransactionMonthly($request)
     {
         $dataExport = [];
-        $dataReport = [];
 
     	$cash = Cash::findOrFail($request->cash_id_to_export);
     	$year_month = $request->year.'-'.$request->month;
@@ -110,7 +89,6 @@ class ExporterController extends Controller
     			->get()->toArray();
 
         foreach($data as $key=>$value){
-            //BLOCK Data Export
             $dataExport[$key]['cash_id'] = $data[$key]['cash_id'];
             $dataExport[$key]['refference'] = $data[$key]['refference'];
             $dataExport[$key]['refference_id'] = $data[$key]['refference_id'];
@@ -127,30 +105,12 @@ class ExporterController extends Controller
             $dataExport[$key]['notes'] = $data[$key]['notes'];
             $dataExport[$key]['transaction_date'] = $data[$key]['transaction_date'];
             
-            //BLOCK Data Report
-            $dataReport[$key]['refference'] = $data[$key]['refference'];
-            $dataReport[$key]['refference_number'] = $data[$key]['refference_number'];
-            $dataReport[$key]['amount'] = $data[$key]['amount'];
-            if($data[$key]['type'] == 'credit'){
-                $dataReport[$key]['credit'] = $data[$key]['amount'];
-                $dataReport[$key]['debit'] = '';
-            }else{
-                $dataReport[$key]['credit'] = '';
-                $dataReport[$key]['debit'] = $data[$key]['amount'];
-            }
-            $dataReport[$key]['notes'] = $data[$key]['notes'];
-            $dataReport[$key]['transaction_date'] = $data[$key]['transaction_date'];
-
         }
 
-        return Excel::create($request->year.'-'.$request->month.'_monthly_transaction_report_'.$cash->name.'', function($excel) use ($dataExport, $dataReport) {
-            $excel->sheet('Export', function($sheet) use ($dataExport)
+        return Excel::create($request->year.'-'.$request->month.'_monthly_transaction_report_'.$cash->name.'', function($excel) use ($dataExport) {
+            $excel->sheet('Sheet-01', function($sheet) use ($dataExport)
             {
                 $sheet->fromArray($dataExport);
-            });
-            $excel->sheet('Report', function($sheet) use ($dataReport)
-            {
-                $sheet->fromArray($dataReport);
             });
         })->download('xlsx');
     }
@@ -158,12 +118,9 @@ class ExporterController extends Controller
     protected function exportCashTransactionFull($request)
     {
         $dataExport = [];
-        $dataReport = [];
-
     	$cash = Cash::findOrFail($request->cash_id_to_export);
     	$data = Transaction::select('cash_id','refference','refference_id','refference_number','type', 'amount', 'notes', 'transaction_date')->where('cash_id',$cash->id)->get()->toArray();
         foreach($data as $key=>$value){
-            //BLOCK Data Export
             $dataExport[$key]['cash_id'] = $data[$key]['cash_id'];
             $dataExport[$key]['refference'] = $data[$key]['refference'];
             $dataExport[$key]['refference_id'] = $data[$key]['refference_id'];
@@ -179,34 +136,16 @@ class ExporterController extends Controller
             }
             $dataExport[$key]['notes'] = $data[$key]['notes'];
             $dataExport[$key]['transaction_date'] = $data[$key]['transaction_date'];
-
-            //BLOCK Data Report
-            $dataReport[$key]['refference'] = $data[$key]['refference'];
-            $dataReport[$key]['refference_number'] = $data[$key]['refference_number'];
-            $dataReport[$key]['amount'] = $data[$key]['amount'];
-            if($data[$key]['type'] == 'credit'){
-                $dataReport[$key]['credit'] = $data[$key]['amount'];
-                $dataReport[$key]['debit'] = '';
-            }else{
-                $dataReport[$key]['credit'] = '';
-                $dataReport[$key]['debit'] = $data[$key]['amount'];
-            }
-            $dataReport[$key]['notes'] = $data[$key]['notes'];
-            $dataReport[$key]['transaction_date'] = $data[$key]['transaction_date'];
             
         }
         /*echo '<pre>';
         print_r($dataExport);        
         echo '</pre>';
         exit();*/
-        return Excel::create('full_transaction_report_'.$cash->name.'', function($excel) use ($dataExport, $dataReport) {
-            $excel->sheet('Export', function($sheet) use ($dataExport)
+        return Excel::create('full_transaction_report_'.$cash->name.'', function($excel) use ($dataExport) {
+            $excel->sheet('Sheet-01', function($sheet) use ($dataExport)
             {
                 $sheet->fromArray($dataExport);
-            });
-            $excel->sheet('Report', function($sheet) use ($dataReport)
-            {
-                $sheet->fromArray($dataReport);
             });
         })->download('xlsx');
     }
