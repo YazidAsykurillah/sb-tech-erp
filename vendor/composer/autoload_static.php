@@ -396,6 +396,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'AddTypePercentAndAmountFromTypeToInvoiceVendorsTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_15_065010_add_type_percent_and_amount_from_type_to_invoice_vendors_table.php',
         'AddUserIdToQuotationVendor' => __DIR__ . '/../..' . '/database/migrations/2017_10_23_051328_add_user_id_to_quotation_vendor.php',
         'AddWhtAndTypeToInvoiceVendors' => __DIR__ . '/../..' . '/database/migrations/2017_09_08_091318_add_wht_and_type_to_invoice_vendors.php',
+        'AddWorkActivationDateToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_24_123103_add_work_activation_date_to_users_table.php',
         'BankAcountTableSeeder' => __DIR__ . '/../..' . '/database/seeds/BankAcountTableSeeder.php',
         'BankAdministrationTableSeeder' => __DIR__ . '/../..' . '/database/seeds/BankAdministrationTableSeeder.php',
         'CashTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CashTableSeeder.php',

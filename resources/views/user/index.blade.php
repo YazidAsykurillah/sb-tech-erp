@@ -41,12 +41,14 @@
                       <th>Role</th>
                       <th>Position</th>
                       <th>Salary</th>
+                      <th>Tahun Aktif</th>
                       <th style="width:10%;text-align:center;">Status</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -115,6 +117,7 @@
         { data: 'roles', name: 'roles.name'},
         { data: 'position', name: 'position'},
         { data: 'salary', name: 'salary'},
+        { data: 'work_activation_date', name: 'work_activation_date'},
         { data: 'status', name: 'status', className:'dt-body-center'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
@@ -137,7 +140,7 @@
       if($(this).index() != 0 && $(this).index() != 8) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
-      if($(this).index() == 6){
+      if($(this).index() == 8){
         $(this).html('<select class="dt-selection form-control" data-id="' + $(this).index() + '" ><option value="active">Active</option><option value="inactive">Inactive</option></select>');
       }
     });

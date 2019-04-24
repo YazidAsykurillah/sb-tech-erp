@@ -426,6 +426,13 @@ class UserController extends Controller
             ->editColumn('salary', function($users){
                 return number_format($users->salary);
             })
+            ->editColumn('work_activation_date', function($users){
+                $wad = "";
+                if($users->work_activation_date!=NULL){
+                    $wad = Carbon::parse($users->work_activation_date)->format('Y');
+                }
+                return $wad;
+            })
             ->addColumn('roles', function (User $user) {
                     return $user->roles->map(function($role) {
                         return str_limit($role->name, 30, '...');

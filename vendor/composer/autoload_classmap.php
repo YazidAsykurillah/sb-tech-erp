@@ -52,6 +52,7 @@ return array(
     'AddTypePercentAndAmountFromTypeToInvoiceVendorsTable' => $baseDir . '/database/migrations/2017_09_15_065010_add_type_percent_and_amount_from_type_to_invoice_vendors_table.php',
     'AddUserIdToQuotationVendor' => $baseDir . '/database/migrations/2017_10_23_051328_add_user_id_to_quotation_vendor.php',
     'AddWhtAndTypeToInvoiceVendors' => $baseDir . '/database/migrations/2017_09_08_091318_add_wht_and_type_to_invoice_vendors.php',
+    'AddWorkActivationDateToUsersTable' => $baseDir . '/database/migrations/2019_04_24_123103_add_work_activation_date_to_users_table.php',
     'BankAcountTableSeeder' => $baseDir . '/database/seeds/BankAcountTableSeeder.php',
     'BankAdministrationTableSeeder' => $baseDir . '/database/seeds/BankAdministrationTableSeeder.php',
     'CashTableSeeder' => $baseDir . '/database/seeds/CashTableSeeder.php',
