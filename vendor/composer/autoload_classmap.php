@@ -69,6 +69,7 @@ return array(
     'CreateCategoriesTable' => $baseDir . '/database/migrations/2017_05_05_073108_create_categories_table.php',
     'CreateConfigurationsTable' => $baseDir . '/database/migrations/2018_02_19_041008_create_configurations_table.php',
     'CreateCustomersTable' => $baseDir . '/database/migrations/2017_03_26_082742_create_customers_table.php',
+    'CreateDeliveryOrdersTable' => $baseDir . '/database/migrations/2019_04_26_122619_create_delivery_orders_table.php',
     'CreateEtsTable' => $baseDir . '/database/migrations/2017_10_26_082638_create_ets_table.php',
     'CreateInternalRequestsTable' => $baseDir . '/database/migrations/2017_04_27_050032_create_internal_requests_table.php',
     'CreateInvoiceCustomerTaxesTable' => $baseDir . '/database/migrations/2017_07_29_083621_create_invoice_customer_taxes_table.php',
