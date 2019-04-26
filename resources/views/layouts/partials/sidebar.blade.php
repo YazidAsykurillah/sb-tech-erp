@@ -129,6 +129,14 @@
       </li>
       @endif
 
+      @if(\Auth::user()->can('access-delivery-order'))
+      <li {{{ (Request::is('delivery-order*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('delivery-order') }}">
+          <i class="fa fa-truck"></i> <span>Delivery Order</span>
+        </a>
+      </li>
+      @endif
+
       @if(\Auth::user()->can('index-invoice-customer') && \Auth::user()->can('index-invoice-vendor'))
       <li class="treeview {{{ (Request::is('invoice*') ? 'active':'') }}}">
         <a href="#">

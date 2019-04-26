@@ -430,6 +430,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('medical-allowance', 'MedicalAllowanceController');
 
 
+	//Delivery Order
+	Route::resource('delivery-order', 'DeliveryOrderController');
 
 	//REST APIs
 	//Preparing rest, for now it's still not used

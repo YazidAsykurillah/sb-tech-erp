@@ -14,6 +14,8 @@ class CreateDeliveryOrdersTable extends Migration
     {
         Schema::create('delivery_orders', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code')->unique();
+            $table->integer('purchase_order_vendor_id');
             $table->timestamps();
         });
     }

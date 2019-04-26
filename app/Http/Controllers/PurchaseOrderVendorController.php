@@ -294,6 +294,12 @@ class PurchaseOrderVendorController extends Controller
             ->editColumn('vendor_id', function($po_vendors){
                 return $po_vendors->vendor ? $po_vendors->vendor->name : NULL;
             })
+            ->editColumn('code', function($po_vendors){
+                $link ='<a href="'.url('purchase-order-vendor/'.$po_vendors->id.'').'" class="btn btn-link" title="Click to view the detail">';
+                    $link .=    $po_vendors->code;
+                    $link .='</a>';
+                return $link;
+            })
             ->addColumn('project_code', function($po_vendors){
                 if($po_vendors->purchase_request){
                     return $po_vendors->purchase_request->project ? $po_vendors->purchase_request->project->code : NULL;    
