@@ -9,7 +9,7 @@ use App\Http\Requests;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 
-use App\User;
+use App\DeliveryOrder;
 
 class DeliveryOrderController extends Controller
 {
@@ -27,54 +27,21 @@ class DeliveryOrderController extends Controller
     public function dataTables(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        if(\Auth::user()->can('index-user-office') && \Auth::user()->can('index-user-outsource')){
-            $users = User::with('roles')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'users.*'
-            ]);    
-        }else if(\Auth::user()->can('index-user-outsource')){
-            $users = User::with('roles')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'users.*'
-            ])
-            ->where('users.type', '=', 'outsource');
-        }
-        else{
-            $users = User::with('roles')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'users.*'
-            ]);
-        }
-        
-        $data_users = Datatables::of($users)
-            ->editColumn('salary', function($users){
-                return number_format($users->salary);
-            })
-            ->editColumn('work_activation_date', function($users){
-                $wad = "";
-                if($users->work_activation_date!=NULL){
-                    $wad = Carbon::parse($users->work_activation_date)->format('Y');
-                }
-                return $wad;
-            })
-            ->addColumn('roles', function (User $user) {
-                    return $user->roles->map(function($role) {
-                        return str_limit($role->name, 30, '...');
-                    })->implode('<br>');
-            })
-            ->editColumn('status', function($users){
-                if($users->status == 'active'){
-                    return '<i class="fa fa-check"></i>';
-                }
-            })
-            ->addColumn('actions', function($users){
-                    $actions_html ='<a href="'.url('user/'.$users->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+        $deliveryOrders = DeliveryOrder::select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'delivery_orders.*',
+        ])->get();
+
+        $data_delivery_orders = Datatables::of($deliveryOrders)
+            
+            ->addColumn('actions', function($deliveryOrders){
+                    $actions_html ='<a href="'.url('delivery_orders-category/'.$deliveryOrders->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('user/'.$users->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this user">';
+                    $actions_html .='<a href="'.url('delivery_orders-category/'.$deliveryOrders->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this delivery_orders-category">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-user" data-id="'.$users->id.'" data-text="'.$users->name.'">';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-delivery_orders-category" data-id="'.$deliveryOrders->id.'" data-text="'.$deliveryOrders->name.'">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
 
@@ -82,10 +49,10 @@ class DeliveryOrderController extends Controller
             });
 
         if ($keyword = $request->get('search')['value']) {
-            $data_users->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+            $data_delivery_orders->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }
 
-        return $data_users->make(true);
+        return $data_delivery_orders->make(true);
     }
     //END Datatables
 

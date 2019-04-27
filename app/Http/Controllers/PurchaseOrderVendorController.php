@@ -367,13 +367,10 @@ class PurchaseOrderVendorController extends Controller
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';    
                     }
-                    
-
-
                     return $actions_html;
             });
 
-        if ($keyword = $request->get('search')['value']) {
+        if($keyword = $request->get('search')['value']) {
             $data_po_vendors->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }
 
