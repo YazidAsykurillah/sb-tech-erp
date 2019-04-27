@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddWorkActivationDateToUsersTable extends Migration
+class CreateAllowances extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,12 @@ class AddWorkActivationDateToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users',function(Blueprint $table){
-            $table->date('work_activation_date')->nullable()->default(NULL);
+        Schema::create('allowances', function(Blueprint $table){
+            $table->increments('id');
+            $table->integer('period_id');
+            $table->integer('user_id');
+            $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -24,8 +28,6 @@ class AddWorkActivationDateToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users',function(Blueprint $table){
-            $table->dropColumn('work_activation_date');
-        });
+        Schema::drop('allowances');
     }
 }

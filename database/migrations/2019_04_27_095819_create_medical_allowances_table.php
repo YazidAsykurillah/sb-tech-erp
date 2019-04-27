@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConfigurationsTable extends Migration
+class CreateMedicalAllowancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,13 @@ class CreateConfigurationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('configurations', function (Blueprint $table) {
+        Schema::create('medical_allowances', function(Blueprint $table){
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('value');
+            $table->integer('period_id');
+            $table->integer('user_id');
+            $table->decimal('amount',20,2);
+            $table->integer('multiplier');
+            $table->decimal('total_amount',20,2);
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateConfigurationsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('configurations');
+        Schema::drop('medical_allowances');
     }
 }

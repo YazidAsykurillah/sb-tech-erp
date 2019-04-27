@@ -431,6 +431,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	//Delivery Order
+	Route::get('delivery-order/dataTables', 'DeliveryOrderController@dataTables');
 	Route::resource('delivery-order', 'DeliveryOrderController');
 
 	//REST APIs

@@ -296,8 +296,8 @@ class PurchaseOrderVendorController extends Controller
             })
             ->editColumn('code', function($po_vendors){
                 $link ='<a href="'.url('purchase-order-vendor/'.$po_vendors->id.'').'" class="btn btn-link" title="Click to view the detail">';
-                    $link .=    $po_vendors->code;
-                    $link .='</a>';
+                $link .=    $po_vendors->code;
+                $link .='</a>';
                 return $link;
             })
             ->addColumn('project_code', function($po_vendors){

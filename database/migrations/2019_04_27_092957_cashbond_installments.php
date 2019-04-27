@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConfigurationsTable extends Migration
+class CashbondInstallments extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,12 @@ class CreateConfigurationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('configurations', function (Blueprint $table) {
+        Schema::create('cashbond_installments', function(Blueprint $table){
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('value');
+            $table->integer('cashbond_id');
+            $table->decimal('amount',20,2);
+            $table->date('installment_schedule')->nullable();
+            $table->enum('status',['paid', 'unpaid']);
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateConfigurationsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('configurations');
+        Schema::drop('cashbond_installments');
     }
 }

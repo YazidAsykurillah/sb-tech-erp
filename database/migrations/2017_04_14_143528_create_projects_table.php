@@ -19,6 +19,7 @@ class CreateProjectsTable extends Migration
             $table->string('name');
             $table->integer('purchase_order_customer_id')->nullable()->comment('Related to the purchase_order_customers table, required if the project is external project');
             $table->integer('sales_id')->nullable()->comment('relate to the user with the role of sales, null if the project category is internal');
+            $table->boolean('enabled')->default(TRUE);
             $table->timestamps();
         });
     }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConfigurationsTable extends Migration
+class CreatePayrollsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,12 @@ class CreateConfigurationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('configurations', function (Blueprint $table) {
+        Schema::create('payrolls', function(Blueprint $table){
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('value');
+            $table->integer('period_id');
+            $table->integer('user_id');
+            $table->decimal('thp_amount',20,2);
+            $table->boolean('is_printed');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateConfigurationsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('configurations');
+        Schema::drop('payrolls');
     }
 }

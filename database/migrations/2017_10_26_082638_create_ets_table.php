@@ -17,9 +17,16 @@ class CreateEtsTable extends Migration
             $table->integer('user_id');
             $table->integer('period_id');
             $table->date('the_date');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->text('description');
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
+            $table->decimal('normal',20,2)->nullable();
+            $table->decimal('I',20,2)->nullable();
+            $table->decimal('II',20,2)->nullable();
+            $table->decimal('III',20,2)->nullable();
+            $table->decimal('IV',20,2)->nullable();
+            $table->text('description')->nullable();
+            $table->text('plant')->nullable();
+            $table->string('project_number')->nullable();
             $table->timestamps();
         });
     }

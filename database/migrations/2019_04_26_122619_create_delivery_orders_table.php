@@ -16,6 +16,7 @@ class CreateDeliveryOrdersTable extends Migration
             $table->increments('id');
             $table->string('code')->unique();
             $table->integer('purchase_order_vendor_id');
+            $table->integer('user_id')->comment('Creator');
             $table->timestamps();
         });
     }
