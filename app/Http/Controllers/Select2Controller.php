@@ -472,6 +472,25 @@ class Select2Controller extends Controller
     //ENDBLock Select2 Purchase Order Vendor for Invoice Vendor
 
 
+    //BLock Select2 Purchase Order Vendor
+    public function select2PurchaseOrderVendor(Request $request)
+    {
+        $data = [];
+        if($request->has('q')){
+            $search = $request->q;
+            $data = PurchaseOrderVendor::where('status','=', 'completed')
+                    ->where('purchase_order_vendors.code','like',"%$search%")
+                    ->get();
+        }
+        else{
+            $data = PurchaseOrderVendor::where('status','=', 'completed')
+                    ->get();
+        }
+        return response()->json($data);
+    }
+    //ENDBLock Select2 Purchase Order Vendor
+
+
     //BLock Select2 Cash
     public function select2Cash(Request $request)
     {

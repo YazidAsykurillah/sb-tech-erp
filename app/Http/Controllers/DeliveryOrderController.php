@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\StoreDeliveryOrderRequest;
 
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
@@ -63,7 +64,7 @@ class DeliveryOrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('delivery-order.create');
     }
 
     /**
@@ -72,7 +73,7 @@ class DeliveryOrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDeliveryOrderRequest $request)
     {
         //
     }

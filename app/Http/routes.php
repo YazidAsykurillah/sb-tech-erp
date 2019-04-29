@@ -109,6 +109,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('invoice-vendor', 'InvoiceVendorController');
 
 	//Purchase Order Vendor
+	Route::post('purchase-order-vendor/getItems', 'PurchaseOrderVendorController@getItems');
 	Route::get('purchase-order-vendor/{id}/print_pdf', 'PurchaseOrderVendorController@print_pdf');
 	Route::post('purchase-order-vendor/change-status', 'PurchaseOrderVendorController@changeStatus');
 	Route::post('deletePOVendor', 'PurchaseOrderVendorController@destroy');
@@ -348,6 +349,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Select2
 		//Select2 Purchase Order Vendor Group
+		Route::get('select2PurchaseOrderVendor', 'Select2Controller@select2PurchaseOrderVendor');
 		Route::get('select2PurchaseOrderVendorForInvoiceVendor', 'Select2Controller@select2PurchaseOrderVendorForInvoiceVendor');
 
 		//Select2 Project group

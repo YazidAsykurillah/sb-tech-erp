@@ -377,4 +377,16 @@ class PurchaseOrderVendorController extends Controller
         return $data_po_vendors->make(true);
     }
     //END PURCHASE ORDER VENDOR datatables
+
+
+    public function getItems(Request $request)
+    {
+        $purchaseOrderVendor = PurchaseOrderVendor::findOrFail($request->purchase_order_vendor_id);
+        $purchaseRequest = $purchaseOrderVendor->purchase_request;
+        $items = \DB::table('item_purchase_request')
+            ->where('purchase_request_id', $purchaseRequest->id)
+            ->where('is_received', TRUE)
+            ->get();
+        return response()->json($items);
+    }
 }
