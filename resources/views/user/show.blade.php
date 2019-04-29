@@ -73,6 +73,11 @@
                         <td style="width:5%;">:</td>
                         <td>{{ strtoupper($user->status) }} </td>
                       </tr>
+                      <tr>
+                        <td style="width:40%;">Work Active Date</td>
+                        <td style="width:5%;">:</td>
+                        <td>{{ $user->work_activation_date }} </td>
+                      </tr>
                     </table>
                   </div>
                 </div>

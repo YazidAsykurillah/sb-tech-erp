@@ -232,6 +232,12 @@ class CashbondController extends Controller
         }
 
         $data_cashbonds = Datatables::of($cashbonds)
+            ->editColumn('code', function($cashbonds){
+                $link = '<a href="'.url('cash-bond/'.$cashbonds->id).'" class="btn btn-link">';
+                $link .= $cashbonds->code;
+                $link .= '</a>';
+                return $link;
+            })
             ->editColumn('user', function($cashbonds){
                 if($cashbonds->user){
                     return $cashbonds->user->name;    

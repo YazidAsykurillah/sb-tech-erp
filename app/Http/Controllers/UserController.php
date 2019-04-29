@@ -61,6 +61,7 @@ class UserController extends Controller
         $user->password = $request->password ? bcrypt($request->password) : bcrypt('bmkn');
         $user->nik = $request->number_id;
         $user->type = $request->type;
+        $user->work_activation_date = $request->work_activation_date;
         $user->position = $request->position;
         $user->salary = floatval(preg_replace('#[^0-9.]#', '', $request->salary));
         $user->eat_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->eat_allowance));
@@ -144,6 +145,7 @@ class UserController extends Controller
         $user->position = $request->position;
         $user->nik = $request->number_id;
         $user->type = $request->type;
+        $user->work_activation_date = $request->work_activation_date;
         $user->salary = floatval(preg_replace('#[^0-9.]#', '', $request->salary));
         $user->man_hour_rate = floatval(preg_replace('#[^0-9.]#', '', $request->man_hour_rate));
         $user->eat_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->eat_allowance));

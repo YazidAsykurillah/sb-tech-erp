@@ -4,6 +4,10 @@
   Edit Member
 @endsection
 
+@section('additional_styles')
+  {!! Html::style('css/datepicker/datepicker3.css') !!}
+@endsection
+
 @section('page_header')
   <h1>
     Member
@@ -100,6 +104,17 @@
             </div>
           </div>
           
+          <div class="form-group{{ $errors->has('work_activation_date') ? ' has-error' : '' }}">
+            {!! Form::label('work_activation_date', 'Work Active Date', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('work_activation_date',null,['class'=>'form-control', 'placeholder'=>'Tanggal aktif kerja member', 'id'=>'work_activation_date']) !!}
+              @if ($errors->has('work_activation_date'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('work_activation_date') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           
         </div><!-- /.box-body -->
       </div>
@@ -279,7 +294,7 @@
 @endsection
 
 @section('additional_scripts')
-
+  {!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     $('#salary, #man_hour_rate, #eat_allowance, #transportation_allowance, #medical_allowance, #incentive_week_day, #incentive_week_end, #bpjs_ke, #bpjs_tk').autoNumeric('init',{
@@ -290,8 +305,20 @@
     $('#role_id').select2({
       allowClear : true
     });
+
+    //Block Work activation date input
+    $('#work_activation_date').on('keydown', function(event){
+      event.preventDefault();
+    });
+    $('#work_activation_date').datepicker({
+      format : 'yyyy-mm-dd'
+    });
+    //ENDBlock Work activation date input
+
     $('#form-edit-user').on('submit', function(){
       $('#btn-submit-user').prop('disabled', true);
     });
+
+
   </script>
 @endsection

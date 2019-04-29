@@ -109,6 +109,7 @@ class TransactionController extends Controller
                 $cashbond_installment->cashbond_id = $cashbond->id;
                 $cashbond_installment->amount = $amount_per_installment;
                 $cashbond_installment->installment_schedule = $nisa;
+                $cashbond_installment->status = 'unpaid';
                 $cashbond_installment->save();
             }
         }

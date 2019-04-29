@@ -4,6 +4,10 @@
   Create Member
 @endsection
 
+@section('additional_styles')
+  {!! Html::style('css/datepicker/datepicker3.css') !!}
+@endsection
+
 @section('page_header')
   <h1>
     Member
@@ -90,11 +94,23 @@
 
           <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
             {!! Form::label('type', 'Type', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
+            <div class="col-sm-4">
               {{ Form::select('type', ['office'=>'Office', 'outsource'=>'Outsource'], null, ['class'=>'form-control', 'placeholder'=>'--Select Type--', 'id'=>'type']) }}
               @if ($errors->has('type'))
                 <span class="help-block">
                   <strong>{{ $errors->first('type') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+
+          <div class="form-group{{ $errors->has('work_activation_date') ? ' has-error' : '' }}">
+            {!! Form::label('work_activation_date', 'Work Active Date', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('work_activation_date',null,['class'=>'form-control', 'placeholder'=>'Tanggal aktif kerja member', 'id'=>'work_activation_date']) !!}
+              @if ($errors->has('work_activation_date'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('work_activation_date') }}</strong>
                 </span>
               @endif
             </div>
@@ -156,7 +172,7 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('incentive_week_day') ? ' has-error' : '' }}">
-            {!! Form::label('incentive_week_day', 'Incentive_week_day', ['class'=>'col-sm-2 control-label']) !!}
+            {!! Form::label('incentive_week_day', 'Weekday Incentive', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
               {!!Form::text('incentive_week_day',null,['class'=>'form-control', 'placeholder'=>'incentive_week_day of the member', 'id'=>'incentive_week_day'])!!}
               @if ($errors->has('incentive_week_day'))
@@ -167,7 +183,7 @@
             </div>
           </div>
           <div class="form-group{{ $errors->has('incentive_week_end') ? ' has-error' : '' }}">
-            {!! Form::label('incentive_week_end', 'Incentive_week_end', ['class'=>'col-sm-2 control-label']) !!}
+            {!! Form::label('incentive_week_end', 'Weekend Incentive', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
               {!!Form::text('incentive_week_end',null,['class'=>'form-control', 'placeholder'=>'incentive_week_end of the member', 'id'=>'incentive_week_end'])!!}
               @if ($errors->has('incentive_week_end'))
@@ -261,7 +277,7 @@
 @endsection
 
 @section('additional_scripts')
-
+  {!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     $('#salary').autoNumeric('init',{
@@ -304,5 +320,13 @@
       $('#btn-submit-user').prop('disabled', true);
     });
     
+    //Block Work activation date input
+    $('#work_activation_date').on('keydown', function(event){
+      event.preventDefault();
+    });
+    $('#work_activation_date').datepicker({
+      format : 'yyyy-mm-dd'
+    });
+    //ENDBlock Work activation date input
   </script>
 @endsection
