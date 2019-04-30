@@ -114,7 +114,12 @@ class ProjectController extends Controller
             //if project has purchase_order_customer
             if($project->purchase_order_customer){
                 $po_customer_amount = $project->purchase_order_customer->amount;
-                $invoiced = ($total_paid_invoice+$total_pending_invoice)/$po_customer_amount*100;
+                if($po_customer_amount!=0){
+                    $invoiced = ($total_paid_invoice+$total_pending_invoice)/$po_customer_amount*100;    
+                }else{
+                    $invoiced = 0;
+                }
+                
             }
             else{
                $invoiced = 0;
@@ -149,7 +154,7 @@ class ProjectController extends Controller
            $settlement_adder_array = [];
            $settlement_subtracter_array = [];
            foreach($project->internal_requests as $internal_request){
-            if(count($internal_request->settlement)){
+            if($internal_request->settlement){
                 if($internal_request->settlement->status == 'approved' || $internal_request->settlement->status == 'pending'){
                     //$settlement_amount_array[] = $internal_request->amount - $internal_request->settlement->amount;
                     if($internal_request->amount - $internal_request->settlement->amount < 0){

@@ -237,9 +237,9 @@
                 </tr>
               </thead>
               <tbody>
-              @if(count($project->internal_requests))
+              @if($project->internal_requests)
                 @foreach($project->internal_requests as $internal_request)
-                  @if(count($internal_request->settlement))
+                  @if($internal_request->settlement)
                   <tr>
                     <td>
                       <a href="{{ url('settlement/'.$internal_request->settlement->id) }}">
@@ -312,7 +312,8 @@
               $total_expense_from_settlement = $total_expense_from_settlement;
               $total_expenses = $sum_purchase_order_vendors+$sum_internal_request+$total_expense_from_settlement;
               $purchase_order_customer_amount = $project->purchase_order_customer->amount;
-              $estimated_cost_margin = 100 - (($total_expenses/$purchase_order_customer_amount) * 100);
+              //$estimated_cost_margin = 100 - (($total_expenses/$purchase_order_customer_amount) * 100);
+              $estimated_cost_margin = $project->estimated_cost_margin;
             ?>
             <strong>Estimated Margin</strong>
             <!-- <p class="text-muted">{{ round($project->estimated_cost_margin, 2) }}&nbsp;%</p> -->

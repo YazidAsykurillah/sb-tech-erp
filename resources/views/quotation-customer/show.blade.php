@@ -150,7 +150,7 @@
           <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Purchase Order Customer</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          @if(count($quotation_customer->po_customer))  
+          @if($quotation_customer->po_customer)
           <table class="table table-resposinve">          
             <tr>
               <td style="width: 80%;">
@@ -184,8 +184,8 @@
           <h3 class="box-title"><i class="fa fa-legal"></i>&nbsp;Project</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          @if(count($quotation_customer->po_customer))
-            @if(count($quotation_customer->po_customer->project))
+          @if($quotation_customer->po_customer)
+            @if($quotation_customer->po_customer->project)
               <table class="table table-resposinve">          
                 <tr>
                   <td style="width: 80%;">
