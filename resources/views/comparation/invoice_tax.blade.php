@@ -25,24 +25,24 @@
 	              <h3 class="box-title">Invoice Tax Comparation</h3>
 	            </div><!-- /.box-header -->
 	            <div class="box-body">
-		        	<div class="table-responsive">
-		                <table class="table table-bordered" id="table-invoice-tax-comparation">
-		                 	<thead>
-		                  		<tr>
-		                  			<th style="width:5%;">#</th>
-		                  			<th style="width:15%;">Masa</th>
-		                  			<th style="width:20%;">Tax IN (from invoice vendor)</th>
-		                  			<th style="width:20%;">Tax OUT (from invoice customer)</th>
-                            <th style="width:20%;">Credit</th>
-		                  			<th style="width:20%;">Payment</th>
-		                  		</tr>
-		                  	</thead>
-		                  	<tbody>
-		                  	</tbody>
-		                  	<tfoot>
-		                  	</tfoot>
-		                </table>
-		             </div>
+  		        	<div class="table-responsive">
+                  <table class="table table-bordered" id="table-invoice-tax-comparation">
+                   	<thead>
+                    		<tr>
+                    			<th style="width:5%;">#</th>
+                    			<th style="width:15%;">Masa</th>
+                    			<th style="width:20%;">Tax IN (from invoice vendor)</th>
+                    			<th style="width:20%;">Tax OUT (from invoice customer)</th>
+                          <th style="width:20%;">Credit</th>
+                    			<th style="width:20%;">Payment</th>
+                    		</tr>
+                    	</thead>
+                    	<tbody>
+                    	</tbody>
+                    	<tfoot>
+                    	</tfoot>
+                  </table>
+  		          </div>
 		        </div>
 	        </div>
 	    </div>

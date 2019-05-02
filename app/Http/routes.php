@@ -441,7 +441,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('product/dataTables', 'ProductController@dataTables');
 	Route::resource('product', 'ProductController');
 
+
 	//Report
+	//PPN
+	Route::get('report/data-ppn', 'ReportController@getDataPpn');
+	Route::get('report/ppn', 'ReportController@ppn');
+	//Project
 	Route::get('report/data-project', 'ReportController@getDataProject');
 	Route::get('report/project', 'ReportController@project');
 
