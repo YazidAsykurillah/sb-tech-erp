@@ -436,6 +436,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('delivery-order/dataTables', 'DeliveryOrderController@dataTables');
 	Route::resource('delivery-order', 'DeliveryOrderController');
 
+	//Product
+	Route::post('product/import-excel', 'ProductController@importExcel');
+	Route::get('product/dataTables', 'ProductController@dataTables');
+	Route::resource('product', 'ProductController');
+
 	//Report
 	Route::get('report/data-project', 'ReportController@getDataProject');
 	Route::get('report/project', 'ReportController@project');

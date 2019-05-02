@@ -320,6 +320,14 @@
       </li>
       @endif
 
+      @if(\Auth::user()->can('access-product'))
+      <li {{{ (Request::is('product*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('product') }}">
+          <i class="fa fa-cube"></i> <span>Product</span>
+        </a>
+      </li>
+      @endif
+
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->

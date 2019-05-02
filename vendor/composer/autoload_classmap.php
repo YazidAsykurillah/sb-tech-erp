@@ -91,6 +91,7 @@ return array(
     'CreatePeriodsTable' => $baseDir . '/database/migrations/2017_05_28_194409_create_periods_table.php',
     'CreatePermissionRoleTable' => $baseDir . '/database/migrations/2017_03_25_180446_create_permission_role_table.php',
     'CreatePermissionsTable' => $baseDir . '/database/migrations/2017_03_25_175938_create_permissions_table.php',
+    'CreateProductsTable' => $baseDir . '/database/migrations/2019_05_02_075730_create_products_table.php',
     'CreateProjectsTable' => $baseDir . '/database/migrations/2017_04_14_143528_create_projects_table.php',
     'CreatePurchaseOrderCustomersTable' => $baseDir . '/database/migrations/2017_04_05_155019_create_purchase_order_customers_table.php',
     'CreatePurchaseOrderVendorsTable' => $baseDir . '/database/migrations/2017_04_24_093720_create_purchase_order_vendors_table.php',
