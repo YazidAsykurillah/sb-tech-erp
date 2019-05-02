@@ -139,6 +139,8 @@
     {!! Html::script('js/datatables/vfs_fonts.js') !!}
     {!! Html::script('js/datatables/buttons.html5.min.js') !!}
 
+    <!--Google Chart-->
+    {!! Html::script('js/google/chart/loader.js') !!}
 
     <!-- Additional javascript -->
     @yield('additional_scripts')

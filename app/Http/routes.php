@@ -436,7 +436,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('delivery-order/dataTables', 'DeliveryOrderController@dataTables');
 	Route::resource('delivery-order', 'DeliveryOrderController');
 
+	//Report
+	Route::get('report/data-project', 'ReportController@getDataProject');
+	Route::get('report/project', 'ReportController@project');
+
 	//REST APIs
 	//Preparing rest, for now it's still not used
 	Route::get('api/invoice-customer', 'Api\InvoiceCustomerController@index');
+	
 });

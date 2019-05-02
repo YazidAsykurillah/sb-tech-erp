@@ -308,6 +308,18 @@
       </li>
       @endif
 
+      @if(\Auth::user()->can('access-report'))
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-book"></i>
+          <span>Report</span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ url('report/project') }}"><i class="fa fa-circle-o"></i> Project</a></li>
+        </ul>
+      </li>
+      @endif
+
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->
