@@ -33,9 +33,8 @@
                         <tr>
                           <th style="width:5%;">#</th>
                           <th style="width:15%;">Masa</th>
-                          <th style="width:20%;">TAX IN</th>
-                          <th style="width:20%;">Tax OUT</th>
-                          <th style="width:20%;">Credit</th>
+                          <th style="width:20%;">TAX IN (INV. Vendor)</th>
+                          <th style="width:20%;">Tax OUT (INV. Customer)</th>
                           <th style="width:20%;">Payment</th>
                         </tr>
                       </thead>
@@ -167,7 +166,6 @@
         { data: 'tax_month', name: 'tax_month', orderable:false},
         { data: 'tax_in', name: 'tax_in', searchable:false, orderable:false },
         { data: 'tax_out', name: 'tax_out', searchable:false, orderable:false },
-        { data: 'credit', name: 'credit', searchable:false, orderable:false },
         { data: 'payment', name: 'payment', searchable:false, orderable:false },
         { data: 'tax_month', visible: false, searchable: false, className: 'never'},
       ],
@@ -194,7 +192,7 @@
         );
       },
       order : [
-        [6, 'asc']
+        [5, 'asc']
       ]
 
     });

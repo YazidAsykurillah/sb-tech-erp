@@ -114,15 +114,6 @@ class ReportController extends Controller
             $tax_out_html .= '</p>';
             return $tax_out_html;
         })
-        ->addColumn('credit', function($results){
-            $yearmonth = $results['tax_month'];
-            $dt = Carbon::parse($yearmonth);
-            $prevMonth = $dt->subMonth()->format('Y-m');
-            $prev_month_tax_in = $this->count_tax_in_from_date($prevMonth);
-            $prev_month_tax_out = $this->count_tax_out_from_date($prevMonth);
-            $prevMonthPayment = $prev_month_tax_in - $prev_month_tax_out;
-            return number_format($prevMonthPayment);
-        })
         ->addColumn('payment', function($results){
             $html = '';
             $yearmonth = $results['tax_month'];
@@ -130,15 +121,17 @@ class ReportController extends Controller
             $prevMonth = $dt->subMonth()->format('Y-m');
             $prev_month_tax_in = $this->count_tax_in_from_date($prevMonth);
             $prev_month_tax_out = $this->count_tax_out_from_date($prevMonth);
-            $prevMonthPayment = $prev_month_tax_in - $prev_month_tax_out;
+            
+            //$prevMonthPayment = $prev_month_tax_in - $prev_month_tax_out;
+            $prevMonthPayment = $prev_month_tax_out - $prev_month_tax_in;
 
             $tax_in = $this->count_tax_in_from_date($results['tax_month']);
             $tax_out = $this->count_tax_out_from_date($results['tax_month']);
             //$payment = $tax_in - $tax_out;
             $payment = $tax_out-$tax_in;
-            $html.='<p>'.number_format($prevMonthPayment).' (Previous)</p>';
+            $html.='<p>'.number_format($prevMonthPayment).' (Credit)</p>';
             $html.='<p>'.number_format($payment).' (Current Month)</p>';
-            $html.='<p>'.number_format($payment+$prevMonthPayment).' (Final)</p>';
+            $html.='<p>'.number_format($payment-$prevMonthPayment).' (Total)</p>';
 
             return  $html;
         });
