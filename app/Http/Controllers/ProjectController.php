@@ -386,4 +386,14 @@ class ProjectController extends Controller
     }
     //END PROJECT dataables
     
+
+    //Complete project
+    public function complete(Request $request)
+    {
+        $project = Project::findOrFail($request->project_id_to_complete);
+        $project->is_completed = TRUE;
+        $project->save();
+        return redirect()->back()
+            ->with('successMessage', "Project has been marked as completed");
+    }
 }

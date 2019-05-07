@@ -365,10 +365,35 @@
         @endif
       </div>
       <!--ENDBOX PO Customer Information-->
-    
-      
     </div>
   </div>
+
+  <!--Modal Complete Project-->
+  <div class="modal fade" id="modal-complete-project" tabindex="-1" role="dialog" aria-labelledby="modal-complete-projectLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'project/complete', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-complete-projectLabel">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          Press Mark as Completed to continue
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="project_id_to_complete" name="project_id_to_complete" value="{{$project->id}}">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Mark as Completed</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Complete Project-->
 @endsection
 
 @section('additional_scripts')
@@ -404,5 +429,12 @@
       });
 
     });
+
+    //Handler Complete project
+    $('#btn-complete-project').on('click', function(event){
+      event.preventDefault();
+      $('#modal-complete-project').modal('show');
+    });
+    //ENDHandler Complete project
   </script>
 @endsection

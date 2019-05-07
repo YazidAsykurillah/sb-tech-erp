@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('quotation-vendor', 'QuotationVendorController');
 
 	//Project
+	Route::post('project/complete', 'ProjectController@complete');
 	Route::post('project/getSalesFromPurchaseOrderCustomer', 'ProjectController@getSalesFromPurchaseOrderCustomer');
 	Route::post('deleteProject', 'ProjectController@destroy');
 	Route::get('project/dataTables', 'ProjectController@dataTables');

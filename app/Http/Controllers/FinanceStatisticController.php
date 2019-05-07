@@ -151,7 +151,8 @@ class FinanceStatisticController extends Controller
     {
         $result = 0;
         $tot_not_invoiced_from_pro_arr = [];
-        $projects = Project::all();
+        //$projects = Project::all();
+        $projects = Project::where('is_completed', FALSE)->get();
         if($projects){
            foreach($projects as $project){
                 $po_customer_amount = $project->purchase_order_customer ? $project->purchase_order_customer->amount : 0;
