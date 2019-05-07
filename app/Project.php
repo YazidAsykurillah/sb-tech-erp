@@ -76,6 +76,10 @@ class Project extends Model
     public function invoice_customer_due()
     {
         $result = 0;
+        //initial check if this project is completed simply return 0;
+        if($this->is_completed == TRUE){
+            return 0;
+        }
         //check if project has already invoice
         if($this->invoice_customer->count())
         {
@@ -95,6 +99,7 @@ class Project extends Model
                 $result =  $this->purchase_order_customer->amount;    
             }
         }
+
         return $result;
     }
 
@@ -112,6 +117,9 @@ class Project extends Model
     public function pending_invoice_customer()
     {
         $result = 0;
+        if($this->is_completed == TRUE){
+            return 0;
+        }
         if($this->invoice_customer->count()){
             $result = $this->invoice_customer()->where('status','=','pending')->sum('amount');
         }
@@ -341,6 +349,9 @@ class Project extends Model
 
     public function getInvoicedAttribute()
     {
+        if($this->is_completed == TRUE){
+            return 100;
+        }
         $total_paid_invoice = $this->paid_invoice_customer();
         $total_pending_invoice = $this->pending_invoice_customer();
         $total_invoice_due = $this->invoice_customer_due();

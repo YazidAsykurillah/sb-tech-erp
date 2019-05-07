@@ -43,6 +43,7 @@ return array(
     'AddColumnVendorIdToTableInternalRequests' => $baseDir . '/database/migrations/2017_07_29_151420_add_column_vendor_id_to_table_internal_requests.php',
     'AddFileColumnToTableQuotationCustomers' => $baseDir . '/database/migrations/2017_07_14_073640_add_file_column_to_table_quotation_customers.php',
     'AddIncentiveToUsersTable' => $baseDir . '/database/migrations/2017_06_19_152254_add_incentive_to_users_table.php',
+    'AddIsCompletedToTableProjects' => $baseDir . '/database/migrations/2019_05_06_133844_add_is_completed_to_table_projects.php',
     'AddQuotationVendorIdToPurchaseOrderVendor' => $baseDir . '/database/migrations/2017_05_22_053902_add quotation_vendor_id to purchase order vendor.php',
     'AddTaxDateToInvoiceCustomer' => $baseDir . '/database/migrations/2017_09_02_080621_add_tax_date_to_invoice_customer.php',
     'AddTaxDateToInvoiceVendorsTable' => $baseDir . '/database/migrations/2017_10_12_055433_add tax_date_to_invoice_vendors_table.php',

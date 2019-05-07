@@ -78,7 +78,7 @@
                   @endif
                 </td>
               </tr>
-               <tr>
+              <tr>
                 <td style="width: 20%;">Status</td>
                 <td style="width: 1%;">:</td>
                 <td>
@@ -86,6 +86,22 @@
                     Enabled
                   @else
                     Disabled
+                  @endif
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 20%;">Is Completed</td>
+                <td style="width: 1%;">:</td>
+                <td>
+                  @if($project->is_completed == TRUE)
+                    Yes
+                  @else
+                    No 
+                    @if(\Auth::user()->can('complete-project'))
+                    <a href="#" id="btn-complete-project" class="btn btn-xs btn-warning">
+                      <i class="fa fa-check"></i> Mark as completed
+                    </a>
+                    @endif
                   @endif
                 </td>
               </tr>

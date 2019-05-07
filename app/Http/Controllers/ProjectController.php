@@ -100,8 +100,9 @@ class ProjectController extends Controller
             $project = Project::findOrFail($id);
             $total_paid_invoice = $project->paid_invoice_customer();
             $total_pending_invoice = $project->pending_invoice_customer();
-            $total_invoice_due = $project->invoice_customer_due();
 
+            $total_invoice_due = $project->invoice_customer_due();
+            //echo $total_invoice_due;exit();
             $total_amount_invoice_vendor = $project->total_amount_invoice_vendor();
             $total_amount_internal_request = $project->total_amount_internal_request();
 
@@ -110,20 +111,7 @@ class ProjectController extends Controller
             $purchase_order_customer_amount = ($project->purchase_order_customer ? $project->purchase_order_customer->amount : 1);
             $purchase_order_customer_amount_per_ppn = $purchase_order_customer_amount/1.1;
 
-            $invoiced = "";
-            //if project has purchase_order_customer
-            if($project->purchase_order_customer){
-                $po_customer_amount = $project->purchase_order_customer->amount;
-                if($po_customer_amount!=0){
-                    $invoiced = ($total_paid_invoice+$total_pending_invoice)/$po_customer_amount*100;    
-                }else{
-                    $invoiced = 0;
-                }
-                
-            }
-            else{
-               $invoiced = 0;
-            }
+            $invoiced = $project->invoiced;
             
             return view('project.show')
                 ->with('project', $project)
