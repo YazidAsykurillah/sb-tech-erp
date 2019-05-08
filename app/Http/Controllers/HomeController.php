@@ -25,6 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        echo "ok";exit();
         $now_date = Carbon::now();
         $from = $now_date->toDateString();
         $next_week = $now_date->addDays(7)->toDateString();
