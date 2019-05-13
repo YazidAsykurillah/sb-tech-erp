@@ -201,7 +201,7 @@
           <div class="pull-right">
             @if(\Auth::user()->can('access-leave'))
             <a href="javascript::void()" class="btn btn-primary btn-xs" id="btn-create-leave" title="Tambahkan Cuti">
-              <i class="fa fa-plus"></i>&nbsp;Add New
+              <i class="fa fa-plus"></i>&nbsp;Add Newi
             </a>
             @endif
           </div>
