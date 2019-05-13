@@ -16,6 +16,7 @@ use App\User;
 use App\Role;
 use App\TimeReport;
 use App\Period;
+use App\Leave;
 
 class UserController extends Controller
 {
@@ -466,4 +467,33 @@ class UserController extends Controller
         return $data_users->make(true);
     }
     //END USER datatables
+
+    //Block get user leave datatable
+    public function getLeavesDataTable(Request $request)
+    {
+
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $leaves = Leave::where('user_id', $request->user_id)->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'leaves.*',
+        ])->get();
+
+        $data_leave = Datatables::of($leaves)
+            
+            ->addColumn('actions', function($leaves){
+                    $actions_html ='<button type="button" class="btn btn-danger btn-xs btn-delete-asset-category" data-id="'.$leaves->id.'" data-text="'.$leaves->description.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_leave->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_leave->make(true);
+    }
+    //END Block get user leave datatable
+
 }

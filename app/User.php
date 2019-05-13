@@ -72,5 +72,10 @@ class User extends Authenticatable
     }
 
     
+    //Leaves
+    public function leaves()
+    {
+        return $this->hasMany('App\Leave', 'user_id');
+    }
 
 }

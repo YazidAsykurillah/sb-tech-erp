@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('user/unlock_create_internal_request', 'UserController@unlock_create_internal_request');
 	Route::post('deleteUser', 'UserController@destroy');
 	Route::post('resetPassword', 'UserController@resetPassword');
+	Route::get('user/getLeavesDataTable', 'UserController@getLeavesDataTable');
 	Route::get('user/dataTables', 'UserController@dataTables');
 	Route::resource('user', 'UserController');
 
@@ -450,6 +451,9 @@ Route::group(['middleware' => 'auth'], function () {
 	//Project
 	Route::get('report/data-project', 'ReportController@getDataProject');
 	Route::get('report/project', 'ReportController@project');
+
+	//Leave
+	Route::resource('leave', 'LeaveController');
 
 	//REST APIs
 	//Preparing rest, for now it's still not used

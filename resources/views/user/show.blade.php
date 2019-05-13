@@ -4,6 +4,10 @@
   Member Detail
 @endsection
 
+@section('additional_styles')
+  {!! Html::style('css/datepicker/datepicker3.css') !!}
+@endsection
+
 @section('page_header')
   <h1>
     Member
@@ -188,6 +192,44 @@
     </div>
   </div>
 
+  <!--Row Leaves-->
+  <div class="row">
+    <div class="col-md-9">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-clock-o"></i>&nbsp;Leaves Information</h3>
+          <div class="pull-right">
+            <a href="javascript::void()" class="btn btn-primary btn-xs" id="btn-create-leave" title="Tambahkan Cuti">
+              <i class="fa fa-plus"></i>&nbsp;Add New
+            </a>
+          </div>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="table-leaves">
+                  <thead>
+                    <tr>
+                      <th style="width:5%;">#</th>
+                      <th style="width:25%;">Date</th>
+                      <th style="">Description</th>
+                      <th style="width:10%;text-align:center;">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row">
     
     <div class="col-md-9">
@@ -258,9 +300,65 @@
     </div>
   </div>
 <!--ENDModal Reset Password-->
+
+<!--Modal Create Leave-->
+  <div class="modal fade" id="modal-create-leave" tabindex="-1" role="dialog" aria-labelledby="modal-create-leaveLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['route'=>'leave.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-leave']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-create-leaveLabel">Create Leave</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group{{ $errors->has('start_date') ? ' has-error' : '' }}">
+            {!! Form::label('start_date', 'Start Date', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!!Form::text('start_date',null,['class'=>'form-control', 'placeholder'=>'Start Date', 'id'=>'start_date'])!!}
+              @if ($errors->has('start_date'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('start_date') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <div class="form-group{{ $errors->has('end_date') ? ' has-error' : '' }}">
+            {!! Form::label('end_date', 'End Date', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!!Form::text('end_date',null,['class'=>'form-control', 'placeholder'=>'End Date', 'id'=>'end_date'])!!}
+              @if ($errors->has('end_date'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('end_date') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+            {!! Form::label('description', 'Description', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!! Form::textarea('description',null,['class'=>'form-control', 'placeholder'=>'Leave description', 'id'=>'description']) !!}
+              @if ($errors->has('description'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('description') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" name="employee_id" value="{{ $user->id}}"/>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" id="btn-submit-leave" class="btn btn-primary">Save</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Create Leave-->
 @endsection
 
 @section('additional_scripts')
+  {!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
   <script type="text/javascript">
     $('#lock_create_internal_request').on('click', function(){
       var user_id = '{!! $user->id !!}';
@@ -302,6 +400,53 @@
     //reset password control
     $('#btn-reset-password').on('click', function(){
       $('#modal-reset-password').modal('show');
+    });
+
+    //Handlers create leave
+      $('#btn-create-leave').on('click', function(event){
+        event.preventDefault();
+        $('#modal-create-leave').modal('show');
+      });
+      //Block Start Date
+      $('#start_date').on('keydown', function(event){
+        event.preventDefault();
+      });
+      $('#start_date').datepicker({
+        format : 'yyyy-mm-dd'
+      });
+      //ENDBlock Start Date
+
+      //Block End Date
+      $('#end_date').on('keydown', function(event){
+        event.preventDefault();
+      });
+      $('#end_date').datepicker({
+        format : 'yyyy-mm-dd'
+      });
+      //ENDBlock End Date
+      //Form create leve submission
+      $('#form-create-leave').on('submit', function(){
+        $('#btn-submit-leave').prop('disabled', true);
+      });
+    //ENDHandlers create leave
+
+    //Datatable leaves
+    var tableLeave =  $('#table-leaves').DataTable({
+      processing :true,
+      serverSide : true,
+      ajax : {
+        url : '{!! url('user/getLeavesDataTable') !!}',
+        data: function(d){
+          d.user_id = '{!! $user->id !!}';
+        }
+      },
+      columns :[
+        {data: 'rownum', name: 'rownum', searchable:false},
+        { data: 'date', name: 'date' },
+        { data: 'description', name: 'description' },
+        { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
+      ],
+
     });
   </script>
 @endsection

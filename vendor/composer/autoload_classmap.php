@@ -85,6 +85,7 @@ return array(
     'CreateItemInvoiceCustomerTable' => $baseDir . '/database/migrations/2017_06_16_095357_create_item_invoice_customer_table.php',
     'CreateItemPurchaseOrderVendorTable' => $baseDir . '/database/migrations/2017_07_17_094814_create_item_purchase_order_vendor_table.php',
     'CreateItemPurchaseRequestTable' => $baseDir . '/database/migrations/2017_08_29_072600_create_item_purchase_request_table.php',
+    'CreateLeavesTable' => $baseDir . '/database/migrations/2019_05_13_155443_create_leaves_table.php',
     'CreateLockConfigurationTable' => $baseDir . '/database/migrations/2017_05_23_101624_create_lock_configuration_table.php',
     'CreateMedicalAllowancesTable' => $baseDir . '/database/migrations/2019_04_27_095819_create_medical_allowances_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
