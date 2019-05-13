@@ -199,9 +199,11 @@
         <div class="box-header with-border">
           <h3 class="box-title"><i class="fa fa-clock-o"></i>&nbsp;Leaves Information</h3>
           <div class="pull-right">
+            @if(\Auth::user()->can('access-leave'))
             <a href="javascript::void()" class="btn btn-primary btn-xs" id="btn-create-leave" title="Tambahkan Cuti">
               <i class="fa fa-plus"></i>&nbsp;Add New
             </a>
+            @endif
           </div>
         </div>
         <div class="box-body">
