@@ -33,8 +33,8 @@
                         <tr>
                           <th style="width:5%;">#</th>
                           <th style="width:15%;">Masa</th>
-                          <th style="width:20%;">TAX IN (INV. Vendor)</th>
-                          <th style="width:20%;">Tax OUT (INV. Customer)</th>
+                          <th style="width:20%;">Tax Masukan</th>
+                          <th style="width:20%;">Tax Keluaran</th>
                           <th style="width:20%;">Payment</th>
                         </tr>
                       </thead>

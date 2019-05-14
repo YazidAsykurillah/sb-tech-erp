@@ -129,9 +129,7 @@ class ReportController extends Controller
             $tax_out = $this->count_tax_out_from_date($results['tax_month']);
             //$payment = $tax_in - $tax_out;
             $payment = $tax_out-$tax_in;
-            $html.='<p>'.number_format($prevMonthPayment).' (Credit)</p>';
-            $html.='<p>'.number_format($payment).' (Current Month)</p>';
-            $html.='<p>'.number_format($payment-$prevMonthPayment).' (Total)</p>';
+            $html.='<p>'.number_format($payment).'</p>';
 
             return  $html;
         });
