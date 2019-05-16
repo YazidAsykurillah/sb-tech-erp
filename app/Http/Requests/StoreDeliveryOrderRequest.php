@@ -23,8 +23,23 @@ class StoreDeliveryOrderRequest extends Request
      */
     public function rules()
     {
-        return [
-            'purchase_order_vendor_id'=>'required|integer'
+        $rules = [
+            'project_id'=>'required|integer|exists:projects,id',
+            'sender_id'=>'required|integer|exists:users,id',
         ];
+        
+        $item = $this->input('item');
+        foreach ($item as $index => $item) {
+            $rules["item.{$index}"] = 'required';
+        }
+        foreach($this->input('quantity') as $key=>$val){
+            $rules["quantity.{$key}"] = 'required';
+        }
+
+        //print_r($rules);exit();
+
+        return $rules;
+        
+        
     }
 }

@@ -97,6 +97,9 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
             'Dotenv\\' => 7,
             'Dompdf\\' => 7,
             'Doctrine\\Instantiator\\' => 22,
+            'Doctrine\\DBAL\\' => 14,
+            'Doctrine\\Common\\Cache\\' => 22,
+            'Doctrine\\Common\\' => 16,
         ),
         'C' => 
         array (
@@ -265,6 +268,18 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
+        ),
+        'Doctrine\\DBAL\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/dbal/lib/Doctrine/DBAL',
+        ),
+        'Doctrine\\Common\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
+        ),
+        'Doctrine\\Common\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/event-manager/lib/Doctrine/Common',
         ),
         'Cron\\' => 
         array (
@@ -456,6 +471,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'CreateVendorsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_101217_create_vendors_table.php',
         'CustomerTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CustomerTableSeeder.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
+        'DeliveryOrderTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DeliveryOrderTableSeeder.php',
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
@@ -536,6 +552,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'InternalRequestTableSeeder' => __DIR__ . '/../..' . '/database/seeds/InternalRequestTableSeeder.php',
         'InvoiceCustomerTableSeeder' => __DIR__ . '/../..' . '/database/seeds/InvoiceCustomerTableSeeder.php',
         'InvoiceVendorTableSeeder' => __DIR__ . '/../..' . '/database/seeds/InvoiceVendorTableSeeder.php',
+        'ItemDeliveryOrder' => __DIR__ . '/../..' . '/database/migrations/2019_05_16_165535_item_delivery_order.php',
         'ItemInvoiceCustomerTableSeeder' => __DIR__ . '/../..' . '/database/seeds/ItemInvoiceCustomerTableSeeder.php',
         'LockConfigurationTableSeeder' => __DIR__ . '/../..' . '/database/seeds/LockConfigurationTableSeeder.php',
         'Maatwebsite\\Excel\\Classes\\Cache' => __DIR__ . '/..' . '/maatwebsite/excel/src/Maatwebsite/Excel/Classes/Cache.php',

@@ -78,6 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('project/complete', 'ProjectController@complete');
 	Route::post('project/getSalesFromPurchaseOrderCustomer', 'ProjectController@getSalesFromPurchaseOrderCustomer');
 	Route::post('deleteProject', 'ProjectController@destroy');
+	Route::get('project/select2ForDeliveryOrder', 'ProjectController@select2ForDeliveryOrder');
 	Route::get('project/dataTables', 'ProjectController@dataTables');
 	Route::resource('project', 'ProjectController');
 
@@ -87,6 +88,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('getPurchaseRequestItems', 'PurchaseRequestController@getPurchaseRequestItems');
 	Route::post('changePurchaseRequestStatus', 'PurchaseRequestController@changeStatus');
 	Route::post('deletePurchaseRequest', 'PurchaseRequestController@destroy');
+	Route::get('purchase-request/select2Items', 'PurchaseRequestController@select2Items');
 	Route::get('purchase-request/dataTables', 'PurchaseRequestController@dataTables');
 	Route::resource('purchase-request', 'PurchaseRequestController');
 
@@ -435,6 +437,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	//Delivery Order
+	Route::get('delivery-order/{id}/print_pdf', 'DeliveryOrderController@print_pdf');
 	Route::get('delivery-order/dataTables', 'DeliveryOrderController@dataTables');
 	Route::resource('delivery-order', 'DeliveryOrderController');
 

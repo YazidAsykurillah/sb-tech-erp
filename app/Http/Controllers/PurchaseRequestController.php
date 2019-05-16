@@ -330,4 +330,22 @@ class PurchaseRequestController extends Controller
     }
     //END PURCHASE REQUEST dataTables
 
+    public function select2Items(Request $request)
+    {
+        $data = [];
+        if($request->has('q')){
+            $search = $request->q;
+            $data = \DB::table("item_purchase_request")
+                    ->where('item', 'LIKE', "%$search%")
+                    ->select('id', 'item')
+                    ->get();
+        }
+        else{
+            $data = \DB::table('item_purchase_request')
+                    ->where('is_received','=', TRUE)
+                    ->select('id', 'item')
+                    ->get();
+        }
+        return response()->json($data);
+    }
 }

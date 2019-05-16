@@ -30,30 +30,31 @@ class DeliveryOrderController extends Controller
         \DB::statement(\DB::raw('set @rownum=0'));
         $deliveryOrders = DeliveryOrder::select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'delivery_orders.*',
-        ])->get();
+            'delivery_orders.*'
+        ])->with(['project', 'creator', 'sender']);
 
-        $data_delivery_orders = Datatables::of($deliveryOrders)
-            
+        $data = Datatables::of($deliveryOrders)
+            ->editColumn('project', function($deliveryOrders){
+                return $deliveryOrders->project->code;
+            })
+            ->editColumn('user_id', function($deliveryOrders){
+                return $deliveryOrders->creator->name;
+            })
+            ->editColumn('sender_id', function($deliveryOrders){
+                return $deliveryOrders->sender->name;
+            })
             ->addColumn('actions', function($deliveryOrders){
-                    $actions_html ='<a href="'.url('delivery_orders-category/'.$deliveryOrders->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html ='<a href="'.url('delivery-order/'.$deliveryOrders->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<a href="'.url('delivery_orders-category/'.$deliveryOrders->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this delivery_orders-category">';
-                    $actions_html .=    '<i class="fa fa-edit"></i>';
-                    $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-delivery_orders-category" data-id="'.$deliveryOrders->id.'" data-text="'.$deliveryOrders->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
-
                     return $actions_html;
             });
 
         if ($keyword = $request->get('search')['value']) {
-            $data_delivery_orders->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+            $data->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }
 
-        return $data_delivery_orders->make(true);
+        return $data->make(true);
     }
     //END Datatables
 
@@ -75,8 +76,35 @@ class DeliveryOrderController extends Controller
      */
     public function store(StoreDeliveryOrderRequest $request)
     {
-        //
+        //init item delivery order data
+        $itemDeliveryOrderData = [];
+        
+        //Save DeliveryOrder model
+        $deliveryOrder = new DeliveryOrder;
+        $deliveryOrder->code = 'DO-'.time();
+        $deliveryOrder->project_id = $request->project_id;
+        $deliveryOrder->user_id = \Auth::user()->id;
+        $deliveryOrder->sender_id = $request->sender_id;
+        $deliveryOrder->save();
+
+        
+        //Build itemDelivery order data
+        foreach($request->item as $key=>$value){
+            $itemDeliveryOrderData[]=[
+                'delivery_order_id'=>$deliveryOrder->id,
+                'item_purchase_request_id'=>$value,
+                'quantity'=>$request->quantity[$key]
+            ];
+        }
+        //Save item delivery order data
+        \DB::table('item_delivery_order')->insert($itemDeliveryOrderData);
+
+
+
+        return redirect('delivery-order')
+            ->with('successMessage', "Delivery order $deliveryOrder->code has been created");
     }
+
 
     /**
      * Display the specified resource.
@@ -86,7 +114,11 @@ class DeliveryOrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $deliveryOrder = DeliveryOrder::findOrFail($id);
+        $deliveryOrderItems = \DB::table('item_delivery_order')->where('delivery_order_id', '=', $id)->get();
+        return view('delivery-order.show')
+            ->with('deliveryOrder', $deliveryOrder)
+            ->with('deliveryOrderItems', $deliveryOrderItems);
     }
 
     /**
@@ -121,5 +153,15 @@ class DeliveryOrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function print_pdf($id)
+    {
+        error_reporting(0);
+        $deliveryOrder = DeliveryOrder::findOrFail($id);
+        $data['deliveryOrder']= $deliveryOrder;
+        $data['deliveryOrderItems'] = \DB::table('item_delivery_order')->where('delivery_order_id','=', $id)->get();
+        $pdf = \PDF::loadView('pdf.delivery_order', $data)->setPaper('a4', 'portrait')->setWarnings(false);
+        return $pdf->stream($deliveryOrder->code.'.pdf');
     }
 }

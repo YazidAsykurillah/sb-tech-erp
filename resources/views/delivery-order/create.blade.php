@@ -22,51 +22,129 @@
 @section('content')
   <div class="row">
     {!! Form::open(['route'=>'delivery-order.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-delivery-order','files'=>true]) !!}
-    <div class="col-md-4">
+    <div class="col-md-12">
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title">Purchase Order Vendor</h3>
+          <h3 class="box-title">Project</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          <div class="form-group{{ $errors->has('purchase_order_vendor_id') ? ' has-error' : '' }}">
-            {!! Form::label('purchase_order_vendor_id', 'PO Vendor', ['class'=>'col-sm-4 control-label']) !!}
-            <div class="col-sm-8">
-              {{ Form::select('purchase_order_vendor_id', [], null, ['class'=>'form-control', 'placeholder'=>'--Select PO Vendor--', 'id'=>'purchase_order_vendor_id']) }}
-              @if ($errors->has('purchase_order_vendor_id'))
+          <div class="form-group{{ $errors->has('project_id') ? ' has-error' : '' }}">
+            {!! Form::label('project_id', 'Project', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+             <select name="project_id" id="project_id" class="form-control">
+                @if(Request::old('project_id') != NULL)
+                  <option value="{{Request::old('project_id')}}">
+                    {{ \App\Project::find(Request::old('project_id'))->code }}
+                  </option>
+                @endif
+              </select>
+              @if ($errors->has('project_id'))
                 <span class="help-block">
-                  <strong>{{ $errors->first('purchase_order_vendor_id') }}</strong>
+                  <strong>{{ $errors->first('project_id') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+
+          <div class="form-group{{ $errors->has('sender_id') ? ' has-error' : '' }}">
+            {!! Form::label('sender_id', 'PIC', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              <select name="sender_id" id="sender_id" class="form-control">
+                @if(Request::old('sender_id') != NULL)
+                  <option value="{{Request::old('sender_id')}}">
+                    {{ \App\User::find(Request::old('sender_id'))->name }}
+                  </option>
+                @endif
+              </select>
+              @if ($errors->has('sender_id'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('sender_id') }}</strong>
                 </span>
               @endif
             </div>
           </div>
           
-        </div>
-      </div><!-- /.box-body -->
-    </div>
-    <div class="col-md-8">
-      <div class="box box-primary">
-        <div class="box-header with-border">
-          <h3 class="box-title">Items</h3>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-          <table class="table" id="table-item">
-            <thead>
-              <tr>
-                <th>Item Name</th>
-                <th>Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colspan="2">There is no item, please selet the Purchase order vendor first or select another one</td>
-              </tr>
-            </tbody>
-          </table>
-          <br>
+          <!-- Group items -->
           <div class="form-group">
-            
+            {!! Form::label('item', 'Item(s)', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-8">
+              <div class="table-responsive">
+                <table id="table-items" class="table">
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th style="width:25%;">Qty</th>
+                      <th style="width:5%">
+                        <button id="btn-add-item" class="btn btn-primary btn-xs" type="button">Add Item</button>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="table_items_body">
+                    <!-- Build row items from occured item validation error-->
+                    @if(Form::old('item'))
+                       @foreach(old('item') as $key => $val)
+                          <tr id="row_index_{{$key}}">
+                            <td class="{{ $errors->has('item.'.$key.'') ? ' has-error' : '' }}">
+                              <select name="item[{{ $key }}]" class="form-control select-item">
+                                @if(Request::old('item.'.$key.'') != NULL)
+                                  <option selected="selected" value="{{Request::old('item.'.$key.'')}}">
+                                    {{ \DB::table('item_purchase_request')->where('id','=',Request::old('item.'.$key.''))->first()->item }}
+                                  </option>
+                                @else
+                                  <option selected="selected" hidden="hidden" value="">Select Item</option>
+                                @endif
+                              </select>
+                               @if ($errors->has('item.'.$key.''))
+                                  <span class="help-block">
+                                    <strong>{{ $errors->first('item.'.$key.'') }}</strong>
+                                  </span>
+                                @endif
+                            </td>
+                            <td class="{{ $errors->has('quantity.'.$key.'') ? ' has-error' : '' }}">
+                              <input type="text" name="quantity[{{$key}}]" class="form-control quantity" value="{{ old('quantity.'.$key) }}" />
+                              @if ($errors->has('quantity.'.$key.''))
+                                <span class="help-block">
+                                  <strong>{{ $errors->first('quantity.'.$key.'') }}</strong>
+                                </span>
+                              @endif
+                            </td>
+                            @if($key !=0)
+                            <td>
+                              <button class="btn btn-danger btn-xs btn-remove-item" type="button">
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </td>
+                            @endif
+                          </tr>
+                      @endforeach
+                    <!-- Build row items from NOT occured item validation error / The page load at very first-->
+                    @else
+                      <tr id="row_index_0">
+                        <td class="{{ $errors->has('item.0') ? ' has-error' : '' }}">
+                          <select name="item[0]" class="form-control select-item">
+                            <option selected="selected" hidden="hidden" value="">item</option>
+                          </select>
+                           @if ($errors->has('item.0'))
+                              <span class="help-block">
+                                <strong>{{ $errors->first('item.0') }}</strong>
+                              </span>
+                            @endif
+                        </td>
+                        <td>
+                          <input type="text" name="quantity[0]" class="form-control quantity" value="{{ old('quantity.0') }}" />
+                        </td>
+                      </tr>
+                    @endif
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- ENDGroup items -->
+          <div class="form-group">
+            {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              <a href="{{ url('delivery-order') }}" class="btn btn-default">
+              <a href="{{ url('cash-bond') }}" class="btn btn-default">
                 <i class="fa fa-repeat"></i>&nbsp;Cancel
               </a>&nbsp;
               <button type="submit" class="btn btn-info" id="btn-submit-delivery-order">
@@ -77,6 +155,7 @@
         </div>
       </div><!-- /.box-body -->
     </div>
+   
     {!! Form::close() !!}
   </div>
 
@@ -86,18 +165,123 @@
 @section('additional_scripts')
   
 <script type="text/javascript">
-  //Block purchase order vendor selection
-    $('#purchase_order_vendor_id').select2({
-      placeholder: 'Select PO Vendor',
+  //Block Select2 Project
+  $('#project_id').select2({
+    placeholder: 'Select Project',
+    ajax: {
+      url: '{!! url('project/select2ForDeliveryOrder') !!}',
+      dataType: 'json',
+      delay: 250,
+      processResults: function (data) {
+        return {
+          results:  $.map(data, function (item) {
+                return {
+                    text: item.code,
+                    id: item.id,
+                    customer_name: item.customer_name
+                }
+            })
+        };
+      },
+      cache: true
+    },
+    allowClear:true,
+    templateResult : templateResultProject,
+  });
+
+  function templateResultProject(results){
+    if(results.loading){
+      return "Searching...";
+    }
+    var markup = '<span>';
+        markup+=  results.text;
+        markup+= '<br/>';
+        markup+=  results.customer_name;
+        markup+= '</span>';
+    return $(markup);
+  }
+  //END Block Select2 Project
+
+
+  //Block Select2 Sender ID
+  $('#sender_id').select2({
+    placeholder: 'Select PIC',
+    ajax: {
+      url: '{!! url('select2User') !!}',
+      dataType: 'json',
+      delay: 250,
+      processResults: function (data) {
+        return {
+          results:  $.map(data, function (item) {
+                return {
+                    text: item.name,
+                    id: item.id,
+                }
+            })
+        };
+      },
+      cache: true
+    },
+    allowClear:true,
+    templateResult : templateResultSender,
+  });
+
+  function templateResultSender(results){
+    if(results.loading){
+      return "Searching...";
+    }
+    var markup = '<span>';
+        markup+=  results.text;
+        markup+= '</span>';
+    return $(markup);
+  }
+  //END Block Select2 Sender ID
+
+  //Block Button add item handling
+  var index_initiator = 0;
+  $('#btn-add-item').on('click', function(){
+    index_initiator+=1;
+    var row_item = '<tr id="row_index_'+index_initiator+'">'+
+                      '<td>'+
+                        '<select name="item['+index_initiator+']" class="form-control select-item">'+
+                          '<option selected="selected" hidden="hidden" value="">item</option>'+
+                        '</select>'+
+                      '</td>'+
+                      '<td><input type="text" name="quantity[]" class="form-control quantity" /></td>'+
+                      '<td><button class="btn btn-danger btn-xs btn-remove-item" type="button"><i class="fa fa-trash"></i></button></td>'+
+                    '</tr>';
+    $('#table-items').find('tbody').append(row_item);
+    $('#table-items').find('tr td button.btn-remove-item').on('click', function(){
+      remove_row($(this));
+    });
+    initSelect2ForItem();
+  });
+  //ENDBlock Button add item handling
+  //Block register .btn-remove-item event handler [After validation fails from the server]
+  $('#table-items').find('tr td button.btn-remove-item').on('click', function(){
+    remove_row($(this));
+  });
+  //ENDBlock register .btn-remove-item event handler [After validation fails from the server]
+
+  //Block function to remove additional row
+  function remove_row(obj){
+    $(obj).parent().parent().remove();
+  }
+  //ENDBlock function to remove additional row
+
+  function initSelect2ForItem(){
+    //Block Select2 Item
+    $('.select-item').select2({
+      placeholder: 'Select Item',
       ajax: {
-        url: '{!! url('select2PurchaseOrderVendor') !!}',
+        url: '{!! url('purchase-request/select2Items') !!}',
         dataType: 'json',
         delay: 250,
         processResults: function (data) {
           return {
             results:  $.map(data, function (item) {
                   return {
-                      text: item.code,
+                      text: item.item,
                       id: item.id,
                   }
               })
@@ -105,36 +289,27 @@
         },
         cache: true
       },
-      templateResult : templateResultPurchaseOrderVendor,
+      allowClear:true,
+      templateResult : templateResultItem,
     });
-
-    function templateResultPurchaseOrderVendor(results){
-      if(results.loading){
-        return "Searching...";
-      }
-      var markup = '<span>';
-          markup+=  results.text;
-          markup+= '</span>';
-      return $(markup);
+  }
+  
+  function templateResultItem(results){
+    if(results.loading){
+      return "Searching...";
     }
+    var markup = '<span>';
+        markup+=  results.text;
+        markup+= '</span>';
+    return $(markup);
+  }
+  //END Block Select2 Item
 
-    $('#purchase_order_vendor_id').on('select2:select', function(){
-      var purchase_order_vendor_id = $(this).val();
-      var token = $('meta[name="csrf-token"]').attr('content');
-      $.ajax({
-        url : '/purchase-order-vendor/getItems',
-        type : 'POST',
-        data : 'purchase_order_vendor_id='+purchase_order_vendor_id+'&_token='+token,
-        beforeSend : function(){},
-        success:function(response){
-          obj = $.parseJSON(response);
-          console.log(obj);
+  //fire select2 initialization to class item
+  initSelect2ForItem();
 
-        }
-      });
-    });
-
-    //ENDBlock purchase order vendor selection
-
+  $('#form-create-delivery-order').on('submit', function(event){
+    $('#btn-submit-delivery-order').prop('disabled', true);
+  });
 </script>
 @endsection

@@ -396,4 +396,28 @@ class ProjectController extends Controller
         return redirect()->back()
             ->with('successMessage', "Project has been marked as completed");
     }
+
+    public function select2ForDeliveryOrder(Request $request)
+    {
+        $data = [];
+        if($request->has('q')){
+            $search = $request->q;
+            $data = \DB::table("projects")
+                    ->join('purchase_order_customers', 'projects.purchase_order_customer_id', '=', 'purchase_order_customers.id')
+                    ->join('customers', 'purchase_order_customers.customer_id', '=', 'customers.id')
+                    ->where('projects.enabled','=',TRUE)
+                    ->where('projects.code','LIKE',"%$search%")
+                    ->select('projects.code', 'projects.id', \DB::raw('customers.name AS customer_name'))
+                    ->get();
+        }
+        else{
+            $data = \DB::table('projects')
+                    ->join('purchase_order_customers', 'projects.purchase_order_customer_id', '=', 'purchase_order_customers.id')
+                    ->join('customers', 'purchase_order_customers.customer_id', '=', 'customers.id')
+                    ->select('projects.code', 'projects.id', \DB::raw('customers.name AS customer_name'))
+                    ->where('projects.enabled','=',TRUE)
+                    ->get();
+        }
+        return response()->json($data);
+    }
 }

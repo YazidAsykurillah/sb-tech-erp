@@ -36,13 +36,17 @@
                     <tr>
                       <th style="width:5%;">#</th>
                       <th style="">DO Number</th>
-                      <th style="">PO Vendor Number</th>
+                      <th style="">Project</th>
                       <th style="">Creator</th>
+                      <th style="">Sender</th>
+                      <th style="">Status</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -56,6 +60,8 @@
                   </tbody>
                   <tfoot>
                     <tr>
+                      <th></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -85,8 +91,10 @@
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false, orderable:true},
         { data: 'code', name: 'code' },
-        { data: 'purchase_order_vendor_id', name: 'purchase_order_vendor_id' },
-        { data: 'user_id', name: 'user_id' },
+        { data: 'project', name: 'project.code' },
+        { data: 'user_id', name: 'creator.name' },
+        { data: 'sender_id', name: 'sender.name' },
+        { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false },
       ],
 
@@ -103,7 +111,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 4) {
+      if ($(this).index() != 0 && $(this).index() != 6) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           
