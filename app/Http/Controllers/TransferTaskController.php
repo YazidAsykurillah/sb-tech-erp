@@ -7,13 +7,17 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use Event;
+use Carbon\Carbon;
 use App\Events\TransferInvoiceVendor;
 
+
+use App\Period;
 use App\InternalRequest;
 use App\InvoiceVendor;
 use App\InvoiceVendorTax;
 use App\Settlement;
 use App\Cashbond;
+use App\CashbondInstallment;
 use App\Cash;
 use App\Transaction;
 use App\TheLog;
@@ -798,6 +802,9 @@ class TransferTaskController extends Controller
             $log_description = "Transfered";
             $log = $this->register_to_the_logs('cashbond', 'update', $request->cashbond_id_to_transfer, $log_description );
 
+            //Register cashbond installment
+            $this->register_cashbond_installment($cashbond);
+
             return redirect()->back()
                 ->with('successMessage', "$cashbond->code has been transfered");
         }
@@ -821,7 +828,6 @@ class TransferTaskController extends Controller
         $transaction->amount = abs($cashbond->amount);
         $transaction->reference_amount = $cash->amount - abs($cashbond->amount);
         $transaction->save();
-
         //now fix the cash amount id,
         
         if($cash){
@@ -831,5 +837,41 @@ class TransferTaskController extends Controller
         return TRUE;
     }
 
+    protected function register_cashbond_installment($obj)
+    {
+        $cashbond = $obj;
+
+        $current_year = date('Y');
+        $current_month = date('m');
+        $period = Period::where('end_date', 'LIKE', "%$current_year-$current_month%")->get()->first();
+        
+        $first_installment_schedule = $period->end_date;
+        $next_installment_schedule_arr = [ $first_installment_schedule ];
+
+        $amount_per_installment = $cashbond->amount / $cashbond->term;
+
+        if($cashbond->term > 1){
+            
+            for($i = 1;$i<$cashbond->term;$i++){
+                $next_installment_schedule =  Carbon::parse($first_installment_schedule)->addMonth($i)->format('Y-m-d');
+                $next_installment_schedule_arr[] = $next_installment_schedule;
+            }
+            
+        }
+
+        if(count($next_installment_schedule_arr)){
+            //clear all the instalment related to cashbond id at first
+            \DB::table('cashbond_installments')->where('cashbond_id', '=', $cashbond->id)->delete();
+            foreach($next_installment_schedule_arr as $nisa){
+                $cashbond_installment = new CashbondInstallment;
+                $cashbond_installment->cashbond_id = $cashbond->id;
+                $cashbond_installment->amount = $amount_per_installment;
+                $cashbond_installment->installment_schedule = $nisa;
+                $cashbond_installment->status = 'unpaid';
+                $cashbond_installment->save();
+            }
+        }
+
+    }
 
 }
