@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\StorePeriodRequest;
+use App\Http\Requests\UpdatePeriodRequest;
 use App\Http\Controllers\Controller;
 
 use Carbon\Carbon;
@@ -90,7 +91,21 @@ class PeriodController extends Controller
      */
     public function edit($id)
     {
-        //
+        $the_year_opts = [];
+        $the_month_opts = [
+            'january'=>'January', 'february'=>'February', 'march'=>'March', 'april'=>'April',
+            'may'=>'May', 'june'=>'June', 'july'=>'July', 'august'=>'August',
+            'september'=>'September', 'october'=>'October', 'november'=>'November', 'december'=>'December'
+        ];
+        for ($i=2017; $i < 2025 ; $i++) { 
+            $the_year_opts[$i] = $i;
+        }
+
+        $period = Period::findOrFail($id);
+        return view('period.edit')
+            ->with('the_year_opts', $the_year_opts)
+            ->with('the_month_opts', $the_month_opts)
+            ->with('period', $period);
     }
 
     /**
@@ -100,9 +115,14 @@ class PeriodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePeriodRequest $request, $id)
     {
-        //
+        $period = Period::findOrFail($id);
+        $period->start_date = date_create($request->start_date);
+        $period->end_date = date_create($request->end_date);
+        $period->save();
+        return redirect('period/'.$id)
+            ->with('successMessage', 'Period has been updated');
     }
 
     /**
