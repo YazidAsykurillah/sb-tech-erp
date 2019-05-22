@@ -17,7 +17,7 @@ class Project extends Model
 
     protected $fillable = ['category','code', 'name', 'purchase_order_customer_id', 'sales_id', 'enabled'];
 
-    protected $appends = ['cost_margin', 'invoiced', 'estimated_cost_margin'];
+    protected $appends = ['cost_margin', 'invoiced', 'estimated_cost_margin', 'customer'];
 
 
     public function purchase_order_customer()
@@ -371,4 +371,10 @@ class Project extends Model
         return $invoiced;
     }
     
+    public function getCustomerAttribute()
+    {
+        if($this->purchase_order_customer){
+            return $this->purchase_order_customer->customer;
+        }
+    }
 }
