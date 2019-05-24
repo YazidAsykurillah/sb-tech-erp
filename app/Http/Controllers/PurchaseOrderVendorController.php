@@ -360,12 +360,16 @@ class PurchaseOrderVendorController extends Controller
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
                     if($po_vendors->status != 'completed'){
-                        $actions_html .='<a href="'.url('purchase-order-vendor/'.$po_vendors->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this purchase-order-vendor">';
-                        $actions_html .=    '<i class="fa fa-edit"></i>';
-                        $actions_html .='</a>&nbsp;';
-                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-vendor" data-id="'.$po_vendors->id.'" data-text="'.$po_vendors->code.'">';
-                        $actions_html .=    '<i class="fa fa-trash"></i>';
-                        $actions_html .='</button>';    
+                        if(\Auth::user()->can('edit-purchase-order-vendor')){
+                            $actions_html .='<a href="'.url('purchase-order-vendor/'.$po_vendors->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this purchase-order-vendor">';
+                            $actions_html .=    '<i class="fa fa-edit"></i>';
+                            $actions_html .='</a>&nbsp;';
+                        }
+                        if(\Auth::user()->can('delete-purchase-order-vendor')){
+                            $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-purchase-order-vendor" data-id="'.$po_vendors->id.'" data-text="'.$po_vendors->code.'">';
+                            $actions_html .=    '<i class="fa fa-trash"></i>';
+                            $actions_html .='</button>';
+                        }
                     }
                     return $actions_html;
             });
