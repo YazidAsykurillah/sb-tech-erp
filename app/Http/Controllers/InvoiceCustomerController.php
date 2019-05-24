@@ -441,8 +441,13 @@ class InvoiceCustomerController extends Controller
 
 
         $data_invoice_customers = Datatables::of($invoice_customers)
+            ->editColumn('code', function($invoice_customers){
+                $link ='<a href="'.url('invoice-customer/'.$invoice_customers->id.'').'" title="Click to view the detail">';
+                $link .=    $invoice_customers->code;
+                $link .='</a>&nbsp;';
+                return $link;
+            })
             ->editColumn('project_id', function($invoice_customers){
-
                 //return $invoice_customers->project->code;return $invoice_customers->project->code;
                 if($invoice_customers->project){
                     return $invoice_customers->project->code;
@@ -492,7 +497,6 @@ class InvoiceCustomerController extends Controller
         if ($keyword = $request->get('search')['value']) {
             $data_invoice_customers->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }
-
         return $data_invoice_customers->make(true);
     }
     //END INVOICE CUSTOMER datatables
