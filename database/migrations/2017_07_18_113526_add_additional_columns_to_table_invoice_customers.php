@@ -16,7 +16,7 @@ class AddAdditionalColumnsToTableInvoiceCustomers extends Migration
             $table->decimal('discount', 20, 2)->default(0);
             $table->decimal('discount_value', 20, 2)->default(0);
             $table->decimal('after_discount', 20, 2)->default(0);
-            $table->integer('down_payment')->default(0);
+            $table->decimal('down_payment',20,2)->default(0);
             $table->decimal('down_payment_value', 20, 2)->default(0);
             $table->decimal('vat_value', 20, 2)->default(0);
 

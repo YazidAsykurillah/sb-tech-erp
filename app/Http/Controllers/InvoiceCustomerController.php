@@ -128,8 +128,11 @@ class InvoiceCustomerController extends Controller
         $invoice_customer->wht = floatval(preg_replace('#[^0-9.]#', '',$request->wht));
         $invoice_customer->amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
         $invoice_customer->description = $request->description ? $request->description : NULL;
-        $invoice_customer->discount = floatval(preg_replace('#[^0-9.]#', '',$request->discount));
-        $invoice_customer->discount_value = ($request->discount/100) * floatval(preg_replace('#[^0-9.]#', '',$request->total_sub_amount));
+
+        $discount = floatval(preg_replace('#[^0-9.]#', '',$request->discount));
+        $invoice_customer->discount = $discount;
+        $invoice_customer->discount_value = ($discount/100) * floatval(preg_replace('#[^0-9.]#', '',$request->total_sub_amount));
+
         $invoice_customer->after_discount = floatval(preg_replace('#[^0-9.]#', '',$request->after_discount));
         $invoice_customer->down_payment = floatval(preg_replace('#[^0-9.]#', '',$request->down_payment));
         $invoice_customer->down_payment_value = floatval(preg_replace('#[^0-9.]#', '',$request->down_payment_value));
