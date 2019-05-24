@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use Yajra\Datatables\Datatables;
+
+use Carbon\Carbon;
+
 use App\InvoiceCustomerTax;
 use App\Transaction;
 use App\Cash;
@@ -140,4 +144,47 @@ class InvoiceCustomerTaxController extends Controller
         }
 
     }
+
+
+
+    public function dataTables(Request $request)
+    {
+
+        \DB::statement(\DB::raw('set @rownum=0'));
+        if($request->param_yearmonth!=""){
+            $invoice_customer_taxes = InvoiceCustomerTax::with('invoice_customer')->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'invoice_customer_taxes.*',
+            ])
+            ->whereHas('invoice_customer', function($query) use($request){
+                $query->where('tax_date', 'LIKE', "%$request->param_yearmonth%");
+            })
+            ->where('source', '=', 'vat')
+            ->where('tax_number', 'NOT LIKE', "%0000");
+        }
+        else{
+            $invoice_customer_taxes = InvoiceCustomerTax::with('invoice_customer', 'cash')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'invoice_customer_taxes.*',
+            ])
+            ->where('source', '=', 'vat')
+            ->where('tax_number', 'NOT LIKE', "%0000");
+        }
+        
+
+        $data_invoice_customer_taxes = Datatables::of($invoice_customer_taxes)
+            ->editColumn('amount', function($invoice_customer_taxes){
+                return number_format($invoice_customer_taxes->amount,2);
+            })
+            ->addColumn('tax_date', function($invoice_customer_taxes){
+                return $invoice_customer_taxes->invoice_customer->tax_date;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_invoice_customer_taxes->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_invoice_customer_taxes->make(true);
+    }
+    
 }

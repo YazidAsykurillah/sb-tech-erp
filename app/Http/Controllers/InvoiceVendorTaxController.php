@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Yajra\Datatables\Datatables;
+
+use Carbon\Carbon;
+
 use App\Http\Requests;
 use App\InvoiceVendorTax;
 use App\Transaction;
@@ -142,5 +146,47 @@ class InvoiceVendorTaxController extends Controller
             $cash->save();
         }
 
+    }
+
+
+    
+    public function dataTables(Request $request)
+    {
+
+        \DB::statement(\DB::raw('set @rownum=0'));
+        if($request->param_yearmonth!=""){
+            $invoice_vendor_taxes = InvoiceVendorTax::with('invoice_vendor')->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'invoice_vendor_taxes.*',
+            ])
+            ->whereHas('invoice_vendor', function($query) use($request){
+                $query->where('tax_date', 'LIKE', "%$request->param_yearmonth%");
+            })
+            ->where('source', '=', 'vat')
+            ->where('tax_number', 'NOT LIKE', "%0000");
+        }
+        else{
+            $invoice_vendor_taxes = InvoiceVendorTax::with('invoice_vendor')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'invoice_vendor_taxes.*',
+            ])
+            ->where('source', '=', 'vat')
+            ->where('tax_number', 'NOT LIKE', "%0000");
+        }
+        
+
+        $data_invoice_vendor_taxes = Datatables::of($invoice_vendor_taxes)
+            ->editColumn('amount', function($invoice_vendor_taxes){
+                return number_format($invoice_vendor_taxes->amount,2);
+            })
+            ->addColumn('tax_date', function($invoice_vendor_taxes){
+                return $invoice_vendor_taxes->invoice_vendor->tax_date;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_invoice_vendor_taxes->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_invoice_vendor_taxes->make(true);
     }
 }

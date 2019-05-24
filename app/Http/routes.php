@@ -267,6 +267,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//Invoice customer TAx
 	Route::post('payInvoiceCustomerTaxApproval', 'InvoiceCustomerTaxController@payInvoiceCustomerTaxApproval');
 	Route::post('payInvoiceCustomerTax', 'InvoiceCustomerTaxController@payInvoiceCustomerTax');
+	Route::get('invoice-customer-tax/dataTables', 'InvoiceCustomerTaxController@dataTables');
 	Route::resource('invoice-customer-tax', 'InvoiceCustomerTaxController');
 
 
@@ -276,6 +277,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//Invoice Vendor TAX
 	Route::post('payInvoiceVendorTaxApproval', 'InvoiceVendorTaxController@payInvoiceVendorTaxApproval');
 	Route::post('payInvoiceVendorTax', 'InvoiceVendorTaxController@payInvoiceVendorTax');
+	Route::get('invoice-vendor-tax/dataTables', 'InvoiceVendorTaxController@dataTables');
 	Route::resource('invoice-vendor-tax', 'InvoiceVendorTaxController');
 
 	//Comparation invoice TAX

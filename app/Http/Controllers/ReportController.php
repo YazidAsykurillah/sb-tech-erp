@@ -140,6 +140,7 @@ class ReportController extends Controller
         $invoice_vendor_taxes = InvoiceVendorTax::whereHas('invoice_vendor', function($query) use ($yearmonth){
             $query->where('invoice_vendors.tax_date', 'LIKE', "%$yearmonth%");
             $query->where('invoice_vendor_taxes.source', '=', "vat");
+            $query->where('invoice_vendor_taxes.tax_number', 'NOT LIKE', "0000%");
         })
         ->sum('amount');
         return $invoice_vendor_taxes;
@@ -151,6 +152,7 @@ class ReportController extends Controller
         $invoice_customer_taxes = InvoiceCustomerTax::whereHas('invoice_customer', function($query) use ($yearmonth){
             $query->where('invoice_customers.tax_date', 'LIKE', "%$yearmonth%");
             $query->where('invoice_customer_taxes.source', '=', "vat");
+            $query->where('invoice_customer_taxes.tax_number', 'NOT LIKE', "0000%");
         })
         ->sum('amount');
         return $invoice_customer_taxes;

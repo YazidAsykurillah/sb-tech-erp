@@ -215,7 +215,7 @@
       processing :true,
       serverSide : true,
       ajax : {
-        url : '{!! route('datatables.getInvoiceCustomerTaxesFromTaxComparation') !!}',
+        url : '{!! url('invoice-customer-tax/dataTables') !!}',
         data: function(d){
           d.param_yearmonth = param_yearmonth;
         }
@@ -245,7 +245,7 @@
       processing :true,
       serverSide : true,
       ajax : {
-        url : '{!! route('datatables.getInvoiceVendorTaxesFromTaxComparation') !!}',
+        url : '{!! url('invoice-vendor-tax/dataTables') !!}',
         data: function(d){
           d.param_yearmonth = param_yearmonth;
         }
