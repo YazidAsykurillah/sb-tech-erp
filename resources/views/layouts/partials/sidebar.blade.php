@@ -247,7 +247,7 @@
       </li>
       @endif
 
-      @if(\Auth::user()->roles->first()->code == 'SUP' || \Auth::user()->roles->first()->code == 'ADM' || \Auth::user()->roles->first()->code == 'FIN')
+      @if(\Auth::user()->roles->first()->code == 'SUP' || \Auth::user()->roles->first()->code == 'FIN')
       <li class="treeview {{{ (Request::is('master-data/*') ? 'class=active' : '') }}} ">
         <a href="#">
           <i class="fa fa-database"></i>
