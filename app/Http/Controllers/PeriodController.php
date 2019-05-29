@@ -138,4 +138,22 @@ class PeriodController extends Controller
         return redirect('period')
             ->with('successMessage', 'Period has been deleted');
     }
+
+    public function select2(Request $request)
+    {
+        $data = [];
+        if($request->has('q')){
+            $search = $request->q;
+            $data = \DB::table("periods")
+                    ->where('periods.code','LIKE',"%$search%")
+                    ->orderBy('start_date', 'DESC')
+                    ->get();
+        }
+        else{
+            $data = \DB::table('periods')
+                    ->orderBy('start_date', 'DESC')
+                    ->get();
+        }
+        return response()->json($data);
+    }
 }

@@ -68,6 +68,11 @@
                 <td>{{ $payroll->user->position }} </td>
               </tr>
               <tr>
+                <td style="width:40%;">Type</td>
+                <td style="width:5%;">:</td>
+                <td>{{ $payroll->user->type }} </td>
+              </tr>
+              <tr>
                 <td style="width:40%;">Period</td>
                 <td style="width:5%;">:</td>
                 <td>{{ $payroll->period->code }} </td>
@@ -292,7 +297,7 @@
                   <th colspan="5" style="text-align:center;border:1px solid;">Manhour</th>
                   
                   <th rowspan="3" style="text-align:center;border:1px solid;">Project Number</th>
-                  <th rowspan="3" style="text-align:center;border:1px solid;">Plant</th>
+                  <th rowspan="3" style="text-align:center;border:1px solid;">Location</th>
                   
                 </tr>
                 <tr>
@@ -321,7 +326,7 @@
                     <td class="centered-bordered">{{ $ets->III }}</td>
                     <td class="centered-bordered">{{ $ets->IV }}</td>
                     <td class="centered-bordered">{{ $ets->project_number }}</td>
-                    <td class="centered-bordered">{{ $ets->plant }}</td>
+                    <td class="centered-bordered">{{ $ets->location }}</td>
                   </tr>
                   @endforeach
                 @endif

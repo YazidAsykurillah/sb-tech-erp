@@ -331,6 +331,20 @@
       </li>
       @endif
 
+      @if(\Auth::user()->can('access-ets'))
+      <li class="treeview">
+        <a href="#">
+          <i class="fa fa-book"></i>
+          <span>ETS</span>
+        </a>
+        <ul class="treeview-menu">
+          <li><a href="{{ url('ets/site') }}"><i class="fa fa-circle-o"></i> ETS Site</a></li>
+        </ul>
+        <ul class="treeview-menu">
+          <li><a href="{{ url('ets/office') }}"><i class="fa fa-circle-o"></i> ETS Office</a></li>
+        </ul>
+      </li>
+      @endif
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->

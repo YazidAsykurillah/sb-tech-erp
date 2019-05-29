@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('resetPassword', 'UserController@resetPassword');
 	Route::get('user/getLeavesDataTable', 'UserController@getLeavesDataTable');
 	Route::get('user/dataTables', 'UserController@dataTables');
+	Route::get('user/select2Site', 'UserController@select2Site');
 	Route::resource('user', 'UserController');
 
 	//Purchase Order Customer
@@ -195,6 +196,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Period
 	Route::post('deletePeriod', 'PeriodController@destroy');
+	Route::get('period/select2', 'PeriodController@select2');
 	Route::resource('period', 'PeriodController');
 
 	//Time Report
@@ -348,9 +350,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 		//Cashflow
 		'getAccountingExpense'=>'datatables.getAccountingExpense',
-
-		//Payroll
-		'getPayrolls'=>'datatables.getPayrolls',
 	]);
 
 	//Select2
@@ -416,6 +415,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('ets/importFromPayroll', 'EtsController@importFromPayroll');
 	Route::post('ets/importForOfficeUser', 'EtsController@importForOfficeUser');
 	Route::post('ets/import', 'EtsController@import');
+	Route::post('ets/site/import', 'EtsController@importEtsSite');
+	Route::get('ets/site', 'EtsController@indexSite');
+	Route::get('ets/site/dataTables', 'EtsController@getSitedataTables');
 	Route::resource('ets', 'EtsController');
 
 
@@ -423,7 +425,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cash-flow', 'CashFlowController');
 
 	//Payroll
+	Route::post('deletePayroll', 'PayrollController@deletePayroll');
 	Route::post('payroll/update_thp_amount', 'PayrollController@update_thp_amount');
+	Route::get('payroll/dataTables', 'PayrollController@dataTables');
 	Route::resource('payroll', 'PayrollController');
 
 	//AllowanceItem
