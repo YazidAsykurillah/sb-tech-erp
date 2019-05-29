@@ -145,7 +145,8 @@ class PayrollController extends Controller
         $allowances = Allowance::where('user_id', $user->id)
                         ->where('period_id', $period->id)
                         ->get();
-
+        /*dd($allowances);
+        exit();*/
         //check medical allowance
         $check_medical_allowance = $this->check_medical_allowance($user, $period);
         $medical_allowance = MedicalAllowance::where('user_id', $user->id)
@@ -230,6 +231,7 @@ class PayrollController extends Controller
 
     protected function check_allowances($user, $period){
         
+        
         $allowances = Allowance::where('user_id', $user->id)
                         ->where('period_id', $period->id)
                         ->get();
@@ -237,6 +239,8 @@ class PayrollController extends Controller
         if(count($allowances) == 0){
             $this->register_allowance($user, $period);
         }
+
+
     }
 
     protected function register_allowance($user, $period){
@@ -253,13 +257,15 @@ class PayrollController extends Controller
                 $allowance->save();
                 $allowance_id = $allowance->id;
                 //build allowance items
-                $this->register_allowance_items($allowance_id, $user);
+                $this->register_allowance_items($allowance_id, $user, $name);
             }
         }
         return TRUE;
     }
 
-    protected function register_allowance_items($allowance_id, $user){
+
+    //Back 2019-05-30
+    /*protected function register_allowance_items($allowance_id, $user){
         \DB::table('allowance_items')->where('allowance_id', $allowance_id)->delete();
 
         $data = [
@@ -268,6 +274,49 @@ class PayrollController extends Controller
         ];
 
         return \DB::table('allowance_items')->insert($data);
+
+    }*/
+
+    protected function register_allowance_items($allowance_id, $user, $name){
+        \DB::table('allowance_items')->where('allowance_id', $allowance_id)->delete();
+
+        //get allowance object
+        $allowance = Allowance::findOrFail($allowance_id);
+        $period_id = $allowance->period_id;
+        
+
+        $transportation_allowance = $user->transportation_allowance;
+        $eat_allowance = $user->eat_allowance;
+        
+        $localMultiplier = \DB::table('ets')
+                            ->where('period_id',$period_id)
+                            ->where('user_id',$user->id)
+                            ->where('location','site-local')
+                            ->count('id');
+       
+        $nonLocalMultiplier = \DB::table('ets')
+                            ->where('period_id',$period_id)
+                            ->where('user_id',$user->id)
+                            ->where('location','site-non-local')
+                            ->count('id');
+
+
+        if($name == 'local'){
+            $data = [
+                ['allowance_id'=>$allowance_id, 'type'=>'transportation', 'amount'=>$transportation_allowance, 'multiplier'=>$localMultiplier, 'total_amount'=>$transportation_allowance*$localMultiplier],
+                ['allowance_id'=>$allowance_id, 'type'=>'meal', 'amount'=>$eat_allowance, 'multiplier'=>$localMultiplier, 'total_amount'=>$eat_allowance*$localMultiplier]
+            ];
+
+            \DB::table('allowance_items')->insert($data);
+        }elseif ($name == 'non-local') {
+            $data = [
+                ['allowance_id'=>$allowance_id, 'type'=>'transportation', 'amount'=>$transportation_allowance, 'multiplier'=>$nonLocalMultiplier, 'total_amount'=>$transportation_allowance*$nonLocalMultiplier],
+                ['allowance_id'=>$allowance_id, 'type'=>'meal', 'amount'=>$eat_allowance, 'multiplier'=>$nonLocalMultiplier, 'total_amount'=>$eat_allowance*$nonLocalMultiplier]
+            ];
+
+            \DB::table('allowance_items')->insert($data);
+        }
+        
 
     }
 
