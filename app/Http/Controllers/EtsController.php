@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use Carbon\Carbon;
+use Yajra\Datatables\Datatables;
 
 use App\Ets;
 use Excel;
@@ -19,7 +20,90 @@ class EtsController extends Controller
      */
     public function index()
     {
-        //
+        return 'index';
+    }
+
+    public function indexSite()
+    {
+        return view('ets.indexSite');
+    }
+
+    public function importEtsSite(Request $request)
+    {
+        $user_id = $request->user_id;
+        $imported_data = 0;
+        if($request->hasFile('file') && $request->period_id!=""){
+            config(['excel.import.startRow' => 4 ]);
+            $path = $request->file('file')->getRealPath();
+            $data = Excel::load($path, function($reader) {
+                $reader->noHeading = true;
+            })->get();
+            /*echo '<pre>';
+            print_r($data);
+            echo '</pre>';
+            exit();*/
+            if(!empty($data) && $data->count()){
+                //first delete all the ETS which is related to user id and period id
+                Ets::where('user_id', '=', $user_id)
+                    ->where('period_id', '=', $request->period_id)
+                    ->delete();
+                foreach ($data as $key => $value) {
+                    $ets = new Ets;
+                    $ets->user_id = $user_id;
+                    $ets->period_id = $request->period_id;
+                    $ets->the_date =  Carbon::parse($value[0])->format('Y-m-d');
+                    $ets->normal = $value[1];
+                    $ets->I = $value[2];
+                    $ets->II = $value[3];
+                    $ets->III = $value[4];
+                    $ets->IV = $value[5];
+                    $ets->description = $value[6];
+                    $ets->location = str_slug(strtolower($value[7]));
+                    $ets->project_number = $value[8];
+                    $ets->type = 'site';
+                    $ets->save();
+                    $imported_data +=1;
+                    
+                }
+            }
+            return back()->with('successMessage', "$imported_data has been imported");
+            
+        }
+        else{
+            return redirect()->back()
+            ->withInput()
+            ->with('errorMessage', "Please upload the file");
+        }
+    }
+
+    public function getSitedataTables(Request $request)
+    {
+        $ets = \DB::table('ets')
+        ->select(
+            'ets.period_id', 'ets.user_id',
+            \DB::raw("CONCAT(periods.the_year,'-',periods.the_month) as the_period"),
+            \DB::raw('users.name as user_name')
+        )
+        ->where('ets.type','=', 'site')
+        ->join('periods', 'periods.id', '=', 'ets.period_id')
+        ->join('users', 'users.id', '=', 'ets.user_id')
+        ->groupBy('ets.period_id', 'ets.user_id');
+
+        $data_ets = Datatables::of($ets)
+            ->addColumn('actions', function($ets){
+                $actions_html = '';
+                $actions_html.='<a class="btn btn-default btn-xs" href="/ets/show/?period_id='.$ets->period_id.'&user_id='.$ets->user_id.'">';   
+                $actions_html.='<i class="fa fa-external-link"></i>';   
+                $actions_html.='</a>';   
+                return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            exit('filter');
+            $data_ets->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_ets->make(true);
     }
 
     /**
@@ -49,9 +133,9 @@ class EtsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        print_r($request->all());
     }
 
     /**

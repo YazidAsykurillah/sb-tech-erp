@@ -66,6 +66,33 @@
     </div>
   </div>
 
+  <!--Modal Delete Payroll-->
+  <div class="modal fade" id="modal-delete-payroll" tabindex="-1" role="dialog" aria-labelledby="modal-delete-payrollLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'deletePayroll', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-delete-payrollLabel">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          Click delete to continue
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="payroll_id_to_delete" name="payroll_id_to_delete">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Delete Payroll-->
+
  
 @endsection
 
@@ -74,7 +101,7 @@
     var tablePayroll =  $('#table-payroll').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getPayrolls') !!}',
+      ajax : '{!! url('payroll/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'period_id', name: 'period_id' },
@@ -89,7 +116,7 @@
     // Delete button handler
     tablePayroll.on('click', '.btn-delete-payroll', function(e){
       var id = $(this).attr('data-id');
-      $('#payroll_id').val(id);
+      $('#payroll_id_to_delete').val(id);
       $('#modal-delete-payroll').modal('show');
     });
 

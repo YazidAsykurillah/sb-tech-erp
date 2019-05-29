@@ -496,4 +496,22 @@ class UserController extends Controller
     }
     //END Block get user leave datatable
 
+    public function select2Site(Request $request)
+    {
+        $data = [];
+        if($request->has('q')){
+            $search = $request->q;
+            $data = \DB::table("users")
+                    ->where('type', '=', 'outsource')
+                    ->where('users.name','LIKE',"%$search%")
+                    ->get();
+        }
+        else{
+            $data = \DB::table('users')
+                    ->where('type', '=', 'outsource')
+                    ->get();
+        }
+        return response()->json($data);
+    }
+
 }
