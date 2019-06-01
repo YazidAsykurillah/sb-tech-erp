@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('resetPassword', 'UserController@resetPassword');
 	Route::get('user/getLeavesDataTable', 'UserController@getLeavesDataTable');
 	Route::get('user/dataTables', 'UserController@dataTables');
+	Route::get('user/select2Office', 'UserController@select2Office');
 	Route::get('user/select2Site', 'UserController@select2Site');
 	Route::resource('user', 'UserController');
 
@@ -416,8 +417,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('ets/importForOfficeUser', 'EtsController@importForOfficeUser');
 	Route::post('ets/import', 'EtsController@import');
 	Route::post('ets/site/import', 'EtsController@importEtsSite');
-	Route::get('ets/site', 'EtsController@indexSite');
-	Route::get('ets/site/dataTables', 'EtsController@getSitedataTables');
+	Route::post('ets/office/import', 'EtsController@importEtsOffice');
+	Route::get('ets/office', 'EtsController@indexETSOffice');
+	Route::get('ets/office/dataTables', 'EtsController@getETSOfficedataTables');
+	Route::get('ets/site', 'EtsController@indexETSSite');
+	Route::get('ets/site/dataTables', 'EtsController@getETSSitedataTables');
 	Route::resource('ets', 'EtsController');
 
 

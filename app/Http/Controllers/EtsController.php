@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 
 use App\Ets;
+use App\Period;
+use App\User;
 use Excel;
 class EtsController extends Controller
 {
@@ -23,11 +25,17 @@ class EtsController extends Controller
         return 'index';
     }
 
-    public function indexSite()
+    public function indexETSSite()
     {
         return view('ets.indexSite');
     }
 
+    public function indexETSOffice()
+    {
+        return view('ets.indexOffice');
+    }
+
+    //Import ETS for site member
     public function importEtsSite(Request $request)
     {
         $user_id = $request->user_id;
@@ -76,7 +84,10 @@ class EtsController extends Controller
         }
     }
 
-    public function getSitedataTables(Request $request)
+    //END Import ETS for site member
+
+    //ETS Site Datatables
+    public function getETSSitedataTables(Request $request)
     {
         $ets = \DB::table('ets')
         ->select(
@@ -105,6 +116,87 @@ class EtsController extends Controller
 
         return $data_ets->make(true);
     }
+    //END ETS Site Datatables
+
+    //ETS Office Datatables
+    public function getETSOfficedataTables(Request $request)
+    {
+        $ets = \DB::table('ets')
+        ->select(
+            'ets.period_id', 'ets.user_id',
+            \DB::raw("CONCAT(periods.the_year,'-',periods.the_month) as the_period"),
+            \DB::raw('users.name as user_name')
+        )
+        ->where('ets.type','=', 'office')
+        ->join('periods', 'periods.id', '=', 'ets.period_id')
+        ->join('users', 'users.id', '=', 'ets.user_id')
+        ->groupBy('ets.period_id', 'ets.user_id');
+
+        $data_ets = Datatables::of($ets)
+            ->addColumn('actions', function($ets){
+                $actions_html = '';
+                $actions_html.='<a class="btn btn-default btn-xs" href="/ets/show/?period_id='.$ets->period_id.'&user_id='.$ets->user_id.'">';   
+                $actions_html.='<i class="fa fa-external-link"></i>';   
+                $actions_html.='</a>';   
+                return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            exit('filter');
+            $data_ets->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_ets->make(true);
+    }
+    //END ETS Office Datatables
+
+    //Import ETS for Office member
+    public function importEtsOffice(Request $request)
+    {
+        $user_id = $request->user_id;
+        $imported_data = 0;
+        if($request->hasFile('file') && $request->period_id!=""){
+            config(['excel.import.startRow' => 2 ]);
+            $path = $request->file('file')->getRealPath();
+            $data = Excel::load($path, function($reader) {
+                $reader->noHeading = true;
+            })->get();
+            /*echo '<pre>';
+            print_r($data);
+            echo '</pre>';
+            exit();*/
+            if(!empty($data) && $data->count()){
+                //first delete all the ETS which is related to user id and period id
+                Ets::where('user_id', '=', $user_id)
+                    ->where('period_id', '=', $request->period_id)
+                    ->delete();
+                foreach ($data as $key => $value) {
+                    $ets = new Ets;
+                    $ets->user_id = $user_id;
+                    $ets->period_id = $request->period_id;
+                    $ets->the_date =  Carbon::parse($value[0])->format('Y-m-d');
+                    $ets->start_time =  $value[1];
+                    $ets->end_time =  $value[2];
+                    $ets->description =  $value[3];
+                    $ets->location = str_slug(strtolower($value[4]));
+                    $ets->project_number = $value[5];
+                    $ets->type = 'office';
+                    $ets->save();
+                    $imported_data +=1;
+                    
+                }
+            }
+            return back()->with('successMessage', "$imported_data has been imported");
+            
+        }
+        else{
+            return redirect()->back()
+            ->withInput()
+            ->with('errorMessage', "Please upload the file");
+        }
+    }
+
+    //END Import ETS for Office member
 
     /**
      * Show the form for creating a new resource.
@@ -135,7 +227,36 @@ class EtsController extends Controller
      */
     public function show(Request $request)
     {
-        print_r($request->all());
+        $user = User::findOrFail($request->user_id);
+        $period = Period::findOrFail($request->period_id);
+        if($user->type == 'outsource'){
+            return $this->showEtsForOutsource($user, $period);
+        }
+        elseif ($user->type == 'office'){
+            return $this->showEtsForOffice($user, $period);
+        }
+        else{
+            return "Unidentified user type";
+        }
+        
+    }
+
+    public function showEtsForOutsource($user, $period){
+
+        $ets_lists = Ets::where('user_id', '=', $user->id)->where('period_id', '=', $period->id)->get();
+        return view('ets.show_ets_outsource')
+            ->with('user', $user)
+            ->with('period', $period)
+            ->with('ets_lists', $ets_lists);
+    }
+
+    public function showEtsForOffice($user, $period){
+
+        $ets_lists = Ets::where('user_id', '=', $user->id)->where('period_id', '=', $period->id)->get();
+        return view('ets.show_ets_office')
+            ->with('user', $user)
+            ->with('period', $period)
+            ->with('ets_lists', $ets_lists);
     }
 
     /**
