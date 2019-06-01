@@ -23,8 +23,8 @@ class TemplatesController extends Controller
             return response()->download($pathToFile, 'Template-ETS-OFFICE.xlsx');
         }
         else{
-            $pathToFile = public_path().'/files/templates/ets.xlsx';
-            return response()->download($pathToFile, 'Template-ETS.xlsx');    
+            $pathToFile = public_path().'/files/templates/ets-site.xlsx';
+            return response()->download($pathToFile, 'Template-ETS-SITE.xlsx');    
         }
     	
     }

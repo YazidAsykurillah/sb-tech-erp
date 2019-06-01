@@ -48,7 +48,7 @@
                       <td></td>
                       <td>ETS SITE</td>
                       <td style="text-align:center;">
-                        <a href="{{ url('templates/download/?file_name=ets') }}" class="btn btn-info"><i class="fa fa-download"></i></a>
+                        <a href="{{ url('templates/download/?file_name=ets_site') }}" class="btn btn-info"><i class="fa fa-download"></i></a>
                       </td>
                     </tr>
                   </tbody>

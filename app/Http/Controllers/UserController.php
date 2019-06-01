@@ -514,4 +514,22 @@ class UserController extends Controller
         return response()->json($data);
     }
 
+    public function select2Office(Request $request)
+    {
+        $data = [];
+        if($request->has('q')){
+            $search = $request->q;
+            $data = \DB::table("users")
+                    ->where('type', '=', 'office')
+                    ->where('users.name','LIKE',"%$search%")
+                    ->get();
+        }
+        else{
+            $data = \DB::table('users')
+                    ->where('type', '=', 'office')
+                    ->get();
+        }
+        return response()->json($data);
+    }
+
 }

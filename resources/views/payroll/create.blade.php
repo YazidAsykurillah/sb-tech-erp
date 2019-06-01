@@ -52,7 +52,13 @@
           <div class="form-group{{ $errors->has('user_id') ? ' has-error' : '' }}">
             {!! Form::label('user_id', 'User', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {{ Form::select('user_id', [], null, ['class'=>'form-control', 'placeholder'=>'Select User', 'id'=>'user_id']) }}
+              <select name="user_id" id="user_id" class="form-control">
+                @if(Request::old('user_id') != NULL)
+                  <option value="{{Request::old('user_id')}}">
+                    {{ \App\User::find(Request::old('user_id'))->name }}
+                  </option>
+                @endif
+              </select>
               @if ($errors->has('user_id'))
                 <span class="help-block">
                   <strong>{{ $errors->first('user_id') }}</strong>
@@ -119,5 +125,10 @@
       }
     });
     //ENDBlock User Selection
+
+  //Create payroll submission
+  $('#form-create-payroll').on('submit', function(){
+    $('#btn-submit-payroll').prop('disabled', true);
+  });
 </script>
 @endsection
