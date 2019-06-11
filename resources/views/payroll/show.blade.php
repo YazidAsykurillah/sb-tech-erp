@@ -88,6 +88,9 @@
               <tr>
                 <td style="width:20%;">
                   <p><strong>Basic Salary</strong></p>
+                  <p style="text-align:right;">
+                    <strong>{{ number_format($total_basic_salary,2) }}</strong>
+                  </p>
                   <p>(Manhour Timesheet)</p>
                 </td>
                 <td style="width:5%;text-align:center;">:</td>

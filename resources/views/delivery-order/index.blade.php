@@ -79,6 +79,33 @@
     </div>
   </div>
 
+  <!--Modal Delete Delivery Order-->
+  <div class="modal fade" id="modal-delete-delivery-order" tabindex="-1" role="dialog" aria-labelledby="modal-delete-delivery-orderLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'deleteDeliveryOrder', 'id'=>'form-delete-delivery-order' , 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-delete-delivery-orderLabel">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          You are going to delete <b id="delivery-order-code-to-delete"></b>
+          <br/>
+          <p class="text text-danger">
+            <i class="fa fa-info-circle"></i>&nbsp;This process can not be reverted
+          </p>
+          <input type="hidden" id="delivery_order_id_to_delete" name="delivery_order_id_to_delete">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger" id="btn-delete-delivery-order">Delete</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Delete Delivery Order-->
+
   
 @endsection
 
@@ -122,6 +149,15 @@
     });
     //ENDBlock search input and select
 
+
+    // Delete button handler
+    dataTable.on('click', '.btn-delete-delivery-order', function(e){
+      var id = $(this).attr('data-id');
+      var code = $(this).attr('data-text');
+      $('#delivery_order_id_to_delete').val(id);
+      $('#delivery-order-code-to-delete').text(code);
+      $('#modal-delete-delivery-order').modal('show');
+    });
 
     //Delete delivery-order process
     $('#form-delete-delivery-order').on('submit', function(){
