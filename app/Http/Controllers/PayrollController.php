@@ -378,6 +378,8 @@ class PayrollController extends Controller
         $user = User::findOrFail($payroll->user->id);
         $period = Period::findOrFail($payroll->period->id);
 
+        //get basic salary 
+        $total_basic_salary = $user->salary;
         $total_man_hour_salary = $request->total_man_hour_salary;
 
         //collect allowances
@@ -417,7 +419,7 @@ class PayrollController extends Controller
 
 
         
-        $thp_amount = $total_man_hour_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance - $total_amount_from_cashbond_installments;
+        $thp_amount = $total_basic_salary+$total_man_hour_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance - $total_amount_from_cashbond_installments;
         //update thp amount of this payroll
         $payroll->thp_amount = $thp_amount;
         $payroll->save();

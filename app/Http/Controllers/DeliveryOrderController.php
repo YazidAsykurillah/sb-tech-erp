@@ -47,6 +47,12 @@ class DeliveryOrderController extends Controller
                     $actions_html ='<a href="'.url('delivery-order/'.$deliveryOrders->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
+                    if($deliveryOrders->status == 'draft'){
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-delivery-order" data-id="'.$deliveryOrders->id.'" data-text="'.$deliveryOrders->code.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';    
+                    }
+                    
                     return $actions_html;
             });
 
@@ -76,6 +82,7 @@ class DeliveryOrderController extends Controller
      */
     public function store(StoreDeliveryOrderRequest $request)
     {
+        //dd($request->all());
         //init item delivery order data
         $itemDeliveryOrderData = [];
         
@@ -96,6 +103,7 @@ class DeliveryOrderController extends Controller
                 'quantity'=>$request->quantity[$key]
             ];
         }
+
         //Save item delivery order data
         \DB::table('item_delivery_order')->insert($itemDeliveryOrderData);
 
@@ -150,9 +158,17 @@ class DeliveryOrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->delivery_order_id_to_delete;
+        $deliveryOrder = DeliveryOrder::findOrFail($id);
+        //delete delivery order model
+        $deliveryOrder->delete();
+
+        //Delete DO items
+        \DB::table('item_delivery_order')->where('delivery_order_id','=', $id)->delete();
+        return redirect()->back()
+            ->with('successMessage', 'Delivery order has been deleted');
     }
 
     public function print_pdf($id)

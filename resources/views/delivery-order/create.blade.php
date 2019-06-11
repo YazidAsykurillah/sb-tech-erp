@@ -139,6 +139,10 @@
                 </table>
               </div>
             </div>
+            <div class="col-sm-2">
+              <select name="build_item_from_purchase_request" id="build_item_from_purchase_request" style="width:100%;">
+              </select>
+            </div>
           </div>
           <!-- ENDGroup items -->
           <div class="form-group">
@@ -308,6 +312,68 @@
   //fire select2 initialization to class item
   initSelect2ForItem();
 
+
+  //Build Item from Purchase Request
+  //Block Copy items from purchase request
+    $('#build_item_from_purchase_request').select2({
+      placeholder: 'Copy items from Purchase Request',
+      ajax: {
+        url: '{!! url('select2PurchaseRequestToCopyItems') !!}',
+        dataType: 'json',
+        delay: 250,
+        processResults: function (data) {
+          return {
+            results:  $.map(data, function (item) {
+                  return {
+                      text: item.code,
+                      id: item.id,
+                      the_items : item.the_items
+                  }
+              })
+          };
+        },
+        cache: true,
+      },
+      allowClear:true
+    }).on('select2:select', function(){
+      run_build_item_from_purchase_request($(this).val());
+    });
+
+    function run_build_item_from_purchase_request(purchase_request_id){
+      //$('#table-items').find('tbody').find('tr#row_index_0').remove();
+      var purchase_request_id = purchase_request_id;
+      $.ajax({
+        url : '{!! url('getPurchaseRequestItems') !!}',
+        type : 'GET',
+        data : 'purchase_request_id='+purchase_request_id,
+        beforeSend : function(){},
+        success : function(response){
+          if(response.length > 0){
+            $('#table-items').find('tbody').find('tr#row_index_0').remove();
+            $.each(response, function(idx, obj) {
+              index_initiator+=1;
+              var row_item = '<tr id="row_index_'+index_initiator+'">'+
+                                '<td>'+
+                                  '<select name="item['+index_initiator+']" class="form-control select-item">'+
+                                    '<option selected="selected" value="'+obj.id+'">'+obj.item+'</option>'+
+                                  '</select>'+
+                                '</td>'+
+                                '<td><input type="text" name="quantity['+index_initiator+']" class="form-control quantity" value="'+obj.quantity+'"/></td>'+
+                                '<td><button class="btn btn-danger btn-xs btn-remove-item" type="button"><i class="fa fa-trash"></i></button></td>'+
+                              '</tr>';
+              $('#table-items').find('tbody').append(row_item);
+              $('#table-items').find('tr td button.btn-remove-item').on('click', function(){
+                remove_row($(this));
+              });
+
+            });
+          }
+         
+        }
+      });
+    }
+
+  //ENDBuild Item from Purchase Request
   $('#form-create-delivery-order').on('submit', function(event){
     $('#btn-submit-delivery-order').prop('disabled', true);
   });

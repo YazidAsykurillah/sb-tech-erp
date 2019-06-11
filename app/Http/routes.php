@@ -447,6 +447,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	//Delivery Order
+	Route::post('deleteDeliveryOrder', 'DeliveryOrderController@destroy');
 	Route::get('delivery-order/{id}/print_pdf', 'DeliveryOrderController@print_pdf');
 	Route::get('delivery-order/dataTables', 'DeliveryOrderController@dataTables');
 	Route::resource('delivery-order', 'DeliveryOrderController');
