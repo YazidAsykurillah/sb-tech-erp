@@ -4,6 +4,10 @@
   {{ $cashbond->code }}
 @endsection
 
+@section('additional_styles')
+  {!! Html::style('css/datepicker/datepicker3.css') !!}
+@endsection
+
 @section('page_header')
   <h1>
     Cash Bond
@@ -183,7 +187,14 @@
                 @foreach($cashbond->cashbond_installments as $cashbond_installment)
                 <tr>
                   <td>{{ number_format($cashbond_installment->amount,2) }}</td>
-                  <td>{{ $cashbond_installment->installment_schedule }}</td>
+                  <td>
+                    {{ $cashbond_installment->installment_schedule }}
+                    @if($cashbond_installment->status == 'unpaid')
+                    <button class="btn btn-default btn-sm btn-change-schedule" data-id="{{ $cashbond_installment->id }}" data-original-schedule="{{ $cashbond_installment->installment_schedule }}">
+                      <i class="fa fa-calendar"></i>
+                    </button>
+                    @endif
+                  </td>
                   <td>{{ $cashbond_installment->status }}</td>
                 </tr>
                 @endforeach
@@ -259,10 +270,45 @@
   </div>
 <!--ENDModal cut-from-salary-->
 
+
+<!--Modal change installment schedule-->
+  <div class="modal fade" id="modalChangeInstallmentSchedule" tabindex="-1" role="dialog" aria-labelledby="modalChangeInstallmentScheduleLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'cashbond-installment/changeSchedule', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modalChangeInstallmentScheduleLabel">Change Installment schedule</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group{{ $errors->has('installment_schedule') ? ' has-error' : '' }}">
+            {!! Form::label('installment_schedule', 'Schedule', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('installment_schedule',null,['class'=>'form-control', 'placeholder'=>'Installment schedule', 'id'=>'installment_schedule']) !!}
+              @if ($errors->has('installment_schedule'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('installment_schedule') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="text" id="installment_id" name="installment_id">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal change installment schedule-->
+
 @endsection
 
 @section('additional_scripts')
-   <script type="text/javascript">
+  {!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
+  <script type="text/javascript">
     //Block Change Status
     $('#btn-change-status').on('click', function(event){
       event.preventDefault();
@@ -278,5 +324,24 @@
       $('#modal-cut-from-salary').modal('show');
     });
     //ENDBlock Cut From Salary
+
+    //Block Installment schedule
+    $('#installment_schedule').on('keydown', function(event){
+      event.preventDefault();
+    });
+    $('#installment_schedule').datepicker({
+      format : 'yyyy-mm-dd'
+    });
+    //ENDBlock Installment schedule
+    //Block change cashbond installment schedule
+    $('.btn-change-schedule').on('click', function(event){
+      event.preventDefault();
+      var installment_id = $(this).attr('data-id');
+      var original_schedule = $(this).attr('data-original-schedule');
+      $('#installment_id').val(installment_id);
+      $('#installment_schedule').val(original_schedule);
+      $('#modalChangeInstallmentSchedule').modal('show');
+    });
+    //ENDBlock change cashbond installment schedule
   </script>
 @endsection
