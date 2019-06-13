@@ -461,6 +461,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//Cashbond Installment
 	Route::post('cashbond-installment/changeSchedule', 'CashbondInstallmentController@changeSchedule');
 	Route::resource('cashbond-installment', 'CashbondInstallmentController');
+	
 	//Report
 	//PPN
 	Route::get('report/data-ppn', 'ReportController@getDataPpn');
