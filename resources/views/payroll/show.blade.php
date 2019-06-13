@@ -20,6 +20,9 @@
       text-align: center;
       border:1px solid;
     }
+    td.centered-bordered{
+      text-align: center;
+    }
   </style>
 @endsection
 
@@ -41,7 +44,7 @@
 @section('content')
   <div class="row">
     <!--Column Slip Gaji-->
-    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="panel panel-primary">
         <div class="panel-heading">
           <div class="panel-title">
@@ -53,27 +56,27 @@
           <div class="table-responsive">
             <table class="table table-striped">
               <tr>
-                <td style="width:40%;">NIK</td>
-                <td style="width:5%;">:</td>
-                <td>{{ $payroll->user->nik }} </td>
-              </tr>
-              <tr>
-                <td style="width:40%;">Name</td>
+                <td style="width:20%;">Name</td>
                 <td style="width:5%;">:</td>
                 <td>{{ $payroll->user->name }} </td>
               </tr>
               <tr>
-                <td style="width:40%;">Position</td>
+                <td style="width:20%;">NIK</td>
+                <td style="width:5%;">:</td>
+                <td>{{ $payroll->user->nik }} </td>
+              </tr>
+              <tr>
+                <td style="width:20%;">Position</td>
                 <td style="width:5%;">:</td>
                 <td>{{ $payroll->user->position }} </td>
               </tr>
               <tr>
-                <td style="width:40%;">Type</td>
+                <td style="width:20%;">Type</td>
                 <td style="width:5%;">:</td>
                 <td>{{ $payroll->user->type }} </td>
               </tr>
               <tr>
-                <td style="width:40%;">Period</td>
+                <td style="width:20%;">Period</td>
                 <td style="width:5%;">:</td>
                 <td>{{ $payroll->period->code }} </td>
               </tr>
@@ -280,14 +283,16 @@
     <!--Endcolumn Slip Gaji-->
 
     <!--Column ETS-->
-    <div class="col-md-6">
+    <div class="col-md-12">
       <div class="box box-default">
         <div class="box-header with-border">
           <h3 class="box-title"><i class="fa fa-clock-o"></i>&nbsp;ETS</h3>
           <div class="pull-right">
+            <!--
             <button type="button" id="btn-import-ets" class="btn btn-xs btn-info">
               <i class="fa fa-upload"></i> Import
             </button>
+          -->
           </div>
         </div><!-- /.box-header -->
         <div class="box-body">
@@ -322,7 +327,10 @@
                   <?php $num++;?>
                   <tr>
                     <td class="centered-bordered">{{ $num }}</td>
-                    <td class="centered-bordered">{{ $ets->the_date }}</td>
+                    <td class="centered-bordered">
+                      {{ $ets->the_date }}
+                      <p>{{ get_day_name($ets->the_date) }}</p>
+                    </td>
                     <td class="centered-bordered">{{ $ets->normal }}</td>
                     <td class="centered-bordered">{{ $ets->I }}</td>
                     <td class="centered-bordered">{{ $ets->II }}</td>
@@ -501,7 +509,7 @@
         data : 'payroll_id='+payroll_id+'&_token='+_token+'&total_man_hour_salary='+{{$total_man_hour_salary}},
         beforeSend : function(){},
         success : function(response){
-        $('#thp_amount').text(response.thp_amount);
+          $('#thp_amount').text(response.thp_amount);
         }
       });
     }

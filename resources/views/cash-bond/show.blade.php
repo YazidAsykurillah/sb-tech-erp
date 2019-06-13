@@ -190,9 +190,11 @@
                   <td>
                     {{ $cashbond_installment->installment_schedule }}
                     @if($cashbond_installment->status == 'unpaid')
-                    <button class="btn btn-default btn-sm btn-change-schedule" data-id="{{ $cashbond_installment->id }}" data-original-schedule="{{ $cashbond_installment->installment_schedule }}">
-                      <i class="fa fa-calendar"></i>
-                    </button>
+                      @if(\Auth::user()->can('update-installment-schedule'))
+                      <button class="btn btn-default btn-sm btn-change-schedule" data-id="{{ $cashbond_installment->id }}" data-original-schedule="{{ $cashbond_installment->installment_schedule }}">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                      @endif
                     @endif
                   </td>
                   <td>{{ $cashbond_installment->status }}</td>
