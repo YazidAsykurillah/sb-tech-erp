@@ -104,8 +104,8 @@
       ajax : '{!! url('payroll/dataTables') !!}',
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
-        { data: 'period_id', name: 'period_id' },
-        { data: 'user_id', name: 'user_id' },
+        { data: 'period.code', name: 'period.code' },
+        { data: 'user.name', name: 'user.name' },
         { data: 'thp_amount', name: 'thp_amount' },
         { data: 'is_printed', name: 'is_printed', searchable:false, orderable:false },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },

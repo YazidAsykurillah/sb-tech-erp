@@ -50,3 +50,11 @@ if(!function_exists('generate_date_range')){
 
 	}
 }
+
+if(!function_exists('get_day_name')){
+	function get_day_name($input){
+		$date = Carbon::parse($input);
+		return $date->format('l');
+
+	}
+}
