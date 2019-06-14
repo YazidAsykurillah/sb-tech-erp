@@ -26,17 +26,9 @@
             <div class="box-header with-border">
               <h3 class="box-title">Purchase Request</h3>
               
-              <div class="pull-right">
-                <a href="{{ URL::to('purchase-request/create')}}" class="btn btn-primary btn-xs" title="Create new Purchase Request">
-                  <i class="fa fa-plus"></i>&nbsp;Add New
-                </a>
-                @if(\Auth::user()->can('approve-purchase-request'))
-                <button type="button" class="btn btn-success btn-xs" id="btn-approve">
-                  <i class="fa fa-check"></i> Approve Multiple
-                </button>  
-                @endif
-              </div>
-              
+              <a href="{{ URL::to('purchase-request/create')}}" class="btn btn-primary pull-right" title="Create new Purchase Request">
+                <i class="fa fa-plus"></i>&nbsp;Add New
+              </a>
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
@@ -129,30 +121,6 @@
     </div>
   </div>
 <!--ENDModal Delete Purchase Order-->
-
-<!--Modal Approve Multiple-->
-  <div class="modal fade" id="modal-approve" tabindex="-1" role="dialog" aria-labelledby="modal-approveLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-      {!! Form::open(['url'=>'purchase-request/approve', 'id'=> 'form-approve', 'method'=>'post']) !!}
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-approveLabel">Confirmation</h4>
-        </div>
-        <div class="modal-body">
-          <p class="text text-danger">
-            <span id="selected_purchase_request_counter"></span> purchase request(s) will be approved
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-info">Approve</button>
-        </div>
-      {!! Form::close() !!}
-      </div>
-    </div>
-  </div>
-<!--ENDModal Approve Multiple-->
 @endsection
 
 @section('additional_scripts')
@@ -236,33 +204,6 @@
       tablePurchaseRequest.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-
-    //Purchase request row selection handler
-    var selectedPurchaseRequest = [];
-    tablePurchaseRequest.on( 'click', 'tr', function () {
-      $(this).toggleClass('selected');
-    });
-    //ENDPurchase request row selection handler
-    //Approve handler
-    $('#btn-approve').on('click', function(event){
-      event.preventDefault();
-      selectedPurchaseRequest = [];
-      var selected_purchase_request_id = tablePurchaseRequest.rows('.selected').data();
-      $.each( selected_purchase_request_id, function( key, value ) {
-        selectedPurchaseRequest.push(selected_purchase_request_id[key].id);
-      });
-      if(selectedPurchaseRequest.length == 0){
-        alert('There are no selected row');
-      }else{
-        $('#form-approve').find('.id_to_approve').remove();
-        $('#selected_purchase_request_counter').html(selectedPurchaseRequest.length);
-        $.each( selectedPurchaseRequest, function( key, value ) {
-          $('#form-approve').append('<input type="hidden" class="id_to_approve" name="id_to_approve[]" value="'+value+'"/>');
-        });
-        $('#modal-approve').modal('show');  
-      }
-      
-    });
-    //ENDApprove handler
+    
   </script>
 @endsection

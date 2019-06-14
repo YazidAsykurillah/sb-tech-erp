@@ -348,4 +348,32 @@ class PurchaseRequestController extends Controller
         }
         return response()->json($data);
     }
+
+    //Approve purchase request handling
+    public function approve(Request $request)
+    {
+        if($request->has('id_to_approve')){
+            //multiple approval
+            if(is_array($request->id_to_approve)){
+                $counter = 0;
+                foreach($request->id_to_approve as $id){
+                    $purchaseRequest = PurchaseRequest::findOrFail($id);
+                    if($purchaseRequest->status == 'pending'){
+                        $purchaseRequest->status = 'approved';
+                        $purchaseRequest->save();
+                        $counter++;
+                    }
+                }
+                return redirect()->back()
+                    ->with('successMessage', "$counter has been approved");
+            }
+            //single approval
+            else{
+
+            }
+        }else{
+            return redirect()->back()
+                ->with('errorMessage', "There are no selected purchase request");
+        }
+    }
 }

@@ -86,6 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	//Purchase Request
+	Route::post('purchase-request/approve', 'PurchaseRequestController@approve');
 	Route::post('updateItemPurchaseRequestIsReceived', 'PurchaseRequestController@updateItemPurchaseRequestIsReceived');
 	Route::get('getPurchaseRequestItems', 'PurchaseRequestController@getPurchaseRequestItems');
 	Route::post('changePurchaseRequestStatus', 'PurchaseRequestController@changeStatus');
