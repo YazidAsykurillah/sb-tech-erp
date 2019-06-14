@@ -414,6 +414,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('exporter/cash_transaction', 'ExporterController@exportCashTransaction');
 
 	//ETS
+	Route::post('ets/update_has_incentive_weekday', 'EtsController@updateHasIncentiveWeekDay');
+	Route::post('ets/update_has_incentive_weekend', 'EtsController@updateHasIncentiveWeekEnd');
 	Route::post('ets/importFromPayroll', 'EtsController@importFromPayroll');
 	Route::post('ets/importForOfficeUser', 'EtsController@importForOfficeUser');
 	Route::post('ets/import', 'EtsController@import');

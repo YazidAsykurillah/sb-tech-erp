@@ -23,6 +23,12 @@
     td.centered-bordered{
       text-align: center;
     }
+    tr.weekend{
+      color: red;
+    }
+    td.weekend{
+      color: red;
+    }
   </style>
 @endsection
 
@@ -325,7 +331,7 @@
                   <?php $num = 0; ?>
                   @foreach($ets_lists as $ets)
                   <?php $num++;?>
-                  <tr>
+                  <tr class="{{ is_date_weekend($ets->the_date) == TRUE ? 'weekend':'' }}">
                     <td class="centered-bordered">{{ $num }}</td>
                     <td class="centered-bordered">
                       {{ $ets->the_date }}

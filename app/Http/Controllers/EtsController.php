@@ -431,4 +431,26 @@ class EtsController extends Controller
         }
     }
 
+
+    public function updateHasIncentiveWeekDay(Request $request)
+    {
+        $ets = Ets::findOrFail($request->ets_id);
+        if($request->state == 'checked'){
+            $ets->has_incentive_week_day = TRUE;
+        }else{
+            $ets->has_incentive_week_day = FALSE;
+        }
+        $ets->save();
+    }
+
+    public function updateHasIncentiveWeekEnd(Request $request)
+    {
+        $ets = Ets::findOrFail($request->ets_id);
+        if($request->state == 'checked'){
+            $ets->has_incentive_week_end = TRUE;
+        }else{
+            $ets->has_incentive_week_end = FALSE;
+        }
+        $ets->save();
+    }
 }

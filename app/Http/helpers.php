@@ -58,3 +58,10 @@ if(!function_exists('get_day_name')){
 
 	}
 }
+
+if(!function_exists('is_date_weekend')){
+	function is_date_weekend($input){
+		$date = Carbon::parse($input);
+		return $date->isWeekend();
+	}
+}
