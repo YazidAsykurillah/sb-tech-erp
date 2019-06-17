@@ -215,12 +215,23 @@ class PayrollController extends Controller
     protected function register_medical_allowance($user, $period)
     {
         \DB::table('medical_allowances')->where('user_id', '=', $user->id)->where('period_id', '=', $period->id)->delete();
+        $totalAmountMedAllowance = 0;
+        $multiplier = \DB::table('ets')
+                            ->where('period_id',$period->id)
+                            ->where('user_id',$user->id)
+                            ->count('id');
+        if($multiplier >=14){
+            $totalAmountMedAllowance = $user->medical_allowance;
+        }else{
+            $totalAmountMedAllowance = $user->medical_allowance/2;
+        }
+        
         $medical_allowance = [
             'user_id'=>$user->id,
             'period_id'=>$period->id,
             'amount'=>$user->medical_allowance,
-            'multiplier'=>0,
-            'total_amount'=>0
+            'multiplier'=>$multiplier,
+            'total_amount'=>$totalAmountMedAllowance
         ];
         \DB::table('medical_allowances')->insert($medical_allowance);
     }

@@ -123,9 +123,21 @@
                         <td>{{ number_format($user->medical_allowance, 2) }} </td>
                       </tr>
                       <tr>
+                        <td style="width:40%;">Workshop Allowance</td>
+                        <td style="width:5%;">:</td>
+                        <td>
+                          <p>
+                            <input type="checkbox" name="has_workshop_allowance" @if($user->has_workshop_allowance == TRUE)checked @endif>
+                          </p>
+                          {{ number_format($user->workshop_allowance_amount, 2) }}
+                        </td>
+                      </tr>
+                      <tr>
                         <td style="width:40%;">Incentive Week Day</td>
                         <td style="width:5%;">:</td>
-                        <td>{{ number_format($user->incentive_week_day, 2) }} </td>
+                        <td>
+                          {{ number_format($user->incentive_week_day, 2) }} 
+                        </td>
                       </tr>
                       
                       <tr>
