@@ -10,6 +10,9 @@ use App\Http\Requests\StorePayrollRequest;
 use Carbon\Carbon;
 use Yajra\Datatables\Datatables;
 
+use Event;
+use App\Events\PayrollIsDeleted;
+
 use App\Payroll;
 use App\User;
 use App\Ets;
@@ -381,11 +384,13 @@ class PayrollController extends Controller
         $period_id = $payroll->period->id;
         $user_id = $payroll->user->id;
 
+
         //Delete payroll model
         $payroll->delete();
-
+        //Fire the event payroll is deleted
+        Event::fire(new PayrollIsDeleted($payroll));
         //Delete ETS from database
-        \DB::table('ets')->where('period_id', '=', $period_id)->where('user_id', '=', $user_id)->delete();
+        //\DB::table('ets')->where('period_id', '=', $period_id)->where('user_id', '=', $user_id)->delete();
         return redirect()->back()
             ->with('successMessage', "Payroll has been deleted");
     }
