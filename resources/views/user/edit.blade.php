@@ -181,6 +181,23 @@
               @endif
             </div>
           </div>
+          <div class="form-group{{ $errors->has('has_workshop_allowance') ? ' has-error' : '' }}">
+            {!! Form::label('has_workshop_allowance', 'Workshop Allowance', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              @if($user->has_workshop_allowance == TRUE )
+                <input type="checkbox" name="has_workshop_allowance" id="has_workshop_allowance" checked />
+                {!!Form::text('workshop_allowance_amount',null,['class'=>'form-control', 'placeholder'=>'workshop_allowance_amount of the member', 'id'=>'workshop_allowance_amount'])!!}
+              @else
+                <input type="checkbox" name="has_workshop_allowance" id="has_workshop_allowance" />
+                {!!Form::text('workshop_allowance_amount',null,['class'=>'form-control', 'placeholder'=>'workshop_allowance_amount of the member', 'id'=>'workshop_allowance_amount'])!!}
+              @endif
+              @if ($errors->has('has_workshop_allowance'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('has_workshop_allowance') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           <div class="form-group{{ $errors->has('incentive_week_day') ? ' has-error' : '' }}">
             {!! Form::label('incentive_week_day', 'Incentive_week_day', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
@@ -297,7 +314,7 @@
   {!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
-    $('#salary, #man_hour_rate, #eat_allowance, #transportation_allowance, #medical_allowance, #incentive_week_day, #incentive_week_end, #bpjs_ke, #bpjs_tk').autoNumeric('init',{
+    $('#salary, #man_hour_rate, #eat_allowance, #transportation_allowance, #medical_allowance, #workshop_allowance_amount, #incentive_week_day, #incentive_week_end, #bpjs_ke, #bpjs_tk').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });
@@ -315,6 +332,9 @@
     });
     //ENDBlock Work activation date input
 
+    //Handling has workshop alloawance
+
+    //ENDHandling has workshop alloawance
     $('#form-edit-user').on('submit', function(){
       $('#btn-submit-user').prop('disabled', true);
     });

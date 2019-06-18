@@ -274,6 +274,30 @@
                 </td>
               </tr>
 
+              <!--Loop Settlement-->
+              <tr>
+                <td colspan="5">
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="width:20%;"><strong>Settlement</strong></td>
+                      <td style="width:5%;text-align:center;">:</td>
+                      <td colspan="3" style="text-align:right;">
+                        @if($settlements->count())
+                          @foreach($settlements as $settlement)
+                            <p>
+                              <strong>
+                                {{ number_format($settlement->internal_request->amount - $settlement->amount, 2) }}
+                              </strong>
+                            </p>
+                          @endforeach
+                        @endif
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!--ENDLoop Settlement-->
+
               <tr>
                 <td colspan="3" style="text-align:right;">Take Home Pay</td>
                 <td style="text-align:center;">:</td>

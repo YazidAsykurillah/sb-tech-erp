@@ -237,7 +237,7 @@
           @endif
         </div>
         <div class="box-footer clearfix">
-          @if( $internal_request->status == 'approved' && count($internal_request->settlement) < 1)
+          @if( $internal_request->status == 'approved' && $internal_request->settlement < 1)
           <a href="{{ URL::to('settlement/create/?internal_request_id='.$internal_request->id.'')}}" class="btn btn-default btn-xs" title="Register a Settlement for this Internal Request">
             <i class="fa fa-plus"></i>&nbsp;Register Settlement
           </a>

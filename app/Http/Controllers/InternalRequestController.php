@@ -91,7 +91,7 @@ class InternalRequestController extends Controller
     {
         //Block build next internal_request code
         $count_internal_request_id = \DB::table('internal_requests')->count();
-        if(count($count_internal_request_id)){
+        if($count_internal_request_id){
             $max = \DB::table('internal_requests')->max('code');
             $int_max = ltrim(preg_replace('#[^0-9]#', '', $max),'0');
             $next_internal_request_code = str_pad(($int_max+1), 5, 0, STR_PAD_LEFT);

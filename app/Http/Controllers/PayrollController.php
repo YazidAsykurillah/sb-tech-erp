@@ -19,6 +19,8 @@ use App\AllowanceItem;
 use App\MedicalAllowance;
 use App\Cashbond;
 use App\CashbondInstallment;
+use App\Settlement;
+use App\InternalRequest;
 
 class PayrollController extends Controller
 {
@@ -166,6 +168,15 @@ class PayrollController extends Controller
                             ->get();
         }
         
+        //get user's settlements
+        $settlements = Settlement::with('internal_request')
+            ->where('status','=','approved')
+            ->where('accounted',FALSE)
+            ->whereHas('internal_request', function($query) use($user, $period){
+                $query->where('requester_id', '=', $user->id);
+                $query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
+            })->get();
+
 
         return view('payroll.show')
             ->with('ets_lists', $ets_lists)
@@ -195,6 +206,7 @@ class PayrollController extends Controller
             ->with('medical_allowance', $medical_allowance)
 
             ->with('cash_advances', $cash_advances)
+            ->with('settlements', $settlements)
 
             ->with('payroll', $payroll);
 
@@ -426,9 +438,30 @@ class PayrollController extends Controller
         }
 
 
-        
+        //Collect balance from settlement
+        $settlement_balance = 0;
+        $settlements = Settlement::with('internal_request')
+            ->where('status','=','approved')
+            ->where('accounted',FALSE)
+            ->whereHas('internal_request', function($query) use($user, $period){
+                $query->where('requester_id', '=', $user->id);
+                $query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
+            })->get();
+
+        if($settlements->count()){
+            foreach($settlements as $settlement){
+                $balance = $settlement->internal_request->amount - $settlement->amount;
+                $settlement_balance+=$balance;
+            }
+        }
+
         $thp_amount = $total_basic_salary+$total_man_hour_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance - $total_amount_from_cashbond_installments;
         //update thp amount of this payroll
+        if($settlement_balance < 0){
+            $thp_amount = $thp_amount+(abs($settlement_balance));
+        }else{
+            $thp_amount = $thp_amount-$settlement_balance;
+        }
         $payroll->thp_amount = $thp_amount;
         $payroll->save();
 

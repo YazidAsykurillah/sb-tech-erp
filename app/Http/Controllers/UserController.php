@@ -130,6 +130,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        //dd($request->has_workshop_allowance);
+
+
         if($request->hasFile('image')){
             //if there is an uploaded image, fire the upload process,set the new profile picture name
             // and collect this profile picture name (to be deleted from the server).
@@ -152,6 +155,13 @@ class UserController extends Controller
         $user->eat_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->eat_allowance));
         $user->transportation_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->transportation_allowance));
         $user->medical_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->medical_allowance));
+        if($request->has_workshop_allowance =='on'){
+            $user->has_workshop_allowance = TRUE;
+            $user->workshop_allowance_amount = floatval(preg_replace('#[^0-9.]#', '', $request->workshop_allowance_amount));
+        }else{
+            $user->has_workshop_allowance = FALSE;
+            $user->workshop_allowance_amount = 0;
+        }
         $user->incentive_week_day = floatval(preg_replace('#[^0-9.]#', '', $request->incentive_week_day));
         $user->incentive_week_end = floatval(preg_replace('#[^0-9.]#', '', $request->incentive_week_end));
         $user->bpjs_ke = floatval(preg_replace('#[^0-9.]#', '', $request->bpjs_ke));
