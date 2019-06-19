@@ -152,9 +152,6 @@ class PayrollController extends Controller
             $man_hour_total = $normal_total+$I_total+$II_total+$III_total+$IV_total;    
         }
         
-        
-
-        
 
         $total_man_hour_salary = $user->man_hour_rate * $man_hour_total;
 
@@ -406,8 +403,7 @@ class PayrollController extends Controller
         $payroll->delete();
         //Fire the event payroll is deleted
         Event::fire(new PayrollIsDeleted($payroll));
-        //Delete ETS from database
-        //\DB::table('ets')->where('period_id', '=', $period_id)->where('user_id', '=', $user_id)->delete();
+        
         return redirect()->back()
             ->with('successMessage', "Payroll has been deleted");
     }
@@ -425,14 +421,12 @@ class PayrollController extends Controller
         $basic_salary = $user->salary;
         $total_man_hour_salary = $request->total_man_hour_salary;
 
+
         // Define total salary
         //if user type is outsource and has basic salary,
         // total salary is achived only by the total manhour salary
-        if($basic_salary > 0 ){
-            $total_salary = $total_man_hour_salary;
-        }else{
-            $total_salary = $basic_salary+$total_man_hour_salary;
-        }
+        $total_salary = $basic_salary+$total_man_hour_salary;
+        
         //collect allowances
         $total_amount_from_allowances = 0;
         $allowances = Allowance::where('user_id','=',$user->id)

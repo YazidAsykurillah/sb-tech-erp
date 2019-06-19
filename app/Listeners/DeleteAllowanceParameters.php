@@ -45,6 +45,8 @@ class DeleteAllowanceParameters
             \DB::table('allowances')->whereIn('id',$allowances_id_to_delete)->delete();
             \DB::table('allowance_items')->whereIn('allowance_id',$allowances_id_to_delete)->delete();
             \DB::table('medical_allowances')->where('period_id','=',$period_id)->where('user_id','=',$user_id)->delete();
+            //Delete ETS from database
+            \DB::table('ets')->where('period_id', '=', $period_id)->where('user_id', '=', $user_id)->delete();
         }
 
 
