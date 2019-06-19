@@ -159,6 +159,8 @@
     //Block User Selection
     $('#user_id').select2({
       placeholder: 'Select Member',
+      width:'100%',
+      dropdownParent: $('#modal-import-ets'),
       ajax: {
         url: '{!! url('user/select2Site') !!}',
         dataType: 'json',
@@ -182,6 +184,8 @@
     //Period Selection
     $('#period_id').select2({
       placeholder: 'Select Period',
+      width:'100%',
+      dropdownParent: $('#modal-import-ets'),
       ajax: {
         url: '{!! url('period/select2') !!}',
         dataType: 'json',

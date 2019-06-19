@@ -114,9 +114,17 @@ class PayrollController extends Controller
 
     public function show($id)
     {
+        
+
+
         $payroll = Payroll::findOrFail($id);
         $period = $payroll->period;
         $user = $payroll->user;
+
+        //initiate needed variables
+        $man_hour_total=0;
+        $basic_salary = $user->salary;
+
         $ets_lists = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->get();
         
         $normal_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('normal');
@@ -134,10 +142,19 @@ class PayrollController extends Controller
         $IV_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('IV');
         $IV_total = $IV_count*4;
 
+        if($user->type =='office'){
+            $man_hour_total = $I_total+$II_total+$III_total+$IV_total;
+        }
+        elseif($user->type =='outsource' && $basic_salary >0){
+            $man_hour_total = $I_total+$II_total+$III_total+$IV_total;
+        }
+        else{
+            $man_hour_total = $normal_total+$I_total+$II_total+$III_total+$IV_total;    
+        }
+        
+        
 
-        $man_hour_total = $normal_total+$I_total+$II_total+$III_total+$IV_total;
-
-        $total_basic_salary = $user->salary;
+        
 
         $total_man_hour_salary = $user->man_hour_rate * $man_hour_total;
 
@@ -200,7 +217,7 @@ class PayrollController extends Controller
 
             ->with('man_hour_total', $man_hour_total)
 
-            ->with('total_basic_salary', $total_basic_salary)
+            ->with('basic_salary', $basic_salary)
             
             ->with('total_man_hour_salary', $total_man_hour_salary)
 
@@ -398,15 +415,24 @@ class PayrollController extends Controller
     public function update_thp_amount(Request $request)
     {
         $thp_amount = 0;
+        $total_salary = 0;
 
         $payroll = Payroll::findOrFail($request->payroll_id);
         $user = User::findOrFail($payroll->user->id);
         $period = Period::findOrFail($payroll->period->id);
 
         //get basic salary 
-        $total_basic_salary = $user->salary;
+        $basic_salary = $user->salary;
         $total_man_hour_salary = $request->total_man_hour_salary;
 
+        // Define total salary
+        //if user type is outsource and has basic salary,
+        // total salary is achived only by the total manhour salary
+        if($basic_salary > 0 ){
+            $total_salary = $total_man_hour_salary;
+        }else{
+            $total_salary = $basic_salary+$total_man_hour_salary;
+        }
         //collect allowances
         $total_amount_from_allowances = 0;
         $allowances = Allowance::where('user_id','=',$user->id)
@@ -460,7 +486,7 @@ class PayrollController extends Controller
             }
         }
 
-        $thp_amount = $total_basic_salary+$total_man_hour_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance - $total_amount_from_cashbond_installments;
+        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance - $total_amount_from_cashbond_installments;
         //update thp amount of this payroll
         if($settlement_balance < 0){
             $thp_amount = $thp_amount+(abs($settlement_balance));

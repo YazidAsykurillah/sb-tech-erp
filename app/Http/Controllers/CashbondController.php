@@ -289,14 +289,20 @@ class CashbondController extends Controller
         $counter=0;
         if(count($request->id_to_set_paid)){
             foreach($request->id_to_set_paid as $id){
-                $cashbond = Cashbond::findOrFail($id);
-                $cashbond->payment_status = TRUE;
-                $cashbond->save();
-                $counter++;
+                try {
+                    $cashbond = Cashbond::findOrFail($id);
+                    $cashbond->payment_status = TRUE;
+                    $cashbond->save();
+                    $counter++;
+                } catch (Exception $e) {
+                    print_r($e);
+                    exit();
+                }
+                
             }
         }
         return redirect()->back()
-            ->with('successMessage',$counter." has been set to paid");
+            ->with('successMessage',$counter." cashbond has been set to paid");
 
     }
 }

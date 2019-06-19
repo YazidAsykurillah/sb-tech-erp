@@ -96,11 +96,7 @@
             <table id="table-salary-description">
               <tr>
                 <td style="width:20%;">
-                  <p><strong>Basic Salary</strong></p>
-                  <p style="text-align:right;">
-                    <strong>{{ number_format($total_basic_salary,2) }}</strong>
-                  </p>
-                  <p>(Manhour Timesheet)</p>
+                  <p><strong>Manhour Timesheet</strong></p>
                 </td>
                 <td style="width:5%;text-align:center;">:</td>
                 <td style="width:35%;">
@@ -136,9 +132,9 @@
                   <p style="text-align:right;"><strong>{{ $man_hour_total }}</strong></p>
                 </td>
                 <td rowspan="2" style="width:30%;">
-                  <p>Total Basic Salary</p>
+                  <p>Basic Salary</p>
                   <p style="text-align:right;">
-                    <strong></strong>
+                    <strong>{{ number_format($basic_salary,2) }}</strong>
                   </p>
                   <p>(Total Jam x Rate)</p>
                   <p style="text-align:right;">
@@ -148,7 +144,7 @@
                 </td>
               </tr>
               <tr>
-                <td>Manhour Rate</td>
+                <td><strong>Manhour Rate</strong></td>
                 <td style="width:5%;text-align:center;">:</td>
                 <td><strong>{{ number_format($payroll->user->man_hour_rate,2) }}</strong></td>
               </tr>
