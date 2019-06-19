@@ -282,4 +282,21 @@ class CashbondController extends Controller
         return $data_cashbonds->make(true);
     }
     //END Cashbond datatables
+
+
+    public function setPaymentStatusPaid(Request $request)
+    {
+        $counter=0;
+        if(count($request->id_to_set_paid)){
+            foreach($request->id_to_set_paid as $id){
+                $cashbond = Cashbond::findOrFail($id);
+                $cashbond->payment_status = TRUE;
+                $cashbond->save();
+                $counter++;
+            }
+        }
+        return redirect()->back()
+            ->with('successMessage',$counter." has been set to paid");
+
+    }
 }

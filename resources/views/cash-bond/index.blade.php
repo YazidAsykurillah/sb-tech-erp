@@ -25,9 +25,17 @@
         <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Cash Bond</h3>
-              <a href="{{ URL::to('cash-bond/create')}}" class="btn btn-primary pull-right" title="Create new Cash Bond">
-                <i class="fa fa-plus"></i>&nbsp;Add New
-              </a>
+              <div class="pull-right">
+                <a href="{{ URL::to('cash-bond/create')}}" class="btn btn-primary btn-xs" title="Create new Cash Bond">
+                  <i class="fa fa-plus"></i>&nbsp;Add New
+                </a>
+                @if(\Auth::user()->can('set-cashbond-payment-status-to-paid'))
+                <button type="button" class="btn btn-success btn-xs" id="btn-set-cashbond-payment-status-to-paid">
+                  <i class="fa fa-check"></i> Set payment status to Paid
+                </button>  
+                @endif
+              </div>
+              
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
@@ -124,6 +132,30 @@
     </div>
   </div>
 <!--ENDModal Delete Invoice Customer-->
+
+<!--Modal Set Cashbond Payment status to paid-->
+  <div class="modal fade" id="modal-set-cashbond-payment-status-to-paid" tabindex="-1" role="dialog" aria-labelledby="modal-set-cashbond-payment-status-to-paidLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'cashbond/setPaymentStatusPaid', 'id'=> 'form-set-paid', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-set-cashbond-payment-status-to-paidLabel">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <p class="text text-danger">
+            <span id="selected_cashbond_counter"></span> Cashbond(s) will be approved
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Set Cashbond Payment status to paid-->
 @endsection
 
 @section('additional_scripts')
@@ -197,5 +229,31 @@
     });
     //ENDBlock search input and select
     
+    //Cashbond row selection handler
+    var selectedCashbond = [];
+    tableCashBond.on( 'click', 'tr', function () {
+      $(this).toggleClass('selected');
+    });
+    //ENDPurchase request row selection handler
+    //Approve handler
+    $('#btn-set-cashbond-payment-status-to-paid').on('click', function(event){
+      event.preventDefault();
+      selectedCashbond = [];
+      var selected_cashbond_id = tableCashBond.rows('.selected').data();
+      $.each( selected_cashbond_id, function( key, value ) {
+        selectedCashbond.push(selected_cashbond_id[key].id);
+      });
+      if(selectedCashbond.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-set-paid').find('.id_to_set_paid').remove();
+        $('#selected_cashbond_counter').html(selectedCashbond.length);
+        $.each( selectedCashbond, function( key, value ) {
+          $('#form-set-paid').append('<input type="hidden" class="id_to_set_paid" name="id_to_set_paid[]" value="'+value+'"/>');
+        });
+        $('#modal-set-cashbond-payment-status-to-paid').modal('show');  
+      }
+      
+    });
   </script>
 @endsection
