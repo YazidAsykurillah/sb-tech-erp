@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use App\Http\Requests\StoreRoleRequest;
+
 use App\Role;
 use App\Permission;
 
@@ -29,7 +30,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('role.create');
     }
 
     /**
@@ -38,9 +39,15 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //
+        $role = new Role;
+        $role->code = trim(trim($request->code));
+        $role->name = $request->name;
+        $role->save();
+        return redirect('role/'.$role->id)
+            ->with('successMessage', "Role has been created");
+
     }
 
     /**
