@@ -114,9 +114,6 @@ class PayrollController extends Controller
 
     public function show($id)
     {
-        
-
-
         $payroll = Payroll::findOrFail($id);
         $period = $payroll->period;
         $user = $payroll->user;
@@ -141,6 +138,16 @@ class PayrollController extends Controller
 
         $IV_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('IV');
         $IV_total = $IV_count*4;
+
+        //incentives
+        $incentive_week_day_count = Ets::where('user_id','=', $user->id)
+                                    ->where('period_id', $period->id)
+                                    ->where('has_incentive_week_day','=',TRUE)
+                                    ->get();
+        $incentive_week_end_count = Ets::where('user_id','=', $user->id)
+                                    ->where('period_id', $period->id)
+                                    ->where('has_incentive_week_end','=',TRUE)
+                                    ->get();
 
         if($user->type =='office'){
             $man_hour_total = $I_total+$II_total+$III_total+$IV_total;
@@ -194,8 +201,10 @@ class PayrollController extends Controller
                 $query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
             })->get();
 
-
-        return view('payroll.show')
+        //if user type is site show payroll page for site
+        //otherwise show payroll page for office
+        if($user->type == 'outsource'){
+            return view('payroll.show')
             ->with('ets_lists', $ets_lists)
             ->with('normal_count', $normal_count)
             ->with('normal_total', $normal_total)
@@ -225,9 +234,44 @@ class PayrollController extends Controller
             ->with('cash_advances', $cash_advances)
             ->with('settlements', $settlements)
 
+            ->with('payroll', $payroll);    
+        }else{
+            return view('payroll.show_for_office')
+            ->with('ets_lists', $ets_lists)
+            ->with('normal_count', $normal_count)
+            ->with('normal_total', $normal_total)
+            ->with('incentive_week_day_count', $incentive_week_day_count->count())
+            ->with('incentive_week_end_count', $incentive_week_end_count->count())
+            ->with('I_count', $I_count)
+            ->with('I_total', $I_total)
+
+            ->with('II_count', $II_count)
+            ->with('II_total', $II_total)
+
+            ->with('III_count', $III_count)
+            ->with('III_total', $III_total)
+
+            ->with('IV_count', $IV_count)
+            ->with('IV_total', $IV_total)
+
+            ->with('man_hour_total', $man_hour_total)
+
+            ->with('basic_salary', $basic_salary)
+            
+            ->with('total_man_hour_salary', $total_man_hour_salary)
+
+            ->with('allowances', $allowances)
+
+            ->with('medical_allowance', $medical_allowance)
+
+            ->with('cash_advances', $cash_advances)
+            ->with('settlements', $settlements)
+
             ->with('payroll', $payroll);
+        }
 
         
+
     }
 
 
