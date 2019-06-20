@@ -164,6 +164,7 @@ class UserController extends Controller
         }
         $user->incentive_week_day = floatval(preg_replace('#[^0-9.]#', '', $request->incentive_week_day));
         $user->incentive_week_end = floatval(preg_replace('#[^0-9.]#', '', $request->incentive_week_end));
+        $user->additional_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->additional_allowance));
         $user->bpjs_ke = floatval(preg_replace('#[^0-9.]#', '', $request->bpjs_ke));
         $user->bpjs_tk = floatval(preg_replace('#[^0-9.]#', '', $request->bpjs_tk));
         $user->profile_picture = $this->user_profile_picture;

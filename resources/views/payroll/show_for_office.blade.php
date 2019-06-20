@@ -185,16 +185,15 @@
                 <td colspan="5">
                   <table style="width:100%;">
                     <tr>
-                      <td style="width:20%;">Name</td>
-                      <td style="width:5%;text-align:center;">:</td>
-                      <td colspan="3"><strong>Medical Allowance</strong></td>
+                      <td style="width: 20%;" colspan="5">
+                        <strong>Medical Allowance</strong>
+                      </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td style="width: 20%;">
                         <p>Rate / Month</p>
-                        
                       </td>
-                      <td style="text-align:center;">:</td>
+                      <td style="text-align:center;width: 5%;">:</td>
                       <td style="width:35%;text-align:right;">
                         <p>
                           <a href="#" id="medical_allowance_amount" data-type="text" data-pk="{{ $medical_allowance->first()->id }}"  data-title="Medical Alloawance Amount">
@@ -248,7 +247,6 @@
                   </table>
                 </td>
               </tr>
-
               <!--Loop Settlement-->
               <tr>
                 <td colspan="5">
@@ -256,25 +254,32 @@
                     <tr>
                       <td style="width:20%;"><strong>Settlement</strong></td>
                       <td style="width:5%;text-align:center;">:</td>
-                      <td colspan="3" style="text-align:right;">
-                        @if($settlements->count())
-                          @foreach($settlements as $settlement)
-                            <?php $settlement_balance = $settlement->internal_request->amount - $settlement->amount;?>
-                            @if($settlement_balance > 0)
-                            <p>
-                              <strong>
-                                - {{ number_format(abs($settlement_balance), 2) }}
-                              </strong>
-                            </p>
-                            @else
-                            <p>
-                              <strong>
-                                + {{ number_format(abs($settlement_balance), 2) }}
-                              </strong>
-                            </p>
-                            @endif
-                          @endforeach
-                        @endif
+                      <td colspan="3" style="">
+                      @if($settlements->count())
+                        <table style="width:100%;" id="table-settlement-list">
+                        @foreach($settlements as $settlement)
+                          <?php $settlement_balance = $settlement->internal_request->amount - $settlement->amount;?>
+                          <tr>
+                            <td style="width: 20%;">
+                              <a href="{{url('settlement/'.$settlement->id)}}" target="">
+                                {{ $settlement->code}}
+                              </a>
+                            </td>
+                            <td style="text-align: right;">
+                              @if($settlement_balance > 0)
+                                <strong>
+                                  - {{ number_format(abs($settlement_balance), 2) }}
+                                </strong>
+                              @else
+                                <strong>
+                                  + {{ number_format(abs($settlement_balance), 2) }}
+                                </strong>
+                              @endif
+                            </td>
+                          </tr>
+                        @endforeach
+                        </table>
+                      @endif
                       </td>
                     </tr>
                   </table>

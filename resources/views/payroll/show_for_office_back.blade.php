@@ -100,38 +100,12 @@
                 </td>
                 <td style="width:5%;text-align:center;">:</td>
                 <td style="width:35%;">
-                  <table id="table-manhour-summary" style="width:100%;">
-                    <tr>
-                      <td rowspan="2" style="width:20%;">Normal</td>
-                      <td colspan="4" style="width:80%;">Overtime</td>
-                    </tr>
-                    <tr>
-                      <td style="width:20%;">I</td>
-                      <td style="width:20%;">II</td>
-                      <td style="width:20%;">III</td>
-                      <td style="width:20%;">IV</td>
-                    </tr>
-                    <tr>
-                      <td>{{ $normal_count }}</td>
-                      <td>{{ $I_count }}</td>
-                      <td>{{ $II_count }} </td>
-                      <td>{{ $III_count }}</td>
-                      <td>{{ $IV_count }}</td>
-                    </tr>
-                    <tr>
-                      <td>{{ $normal_total }}</td>
-                      <td>{{ $I_total }}</td>
-                      <td>{{ $II_total }} </td>
-                      <td>{{ $III_total }}</td>
-                      <td>{{ $IV_total }}</td>
-                    </tr>
-                  </table>
+                  
                 </td>
-                <td rowspan="2" style="width:10%;">
-                  <p>Total Jam</p>
-                  <p style="text-align:right;"><strong>{{ $man_hour_total }}</strong></p>
+                <td rowspan="3" style="width:10%;">
+                  
                 </td>
-                <td rowspan="2" style="width:30%;">
+                <td rowspan="3" style="width:30%;">
                   <p>Basic Salary</p>
                   <p style="text-align:right;">
                     <strong>{{ number_format($basic_salary,2) }}</strong>
@@ -144,9 +118,14 @@
                 </td>
               </tr>
               <tr>
-                <td><strong>Manhour Rate</strong></td>
+                <td><strong>Incentive Weekday</strong></td>
                 <td style="width:5%;text-align:center;">:</td>
-                <td><strong>{{ number_format($payroll->user->man_hour_rate,2) }}</strong></td>
+                <td><strong>{{ number_format($payroll->user->incentive_week_day,2) }}</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Incentive Weekend</strong></td>
+                <td style="width:5%;text-align:center;">:</td>
+                <td><strong>{{ number_format($payroll->user->incentive_week_end,2) }}</strong></td>
               </tr>
               <tr>
                 <td colspan="5"></td>
@@ -197,35 +176,6 @@
                   </td>
                 </tr>
                 @endforeach
-
-                <!--Block Workshop allowance-->
-                <tr>
-                  <td colspan="5">
-                    <table style="width:100%;">
-                      <tr>
-                        <td style="width: 20%;" colspan="5">
-                          <strong>Workshop Allowance</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="width: 20%;">
-                          <p>Rate</p>
-                        </td>
-                        <td style="text-align:center;width: 5%;">:</td>
-                        <td style="width:35%;text-align:right;">
-                          {{ number_format($payroll->user->workshop_allowance_amount,2) }}
-                        </td>
-                        <td style="text-align:right">
-                          <p><strong>Total Hari</strong></p>
-                        </td>
-                        <td style="width:30%;text-align:right;">
-                         
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <!--ENDBlock Workshop allowance-->
               
               @endif
               <!--ENDLoop over the allowances exclude medical-->
@@ -279,7 +229,7 @@
               <tr>
                 <td colspan="5"></td>
               </tr>
-              <!--Loop cashbonds-->
+              <!--Loop over the Expenses-->
               <tr>
                 <td colspan="5">
                   <table style="width:100%;">
@@ -297,8 +247,6 @@
                   </table>
                 </td>
               </tr>
-              <!--ENDLoop cashbonds-->
-
               <!--Loop Settlement-->
               <tr>
                 <td colspan="5">
@@ -306,32 +254,25 @@
                     <tr>
                       <td style="width:20%;"><strong>Settlement</strong></td>
                       <td style="width:5%;text-align:center;">:</td>
-                      <td colspan="3" style="">
-                      @if($settlements->count())
-                        <table style="width:100%;" id="table-settlement-list">
-                        @foreach($settlements as $settlement)
-                          <?php $settlement_balance = $settlement->internal_request->amount - $settlement->amount;?>
-                          <tr>
-                            <td style="width: 20%;">
-                              <a href="{{url('settlement/'.$settlement->id)}}" target="">
-                                {{ $settlement->code}}
-                              </a>
-                            </td>
-                            <td style="text-align: right;">
-                              @if($settlement_balance > 0)
-                                <strong>
-                                  - {{ number_format(abs($settlement_balance), 2) }}
-                                </strong>
-                              @else
-                                <strong>
-                                  + {{ number_format(abs($settlement_balance), 2) }}
-                                </strong>
-                              @endif
-                            </td>
-                          </tr>
-                        @endforeach
-                        </table>
-                      @endif
+                      <td colspan="3" style="text-align:right;">
+                        @if($settlements->count())
+                          @foreach($settlements as $settlement)
+                            <?php $settlement_balance = $settlement->internal_request->amount - $settlement->amount;?>
+                            @if($settlement_balance > 0)
+                            <p>
+                              <strong>
+                                - {{ number_format(abs($settlement_balance), 2) }}
+                              </strong>
+                            </p>
+                            @else
+                            <p>
+                              <strong>
+                                + {{ number_format(abs($settlement_balance), 2) }}
+                              </strong>
+                            </p>
+                            @endif
+                          @endforeach
+                        @endif
                       </td>
                     </tr>
                   </table>
@@ -368,28 +309,20 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
-            <table id="table-ets" class="table">
+            <table class="table" id="table-ets">
               <thead>
                 <tr>
-                  <th rowspan="3" style="text-align:center;border:1px solid;">#</th>
-                  <th rowspan="3" style="text-align:center;border:1px solid;">Date</th>
-                  <th colspan="5" style="text-align:center;border:1px solid;">Manhour</th>
-                  
-                  <th rowspan="3" style="text-align:center;border:1px solid;">Project Number</th>
-                  <th rowspan="3" style="text-align:center;border:1px solid;">Location</th>
-                  
-                </tr>
-                <tr>
-                  <th rowspan="2" style="text-align:center;border:1px solid;">Normal</th>
-                  <th colspan="4" style="text-align:center;border:1px solid;">Overtime</th>
-                  
-                </tr>
-                <tr>
-                  <th style="text-align:center;border:1px solid;">I</th>
-                  <th style="text-align:center;border:1px solid;">II</th>
-                  <th style="text-align:center;border:1px solid;">III</th>
-                  <th style="text-align:center;border:1px solid;">IV</th>
-                </tr>
+                  <td style="width: 5%;">#</td>
+                  <td style="width: 10%;">Date</td>
+                  <td style="width: 10%;">Start Time</td>
+                  <td style="width: 10%;">End Time</td>
+                  <td style="width: 15%;">Description</td>
+                  <td>Location</td>
+                  <td>Project Number</td>
+                  <td>Incentive Week Day</td>
+                  <td>Incentive Week End</td>
+                  <td>Checker Notes</td>
+                </tr>  
               </thead>
               <tbody>
                 @if($ets_lists->count())
@@ -397,23 +330,30 @@
                   @foreach($ets_lists as $ets)
                   <?php $num++;?>
                   <tr class="{{ is_date_weekend($ets->the_date) == TRUE ? 'weekend':'' }}">
-                    <td class="centered-bordered">{{ $num }}</td>
-                    <td class="centered-bordered">
+                    <td class="">{{ $num }}</td>
+                    <td class="">
                       {{ $ets->the_date }}
                       <p>{{ get_day_name($ets->the_date) }}</p>
                     </td>
-                    <td class="centered-bordered">{{ $ets->normal }}</td>
-                    <td class="centered-bordered">{{ $ets->I }}</td>
-                    <td class="centered-bordered">{{ $ets->II }}</td>
-                    <td class="centered-bordered">{{ $ets->III }}</td>
-                    <td class="centered-bordered">{{ $ets->IV }}</td>
-                    <td class="centered-bordered">{{ $ets->project_number }}</td>
-                    <td class="centered-bordered">{{ $ets->location }}</td>
+                    <td class="">{{ $ets->start_time }}</td>
+                    <td class="">{{ $ets->end_time }}</td>
+                    <td class="">{{ $ets->description }}</td>
+                    <td class="">{{ $ets->location }}</td>
+                    <td class="">{{ $ets->project_number }}</td>
+                    <td class="">
+                      <input type="checkbox" class="check_has_incentive_week_day" data-id="{{$ets->id}}" @if($ets->has_incentive_week_day == TRUE) checked @endif disabled/>
+                    </td>
+                    <td class="">
+                      <input type="checkbox" class="check_has_incentive_week_end" data-id="{{$ets->id}}" @if($ets->has_incentive_week_end == TRUE) checked @endif disabled/>
+                    </td>
+                    <td>
+                      {{ $ets->checker_notes }}
+                    </td>
                   </tr>
                   @endforeach
                 @endif
               </tbody>
-            </table>
+           </table>
           </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix"></div>

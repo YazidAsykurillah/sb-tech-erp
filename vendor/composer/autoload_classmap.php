@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'AclTableSeeder' => $baseDir . '/database/seeds/AclTableSeeder.php',
+    'AddAdditionalAllowanceToTableUsers' => $baseDir . '/database/migrations/2019_06_20_081335_add_additional_allowance_to_table_users.php',
     'AddAdditionalColoumnsToTablePurchaseOrderVendor' => $baseDir . '/database/migrations/2017_07_17_122602_add_additional_coloumns_to_table_purchase_order_vendor.php',
     'AddAdditionalColumnToTableCashbonds' => $baseDir . '/database/migrations/2017_08_31_083910_add_additional_column_to_table_cashbonds.php',
     'AddAdditionalColumnsToPurchaseRequestsTable' => $baseDir . '/database/migrations/2017_08_29_075414_add_additional_columns_to_purchase_requests_table.php',

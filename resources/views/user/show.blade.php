@@ -145,7 +145,11 @@
                         <td style="width:5%;">:</td>
                         <td>{{ number_format($user->incentive_week_end, 2) }} </td>
                       </tr>
-                      
+                      <tr>
+                        <td style="width:40%;">Additional Allowance</td>
+                        <td style="width:5%;">:</td>
+                        <td>{{ number_format($user->additional_allowance, 2) }} </td>
+                      </tr>
                       <tr>
                         <td style="width:40%;">BPJS Kesehatan</td>
                         <td style="width:5%;">:</td>

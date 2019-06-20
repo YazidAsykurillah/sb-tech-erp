@@ -366,6 +366,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
 
     public static $classMap = array (
         'AclTableSeeder' => __DIR__ . '/../..' . '/database/seeds/AclTableSeeder.php',
+        'AddAdditionalAllowanceToTableUsers' => __DIR__ . '/../..' . '/database/migrations/2019_06_20_081335_add_additional_allowance_to_table_users.php',
         'AddAdditionalColoumnsToTablePurchaseOrderVendor' => __DIR__ . '/../..' . '/database/migrations/2017_07_17_122602_add_additional_coloumns_to_table_purchase_order_vendor.php',
         'AddAdditionalColumnToTableCashbonds' => __DIR__ . '/../..' . '/database/migrations/2017_08_31_083910_add_additional_column_to_table_cashbonds.php',
         'AddAdditionalColumnsToPurchaseRequestsTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_29_075414_add_additional_columns_to_purchase_requests_table.php',

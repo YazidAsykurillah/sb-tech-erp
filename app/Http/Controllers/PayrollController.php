@@ -233,7 +233,7 @@ class PayrollController extends Controller
 
             ->with('cash_advances', $cash_advances)
             ->with('settlements', $settlements)
-
+            ->with('user', $user)
             ->with('payroll', $payroll);    
         }else{
             return view('payroll.show_for_office')
