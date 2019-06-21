@@ -33,7 +33,7 @@
           <div class="form-group{{ $errors->has('user_id') ? ' has-error' : '' }}">
             {!! Form::label('user_id', 'User', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              @if(\Auth::user()->roles->first()->code == 'SUP' || \Auth::user()->roles->first()->code == 'ADM')
+              @if(\Auth::user()->roles->first()->code == 'SUP' || \Auth::user()->roles->first()->code == 'ADM' || \Auth::user()->roles->first()->code == 'FIN')
                 {{ Form::select('user_id', $user_opts, null, ['class'=>'form-control', 'placeholder'=>'Select User', 'id'=>'user_id']) }}
               @else
                 {!! Form::text('requester_name',\Auth::user()->name,['class'=>'form-control', 'placeholder'=>'Requester NAME', 'id'=>'requester_name', 'disabled'=>true]) !!}
