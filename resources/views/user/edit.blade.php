@@ -231,6 +231,17 @@
               @endif
             </div>
           </div>
+          <div class="form-group{{ $errors->has('competency_allowance') ? ' has-error' : '' }}">
+            {!! Form::label('competency_allowance', 'Tunjangan Kompetensi', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!!Form::text('competency_allowance',null,['class'=>'form-control', 'placeholder'=>'competency_allowance of the member', 'id'=>'competency_allowance'])!!}
+              @if ($errors->has('competency_allowance'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('competency_allowance') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
         </div>
       </div>
       <!-- END Box Salary and Allowance -->
@@ -306,7 +317,7 @@
           <div class="form-group">
               {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              <a href="{{ url('user') }}" class="btn btn-default">
+              <a href="{{ url('user/'.$user->id.'') }}" class="btn btn-default">
                 <i class="fa fa-repeat"></i>&nbsp;Cancel
               </a>&nbsp;
               <button type="submit" class="btn btn-info" id="btn-submit-user">
@@ -325,7 +336,7 @@
   {!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
-    $('#salary, #man_hour_rate, #eat_allowance, #transportation_allowance, #medical_allowance, #workshop_allowance_amount, #incentive_week_day, #incentive_week_end, #additional_allowance, #bpjs_ke, #bpjs_tk').autoNumeric('init',{
+    $('#salary, #man_hour_rate, #eat_allowance, #transportation_allowance, #medical_allowance, #workshop_allowance_amount, #incentive_week_day, #incentive_week_end, #additional_allowance, #competency_allowance, #bpjs_ke, #bpjs_tk').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });

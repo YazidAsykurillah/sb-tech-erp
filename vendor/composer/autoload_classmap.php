@@ -43,6 +43,7 @@ return array(
     'AddColumnTypeToTableInvoiceCustomers' => $baseDir . '/database/migrations/2017_07_31_095925_add_column_type_to_table_invoice_customers.php',
     'AddColumnUserIdToTablePurchaseRequests' => $baseDir . '/database/migrations/2017_07_18_084223_add_column_user_id_to_table_purchase_requests.php',
     'AddColumnVendorIdToTableInternalRequests' => $baseDir . '/database/migrations/2017_07_29_151420_add_column_vendor_id_to_table_internal_requests.php',
+    'AddCompetencyAllowanceToUsersTable' => $baseDir . '/database/migrations/2019_06_21_094845_add_competency_allowance_to_users_table.php',
     'AddFileColumnToTableQuotationCustomers' => $baseDir . '/database/migrations/2017_07_14_073640_add_file_column_to_table_quotation_customers.php',
     'AddHasIncentiveWeekdayAndHasIncentiveWeekEndToTableEts' => $baseDir . '/database/migrations/2019_06_14_031012_add_has_incentive_weekday_and_has_incentive_week_end_to_table_ets.php',
     'AddHasWorkshopAlloacneAndWorkshopAllowanceAmountToUsers' => $baseDir . '/database/migrations/2019_06_17_051225_add_has_workshop_alloacne_and_workshop_allowance_amount_to_users.php',

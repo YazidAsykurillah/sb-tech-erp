@@ -15,7 +15,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password','profile_picture', 'status', 'salary', 'man_hour_rate', 'number_id', 'nik', 'type',
-        'eat_allowance', 'transportation_allowance', 'medical_allowance', 'bpjs_tk', 'bpjs_ke', 'incentive', 'position', 'work_activation_date', 'has_workshop_allowance', 'workshop_allowance_amount', 'additional_allowance',
+        'eat_allowance', 'transportation_allowance', 'medical_allowance', 'bpjs_tk', 'bpjs_ke', 'incentive', 'position', 'work_activation_date', 'has_workshop_allowance', 'workshop_allowance_amount', 'additional_allowance', 'competency_allowance'
     ];
 
     /**

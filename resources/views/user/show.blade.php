@@ -151,6 +151,11 @@
                         <td>{{ number_format($user->additional_allowance, 2) }} </td>
                       </tr>
                       <tr>
+                        <td style="width:40%;">Tunjangan Kompetensi</td>
+                        <td style="width:5%;">:</td>
+                        <td>{{ number_format($user->competency_allowance, 2) }} </td>
+                      </tr>
+                      <tr>
                         <td style="width:40%;">BPJS Kesehatan</td>
                         <td style="width:5%;">:</td>
                         <td>{{ number_format($user->bpjs_ke, 2) }} </td>

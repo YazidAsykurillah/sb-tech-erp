@@ -160,7 +160,7 @@
                   return {
                       text: item.code,
                       id: item.id,
-                      name : item.name
+                      name : item.name,
                   }
               })
           };

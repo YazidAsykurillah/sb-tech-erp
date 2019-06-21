@@ -395,7 +395,8 @@ class Select2Controller extends Controller
     }
     //ENDBLock Select2 project for purchase request
 
-    //BLock Select2 Project
+
+    //BLock Select2 Project Back UP
     public function select2Project(Request $request)
     {
         $estimated_configuration_limit = Configuration::whereName('estimated-cost-margin-limit')->first()->value;
@@ -425,10 +426,13 @@ class Select2Controller extends Controller
             }
         }
 
-
         return response()->json($data);
     }
     //ENDSelect2 Project
+
+    
+
+
 
     //BLock Select2 Project for Invoice Vendor
     public function select2ProjectForInvoiceVendor(Request $request)
