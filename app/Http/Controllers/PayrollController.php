@@ -12,6 +12,7 @@ use Yajra\Datatables\Datatables;
 
 use Event;
 use App\Events\PayrollIsDeleted;
+use App\Events\PayrollIsCreated;
 
 use App\Payroll;
 use App\User;
@@ -99,6 +100,8 @@ class PayrollController extends Controller
         $payroll->user_id = $request->user_id;
         $payroll->period_id = $request->period_id;
         $payroll->save();
+        //Fire the event payroll is created
+        Event::fire(new PayrollIsCreated($payroll));
         return redirect('payroll/'.$payroll->id)
             ->with('successMessage', "Payroll has been created, now you can calculate the salary");
     }

@@ -49,6 +49,8 @@ class DeleteAllowanceParameters
             \DB::table('ets')->where('period_id', '=', $period_id)->where('user_id', '=', $user_id)->delete();
         }
 
+        //Delete workshop allowance records
+        \DB::table('workshop_allowances')->where('payroll_id','=', $payroll->id)->delete();
 
     }
 }

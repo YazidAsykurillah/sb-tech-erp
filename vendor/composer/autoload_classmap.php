@@ -116,6 +116,7 @@ return array(
     'CreateUserTimePeriodTable' => $baseDir . '/database/migrations/2017_05_30_163703_create_user_time_period_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CreateVendorsTable' => $baseDir . '/database/migrations/2017_03_26_101217_create_vendors_table.php',
+    'CreateWorkshopAllowancesTable' => $baseDir . '/database/migrations/2019_06_21_065208_create_workshop_allowances_table.php',
     'CustomerTableSeeder' => $baseDir . '/database/seeds/CustomerTableSeeder.php',
     'DatabaseSeeder' => $baseDir . '/database/seeds/DatabaseSeeder.php',
     'DeliveryOrderTableSeeder' => $baseDir . '/database/seeds/DeliveryOrderTableSeeder.php',

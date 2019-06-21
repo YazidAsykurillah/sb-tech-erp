@@ -25,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\PayrollIsDeleted' => [
             'App\Listeners\DeleteAllowanceParameters',
         ],
+        'App\Events\PayrollIsCreated' => [
+            'App\Listeners\RegisterWokshopAllowance',
+        ],
     ];
 
     /**

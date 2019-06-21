@@ -475,6 +475,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'CreateUserTimePeriodTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_30_163703_create_user_time_period_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'CreateVendorsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_101217_create_vendors_table.php',
+        'CreateWorkshopAllowancesTable' => __DIR__ . '/../..' . '/database/migrations/2019_06_21_065208_create_workshop_allowances_table.php',
         'CustomerTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CustomerTableSeeder.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'DeliveryOrderTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DeliveryOrderTableSeeder.php',

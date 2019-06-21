@@ -28,8 +28,6 @@
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li class=""><a href="{{ URL::to('ets/office') }}">ETS</a></li>
-    <li class="active">Detail</li>
   </ol>
 @endsection
 
