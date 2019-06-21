@@ -213,13 +213,29 @@
                         </td>
                         <td style="text-align:center;width: 5%;">:</td>
                         <td style="width:35%;text-align:right;">
-                          {{ number_format($payroll->user->workshop_allowance_amount,2) }}
+                          @if($payroll->workshop_allowance)
+                            <a href="#" id="workshop_allowance_amount" data-type="text" data-pk="{{ $payroll->workshop_allowance->id }}"  data-title="Workshop allowance amount">
+                              {{ number_format($payroll->workshop_allowance->amount,2) }}
+                            </a>
+                          @endif
                         </td>
                         <td style="text-align:right">
-                          <p><strong>Total Hari</strong></p>
+                          @if($payroll->workshop_allowance)
+                            <a href="#" id="workshop_allowance_multiplier" data-type="text" data-pk="{{ $payroll->workshop_allowance->id }}"  data-title="Workshop allowance multiplier">
+                              {{$payroll->workshop_allowance->multiplier}}
+                            </a>
+                          @endif
                         </td>
                         <td style="width:30%;text-align:right;">
-                         
+                          @if($payroll->workshop_allowance)
+                            <p>
+                              <strong id="total_workshop_allowance_amount">
+                                {{ number_format($payroll->workshop_allowance->total_amount,2) }}
+                              </strong>
+                            </p>
+                          @else
+                            <p><strong id="total_workshop_allowance_amount">0</strong></p>
+                          @endif
                         </td>
                       </tr>
                     </table>
@@ -569,6 +585,49 @@
             vMax:'1000',
         });
     });
+
+
+    //Editable Workshop Allowance Amount
+    $('#workshop_allowance_amount').editable({
+      mode : 'inline',
+      type: 'number',
+      pk: $(this).attr('data-pk'),
+      url: '{!! url('workshop-allowance/update-amount') !!}',
+      title: 'Enter amount',
+      params : {_token : _token},
+      success: function(response, newValue){
+        $('#total_workshop_allowance_amount').text(response.total_workshop_allowance_amount);
+        update_thp_amount();
+        
+      }
+    }).on('shown', function(e, editable) {
+        editable.input.$input.autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+    });
+
+    //Editable Workshop Allowance multiplier
+    $('#workshop_allowance_multiplier').editable({
+      mode : 'inline',
+      type: 'number',
+      pk: $(this).attr('data-pk'),
+      url: '{!! url('workshop-allowance/update-multiplier') !!}',
+      title: 'Enter multiplier',
+      params : {_token : _token},
+      success: function(response, newValue){
+        $('#total_workshop_allowance_amount').text(response.total_workshop_allowance_amount);
+        update_thp_amount();
+        
+      }
+    }).on('shown', function(e, editable) {
+        editable.input.$input.autoNumeric('init',{
+            aSep:',',
+            aDec:'.'
+        });
+    });
+
+
 
     update_thp_amount();
 

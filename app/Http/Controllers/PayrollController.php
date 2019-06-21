@@ -527,7 +527,13 @@ class PayrollController extends Controller
             }
         }
 
-        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance - $total_amount_from_cashbond_installments;
+        //Collect workshop allowance amount
+        $workshop_allowance_amount = 0;
+        if($payroll->workshop_allowance){
+            $workshop_allowance_amount = $payroll->workshop_allowance->total_amount;
+        }
+        
+        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments;
         //update thp amount of this payroll
         if($settlement_balance < 0){
             $thp_amount = $thp_amount+(abs($settlement_balance));

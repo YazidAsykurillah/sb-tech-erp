@@ -20,7 +20,7 @@ class Payroll extends Model
     	return $this->belongsTo('App\User');
     }
 
-    public function workshopAllowance(){
+    public function workshop_allowance(){
         return $this->hasOne('App\WorkshopAllowance');
     }
 
