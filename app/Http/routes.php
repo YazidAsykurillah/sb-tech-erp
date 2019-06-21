@@ -415,6 +415,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('exporter/cash_transaction', 'ExporterController@exportCashTransaction');
 
 	//ETS
+	Route::post('ets/importMyEts','EtsController@importMyEts');
+	Route::get('ets/myEtsDataTables','EtsController@myEtsDataTables');
+	Route::get('ets/my-ets','EtsController@myEts');
 	Route::post('ets/update_has_incentive_weekday', 'EtsController@updateHasIncentiveWeekDay');
 	Route::post('ets/update_has_incentive_weekend', 'EtsController@updateHasIncentiveWeekEnd');
 	Route::post('ets/importFromPayroll', 'EtsController@importFromPayroll');
@@ -466,6 +469,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('cashbond-installment/changeSchedule', 'CashbondInstallmentController@changeSchedule');
 	Route::resource('cashbond-installment', 'CashbondInstallmentController');
 	
+
 	//Report
 	//PPN
 	Route::get('report/data-ppn', 'ReportController@getDataPpn');

@@ -684,6 +684,12 @@
         </ul>
       </li>
       @endif
+
+      <li {{{ (Request::is('ets/my-ets') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('ets/my-ets') }}">
+          <i class="fa fa-book"></i> <span>My ETS</span>
+        </a>
+      </li>
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->
