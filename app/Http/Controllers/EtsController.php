@@ -494,46 +494,90 @@ class EtsController extends Controller
 
     public function importMyEts(Request $request)
     {
-        $user_id = \Auth::user()->id;
+        $user = \Auth::user();
         $imported_data = 0;
-        if($request->hasFile('file') && $request->period_id!=""){
-            config(['excel.import.startRow' => 2 ]);
-            $path = $request->file('file')->getRealPath();
-            $data = Excel::load($path, function($reader) {
-                $reader->noHeading = true;
-            })->get();
-            /*echo '<pre>';
-            print_r($data);
-            echo '</pre>';
-            exit();*/
-            if(!empty($data) && $data->count()){
-                //first delete all the ETS which is related to user id and period id
-                Ets::where('user_id', '=', $user_id)
-                    ->where('period_id', '=', $request->period_id)
-                    ->delete();
-                foreach ($data as $key => $value) {
-                    $ets = new Ets;
-                    $ets->user_id = $user_id;
-                    $ets->period_id = $request->period_id;
-                    $ets->the_date =  Carbon::parse($value[0])->format('Y-m-d');
-                    $ets->start_time =  $value[1];
-                    $ets->end_time =  $value[2];
-                    $ets->description =  $value[3];
-                    $ets->location = str_slug(strtolower($value[4]));
-                    $ets->project_number = $value[5];
-                    $ets->type = 'office';
-                    $ets->save();
-                    $imported_data +=1;
-                    
+        if($user->type =='office'){ //Import ETS for office member
+            if($request->hasFile('file') && $request->period_id!=""){
+                config(['excel.import.startRow' => 2 ]);
+                $path = $request->file('file')->getRealPath();
+                $data = Excel::load($path, function($reader) {
+                    $reader->noHeading = true;
+                })->get();
+                /*echo '<pre>';
+                print_r($data);
+                echo '</pre>';
+                exit();*/
+                if(!empty($data) && $data->count()){
+                    //first delete all the ETS which is related to user id and period id
+                    Ets::where('user_id', '=', $user->id)
+                        ->where('period_id', '=', $request->period_id)
+                        ->delete();
+                    foreach ($data as $key => $value) {
+                        $ets = new Ets;
+                        $ets->user_id = $user->id;
+                        $ets->period_id = $request->period_id;
+                        $ets->the_date =  Carbon::parse($value[0])->format('Y-m-d');
+                        $ets->start_time =  $value[1];
+                        $ets->end_time =  $value[2];
+                        $ets->description =  $value[3];
+                        $ets->location = str_slug(strtolower($value[4]));
+                        $ets->project_number = $value[5];
+                        $ets->type = 'office';
+                        $ets->save();
+                        $imported_data +=1;
+                        
+                    }
                 }
+                return back()->with('successMessage', "$imported_data has been imported");
+                
             }
-            return back()->with('successMessage', "$imported_data has been imported");
-            
+            else{
+                return redirect()->back()
+                ->withInput()
+                ->with('errorMessage', "Please upload the file");
+            }
         }
-        else{
-            return redirect()->back()
-            ->withInput()
-            ->with('errorMessage', "Please upload the file");
+        else{   //the user type is outsource
+            if($request->hasFile('file') && $request->period_id!=""){
+                config(['excel.import.startRow' => 4 ]);
+                $path = $request->file('file')->getRealPath();
+                $data = Excel::load($path, function($reader) {
+                    $reader->noHeading = true;
+                })->get();
+                if(!empty($data) && $data->count()){
+                    //first delete all the ETS which is related to user id and period id
+                    Ets::where('user_id', '=', $user->id)
+                        ->where('period_id', '=', $request->period_id)
+                        ->delete();
+                    foreach ($data as $key => $value) {
+                        $ets = new Ets;
+                        $ets->user_id = $user->id;
+                        $ets->period_id = $request->period_id;
+                        $ets->the_date =  Carbon::parse($value[0])->format('Y-m-d');
+                        $ets->normal = $value[1];
+                        $ets->I = $value[2];
+                        $ets->II = $value[3];
+                        $ets->III = $value[4];
+                        $ets->IV = $value[5];
+                        $ets->description = $value[6];
+                        $ets->location = str_slug(strtolower($value[7]));
+                        $ets->project_number = $value[8];
+                        $ets->type = 'site';
+                        $ets->save();
+                        $imported_data +=1;
+                        
+                    }
+                }
+                return back()->with('successMessage', "$imported_data has been imported");
+                
+            }
+            else{
+                return redirect()->back()
+                ->withInput()
+                ->with('errorMessage', "Please upload the file");
+            }
         }
+        
+        
     }
 }
