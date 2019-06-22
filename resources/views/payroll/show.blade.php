@@ -445,7 +445,6 @@
                   </table>
                 </td>
               </tr>
-
               <!--ENDLoop Extra Payroll Payment-->
               <tr>
                 <td colspan="3" style="text-align:right;">Take Home Pay</td>
