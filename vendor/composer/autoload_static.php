@@ -439,6 +439,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'CreateCashbondsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_16_094746_create_cashbonds_table.php',
         'CreateCashesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_16_125614_create_cashes_table.php',
         'CreateCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_05_073108_create_categories_table.php',
+        'CreateCompetencyAllowancesTable' => __DIR__ . '/../..' . '/database/migrations/2019_06_21_144155_create_competency_allowances_table.php',
         'CreateConfigurationsTable' => __DIR__ . '/../..' . '/database/migrations/2018_02_19_041008_create_configurations_table.php',
         'CreateCustomersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_082742_create_customers_table.php',
         'CreateDeliveryOrdersTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_26_122619_create_delivery_orders_table.php',

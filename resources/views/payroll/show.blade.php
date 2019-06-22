@@ -136,6 +136,10 @@
                   <p style="text-align:right;">
                     <strong>{{ number_format($basic_salary,2) }}</strong>
                   </p>
+                  <p>Tunjangan Kompetensi</p>
+                  <p style="text-align:right;">
+                    <strong>{{ number_format($competency_allowance->amount,2) }}</strong>
+                  </p>
                   <p>(Total Jam x Rate)</p>
                   <p style="text-align:right;">
                     <strong>{{ number_format($total_man_hour_salary,2) }}</strong>

@@ -24,4 +24,9 @@ class Payroll extends Model
         return $this->hasOne('App\WorkshopAllowance');
     }
 
+    public function competency_allowance()
+    {
+        return $this->hasOne('App\CompetencyAllowance');
+    }
+
 }

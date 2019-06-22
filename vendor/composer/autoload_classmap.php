@@ -80,6 +80,7 @@ return array(
     'CreateCashbondsTable' => $baseDir . '/database/migrations/2017_05_16_094746_create_cashbonds_table.php',
     'CreateCashesTable' => $baseDir . '/database/migrations/2017_05_16_125614_create_cashes_table.php',
     'CreateCategoriesTable' => $baseDir . '/database/migrations/2017_05_05_073108_create_categories_table.php',
+    'CreateCompetencyAllowancesTable' => $baseDir . '/database/migrations/2019_06_21_144155_create_competency_allowances_table.php',
     'CreateConfigurationsTable' => $baseDir . '/database/migrations/2018_02_19_041008_create_configurations_table.php',
     'CreateCustomersTable' => $baseDir . '/database/migrations/2017_03_26_082742_create_customers_table.php',
     'CreateDeliveryOrdersTable' => $baseDir . '/database/migrations/2019_04_26_122619_create_delivery_orders_table.php',

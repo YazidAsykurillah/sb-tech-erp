@@ -51,6 +51,8 @@ class DeleteAllowanceParameters
 
         //Delete workshop allowance records
         \DB::table('workshop_allowances')->where('payroll_id','=', $payroll->id)->delete();
+        //Delete competency allowance records
+        \DB::table('competency_allowances')->where('payroll_id','=', $payroll->id)->delete();
 
     }
 }

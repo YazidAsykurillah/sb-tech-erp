@@ -21,6 +21,7 @@ use App\Period;
 use App\Allowance;
 use App\AllowanceItem;
 use App\MedicalAllowance;
+use App\CompetencyAllowance;
 use App\Cashbond;
 use App\CashbondInstallment;
 use App\Settlement;
@@ -204,6 +205,17 @@ class PayrollController extends Controller
                 $query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
             })->get();
 
+
+        //get or create competency allowance
+        if($payroll->competency_allowance){
+            $competency_allowance = $payroll->competency_allowance;
+        }else{
+            $competency_allowance = new CompetencyAllowance;
+            $competency_allowance->payroll_id = $id;
+            $competency_allowance->amount = $user->competency_allowance;
+            $competency_allowance->save();
+        }
+
         //if user type is site show payroll page for site
         //otherwise show payroll page for office
         if($user->type == 'outsource'){
@@ -237,6 +249,7 @@ class PayrollController extends Controller
             ->with('cash_advances', $cash_advances)
             ->with('settlements', $settlements)
             ->with('user', $user)
+            ->with('competency_allowance', $competency_allowance)
             ->with('payroll', $payroll);    
         }else{
             return view('payroll.show_for_office')
@@ -269,7 +282,7 @@ class PayrollController extends Controller
 
             ->with('cash_advances', $cash_advances)
             ->with('settlements', $settlements)
-
+            ->with('competency_allowance', $competency_allowance)
             ->with('payroll', $payroll);
         }
 
@@ -533,7 +546,10 @@ class PayrollController extends Controller
             $workshop_allowance_amount = $payroll->workshop_allowance->total_amount;
         }
         
-        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments;
+        //Collect Competency Allowance
+        $competency_allowance = $payroll->competency_allowance ? $payroll->competency_allowance->amount :0;
+        
+        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance;
         //update thp amount of this payroll
         if($settlement_balance < 0){
             $thp_amount = $thp_amount+(abs($settlement_balance));
