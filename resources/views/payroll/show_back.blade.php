@@ -31,11 +31,7 @@
     }
 
     table#extra_payment_table_adder td{
-      vertical-align: center;
-      border:none;
-    }
-    table#extra_payment_table_substractor td{
-      vertical-align: center;
+      vertical-align: top;
       border:none;
     }
   </style>
@@ -376,67 +372,20 @@
                 <td colspan="5">
                   <table style="width:100%;">
                     <tr>
-                      <td style="width:20%;">
-                        <strong>Penambahan</strong>
-                        <div class="pull-right">
-                          <button class="btn btn-xs btn-default btn-create-extra-payroll-payment" data-type="adder">
-                            <i class="fa fa-plus-circle"></i>
-                          </button>
-                        </div>
-                      </td>
+                      <td style="width:20%;"><strong>Penambahan</strong></td>
                       <td style="width:5%;text-align:center;">:</td>
                       <td colspan="3" style="">
                         <table class="extra_payment_table" id="extra_payment_table_adder" style="width: 100%;">
                           <tbody>
-                            @if($extra_payroll_payments_adder->count())
-                              @foreach($extra_payroll_payments_adder as $epp_adder)
-                              <tr id="row_{{$epp_adder->id}}">
-                                <td style="width: 5%;">
-                                  <a href="javascript::void()" class="btn btn-xs btn-delete-extra-payment" data-id="{{$epp_adder->id}}">
-                                    <i class="fa fa-trash"></i>
-                                  </a>
-                                </td>
-                                <td>{{ $epp_adder->description }}</td>
-                                <td style="text-align: right;">
-                                  <strong>{{ number_format($epp_adder->amount,2) }}</strong>
-                                </td>
-                              </tr>
-                              @endforeach
-                            @endif
-                          </tbody>
-                          
-                        </table>
-                      </td>
-                    </tr>
-                    <!--Substractor Block-->
-                    <tr>
-                      <td style="width:20%;">
-                        <strong>Pengurangan</strong>
-                        <div class="pull-right">
-                          <button class="btn btn-xs btn-default btn-create-extra-payroll-payment" data-type="substractor">
-                            <i class="fa fa-plus-circle"></i>
-                          </button>
-                        </div>
-                      </td>
-                      <td style="width:5%;text-align:center;">:</td>
-                      <td colspan="3" style="">
-                        <table class="extra_payment_table" id="extra_payment_table_substractor" style="width: 100%;">
-                          <tbody>
-                            @if($extra_payroll_payments_substractor->count())
-                              @foreach($extra_payroll_payments_substractor as $epp_substractor)
-                              <tr id="row_{{$epp_substractor->id}}">
-                                <td style="width: 5%;">
-                                  <a href="javascript::void()" class="btn btn-xs btn-delete-extra-payment" data-id="{{$epp_substractor->id}}">
-                                    <i class="fa fa-trash"></i>
-                                  </a>
-                                </td>
-                                <td>{{ $epp_substractor->description }}</td>
-                                <td style="text-align: right;">
-                                  <strong>{{ number_format($epp_substractor->amount,2) }}</strong>
-                                </td>
-                              </tr>
-                              @endforeach
-                            @endif
+                            <tr>
+                              <td style="width: 5%;">
+                                <a href="#" class="btn btn-xs">
+                                  <i class="fa fa-trash"></i>
+                                </a>
+                              </td>
+                              <td>G</td>
+                              <td style="text-align: right;">G</td>
+                            </tr>  
                           </tbody>
                           
                         </table>
@@ -445,7 +394,6 @@
                   </table>
                 </td>
               </tr>
-
               <!--ENDLoop Extra Payroll Payment-->
               <tr>
                 <td colspan="3" style="text-align:right;">Take Home Pay</td>
@@ -573,54 +521,6 @@
     </div>
   </div>
   <!--ENDModal Import ETS-->
-
-  <!--Modal Create Extra Payroll Payment-->
-  <div class="modal fade" id="modal-create-extra-payroll-payment" tabindex="-1" role="dialog" aria-labelledby="modal-create-extra-payroll-paymentLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-      {!! Form::open(['url'=>'extra-payroll-payment/save', 'class'=>'form form-horizontal', 'method'=>'post', 'id'=>'form-create-extra-payroll-payment', 'files'=>true]) !!}
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-create-extra-payroll-paymentLabel">Create Extra Payroll Payment</h4>
-        </div>
-        <div class="modal-body">
-          
-          <div class="form-group{{ $errors->has('epp_description') ? ' has-error' : '' }}">
-            {!! Form::label('epp_description', 'Description', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {!! Form::text('epp_description',null,['class'=>'form-control', 'placeholder'=>'Description', 'id'=>'epp_description']) !!}
-              @if ($errors->has('epp_description'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('epp_description') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
-
-          <div class="form-group{{ $errors->has('epp_amount') ? ' has-error' : '' }}">
-            {!! Form::label('epp_amount', 'Amount', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {!! Form::text('epp_amount',null,['class'=>'form-control', 'placeholder'=>'Amount', 'id'=>'epp_amount']) !!}
-              @if ($errors->has('epp_amount'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('epp_amount') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
-          
-        </div>
-        <div class="modal-footer">
-          <input type="hidden" id="payroll_id" name="payroll_id" value="{{ $payroll->id }}" />
-          <input type="hidden" id="epp_type" name="epp_type" value="" />
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btn-submit-extra-payroll-payment">Submit</button>
-        </div>
-      {!! Form::close() !!}
-      </div>
-    </div>
-  </div>
-  <!--ENDModal Create Extra Payroll Payment-->
  
 @endsection
 
@@ -767,77 +667,6 @@
         });
     });
 
-
-    //Create Extra Payroll Payment Handler
-    $('#epp_amount').autoNumeric('init',{
-      aSep:',',
-      aDec:'.'
-    });
-    $('.btn-create-extra-payroll-payment').on('click', function(event){
-      event.preventDefault();
-      let type = $(this).attr('data-type');
-      
-      $('#epp_type').val(type);
-      $('#modal-create-extra-payroll-payment').modal('show');
-    });
-
-    //Form create extra payroll payment submission handling
-    $('#form-create-extra-payroll-payment').on('submit',function(event){
-      event.preventDefault();
-      $.ajax({
-        type: 'post',
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        dataType: 'json',
-        success: function(data){
-          let new_row ='<tr>';
-              new_row+= '<td style="width: 5%;">';
-              new_row+=   '<a href="#" class="btn btn-xs btn-delete-extra-payment" data-id="'+data.id+'">';
-              new_row+=     '<i class="fa fa-trash"></i>';
-              new_row+=   '</a>';
-              new_row+= '</td>';
-              new_row+= '<td>';
-              new_row+=   data.description;
-              new_row+= '</td>';
-              new_row+= '<td style="text-align:right;">';
-              new_row+=   '<strong>'+data.amount+'</strong>';
-              new_row+= '</td>';
-              new_row+= '</tr>';
-          console.log(data);
-          if(data.type == 'adder'){
-            $('#modal-create-extra-payroll-payment').modal('hide');
-            $('#extra_payment_table_adder').find('tbody').append(new_row);
-            update_thp_amount();
-          }else{
-            $('#modal-create-extra-payroll-payment').modal('hide');
-            $('#extra_payment_table_substractor').find('tbody').append(new_row);
-            update_thp_amount();
-          }
-        },
-        error: function(data){
-          var errors = data.responseJSON;
-          console.log(errors);
-        }
-      });
-    });
-
-
-    //Delete extra payroll payment handling
-    $('.btn-delete-extra-payment').on('click', function(event){
-      let id = $(this).attr('data-id');
-      event.preventDefault();
-      console.log("id to delete: "+id);
-      $.ajax({
-        type: 'post',
-        url: '/extra-payroll-payment/delete',
-        data: 'id='+id+'&_token='+_token,
-        success:function(response){
-          console.log(response);
-          $('#row_'+id).remove();
-          update_thp_amount();
-        }
-      });
-    });
 
 
     update_thp_amount();

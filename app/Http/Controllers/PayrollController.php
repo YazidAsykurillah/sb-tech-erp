@@ -26,6 +26,7 @@ use App\Cashbond;
 use App\CashbondInstallment;
 use App\Settlement;
 use App\InternalRequest;
+use App\ExtraPayrollPayment;
 
 class PayrollController extends Controller
 {
@@ -216,6 +217,16 @@ class PayrollController extends Controller
             $competency_allowance->save();
         }
 
+        //Get Adder extra payroll payment
+        $extra_payroll_payments_adder = ExtraPayrollPayment::where('payroll_id','=',$id)
+                                        ->where('type','=', 'adder')
+                                        ->get();
+        //Get Substractor extra payroll payment
+        $extra_payroll_payments_substractor = ExtraPayrollPayment::where('payroll_id','=',$id)
+                                        ->where('type','=', 'substractor')
+                                        ->get();
+
+
         //if user type is site show payroll page for site
         //otherwise show payroll page for office
         if($user->type == 'outsource'){
@@ -250,6 +261,8 @@ class PayrollController extends Controller
             ->with('settlements', $settlements)
             ->with('user', $user)
             ->with('competency_allowance', $competency_allowance)
+            ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
+            ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
             ->with('payroll', $payroll);    
         }else{
             return view('payroll.show_for_office')
@@ -284,6 +297,8 @@ class PayrollController extends Controller
             ->with('settlements', $settlements)
             ->with('user', $user)
             ->with('competency_allowance', $competency_allowance)
+            ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
+            ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
             ->with('payroll', $payroll);
         }
 
@@ -550,7 +565,19 @@ class PayrollController extends Controller
         //Collect Competency Allowance
         $competency_allowance = $payroll->competency_allowance ? $payroll->competency_allowance->amount :0;
 
-        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance;
+        //Collect extra payroll payment adder amount
+        $epp_adder = ExtraPayrollPayment::where('payroll_id','=',$payroll->id)
+                            ->where('type','=','adder')
+                            ->sum('amount');
+        //Collect extra payroll payment substractor amount
+        $epp_substractor = ExtraPayrollPayment::where('payroll_id','=',$payroll->id)
+                            ->where('type','=','substractor')
+                            ->sum('amount');
+        //build extra payroll payment substractor
+        $epp_balance = $epp_adder - $epp_substractor;
+
+
+        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance;
         //update thp amount of this payroll
         if($settlement_balance < 0){
             $thp_amount = $thp_amount+(abs($settlement_balance));

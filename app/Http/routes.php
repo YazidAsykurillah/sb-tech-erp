@@ -472,6 +472,11 @@ Route::group(['middleware' => 'auth'], function () {
 	//Workshop Allowance
 	Route::post('workshop-allowance/update-amount', 'WorkshopAllowanceController@updateAmount');
 	Route::post('workshop-allowance/update-multiplier', 'WorkshopAllowanceController@updateMultiplier');
+
+	//Extra Payroll Payment
+	Route::post('extra-payroll-payment/delete', 'ExtraPayrollPaymentController@delete');
+	Route::post('extra-payroll-payment/save', 'ExtraPayrollPaymentController@save');
+	Route::resource('extra-payroll-payment', 'ExtraPayrollPaymentController');
 	//Report
 	//PPN
 	Route::get('report/data-ppn', 'ReportController@getDataPpn');

@@ -29,4 +29,8 @@ class Payroll extends Model
         return $this->hasOne('App\CompetencyAllowance');
     }
 
+    public function extra_payroll_payment()
+    {
+        return $this->hasMany('App\ExtraPayrollPayment');
+    }
 }

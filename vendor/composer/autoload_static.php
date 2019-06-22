@@ -444,6 +444,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'CreateCustomersTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_26_082742_create_customers_table.php',
         'CreateDeliveryOrdersTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_26_122619_create_delivery_orders_table.php',
         'CreateEtsTable' => __DIR__ . '/../..' . '/database/migrations/2017_10_26_082638_create_ets_table.php',
+        'CreateExtraPayrollPaymentsTable' => __DIR__ . '/../..' . '/database/migrations/2019_06_22_204614_create_extra_payroll_payments_table.php',
         'CreateInternalRequestsTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_27_050032_create_internal_requests_table.php',
         'CreateInvoiceCustomerTaxesTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_29_083621_create_invoice_customer_taxes_table.php',
         'CreateInvoiceCustomersTable' => __DIR__ . '/../..' . '/database/migrations/2017_04_22_172048_create_invoice_customers_table.php',
