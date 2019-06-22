@@ -282,6 +282,7 @@ class PayrollController extends Controller
 
             ->with('cash_advances', $cash_advances)
             ->with('settlements', $settlements)
+            ->with('user', $user)
             ->with('competency_allowance', $competency_allowance)
             ->with('payroll', $payroll);
         }
@@ -548,7 +549,7 @@ class PayrollController extends Controller
         
         //Collect Competency Allowance
         $competency_allowance = $payroll->competency_allowance ? $payroll->competency_allowance->amount :0;
-        
+
         $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance;
         //update thp amount of this payroll
         if($settlement_balance < 0){
