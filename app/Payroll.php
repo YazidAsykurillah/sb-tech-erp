@@ -33,4 +33,13 @@ class Payroll extends Model
     {
         return $this->hasMany('App\ExtraPayrollPayment');
     }
+
+    public function incentive_weekday()
+    {
+        return $this->hasOne('App\IncentiveWeekDay');
+    }
+    public function incentive_weekend()
+    {
+        return $this->hasOne('App\IncentiveWeekEnd');
+    }
 }

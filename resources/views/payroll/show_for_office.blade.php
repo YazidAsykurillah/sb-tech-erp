@@ -110,10 +110,10 @@
                 <td style="width:35%;">
                   
                 </td>
-                <td rowspan="3" style="width:10%;">
+                <td rowspan="1" style="width:10%;">
                   
                 </td>
-                <td rowspan="3" style="width:30%;">
+                <td rowspan="1" style="width:30%;">
                   <p>Basic Salary</p>
                   <p style="text-align:right;">
                     <strong>{{ number_format($basic_salary,2) }}</strong>
@@ -129,22 +129,60 @@
                   
                 </td>
               </tr>
+              <!--Group Incentives-->
               <tr>
-                <td><strong>Incentive Weekday</strong></td>
-                <td style="width:5%;text-align:center;">:</td>
-                <td><strong>{{ number_format($payroll->user->incentive_week_day,2) }}</strong></td>
+                <td colspan="5"><strong>Incentives</strong></td>
               </tr>
               <tr>
-                <td><strong>Incentive Weekend</strong></td>
-                <td style="width:5%;text-align:center;">:</td>
-                <td><strong>{{ number_format($payroll->user->incentive_week_end,2) }}</strong></td>
-              </tr>
-              <tr>
-                <td colspan="5"></td>
-              </tr>
-              <tr>
-                <td colspan="5"></td>
-              </tr>
+                  <td colspan="5">
+                    <table style="width:100%;">
+                      <tr>
+                        <td style="text-align:left;width:20%;">
+                            <strong>Week Day</strong>
+                        </td>
+                        <td style="width:5%;text-align:center;">:</td>
+                        <td style="width:35%;text-align:right;">
+
+                         <strong>{{number_format($incentive_weekday->amount,2)}}</strong>
+                          
+                        </td>
+                        <td style="text-align:right">
+                          <strong>{{$incentive_weekday->multiplier}}</strong>
+                        </td>
+                        <td style="width:30%;text-align:right;">
+                          <strong>
+                            <strong>{{number_format($incentive_weekday->total_amount,2)}}</strong>
+                          </strong>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5">
+                    <table style="width:100%;">
+                      <tr>
+                        <td style="text-align:left;width:20%;">
+                            <strong>Week End</strong>
+                        </td>
+                        <td style="width:5%;text-align:center;">:</td>
+                        <td style="width:35%;text-align:right;">
+                          
+                         <strong>{{number_format($incentive_weekend->amount,2)}}</strong>
+                          
+                        </td>
+                        <td style="text-align:right">
+                          <strong>{{$incentive_weekend->multiplier}}</strong>
+                        </td>
+                        <td style="width:30%;text-align:right;">
+                          <strong>
+                            <strong>{{number_format($incentive_weekend->total_amount,2)}}</strong>
+                          </strong>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
 
               <!--Group Allowance-->
               <tr>

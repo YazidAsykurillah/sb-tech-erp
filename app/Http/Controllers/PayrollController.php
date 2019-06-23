@@ -27,6 +27,8 @@ use App\CashbondInstallment;
 use App\Settlement;
 use App\InternalRequest;
 use App\ExtraPayrollPayment;
+use App\IncentiveWeekDay;
+use App\IncentiveWeekEnd;
 
 class PayrollController extends Controller
 {
@@ -144,15 +146,49 @@ class PayrollController extends Controller
         $IV_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('IV');
         $IV_total = $IV_count*4;
 
-        //incentives
-        $incentive_week_day_count = Ets::where('user_id','=', $user->id)
+        //incentives builder
+        //WeekDay
+        $weekday_ets = Ets::where('user_id','=', $user->id)
                                     ->where('period_id', $period->id)
                                     ->where('has_incentive_week_day','=',TRUE)
-                                    ->get();
-        $incentive_week_end_count = Ets::where('user_id','=', $user->id)
+                                    ->get()->count();
+        $total_amount_incentive_weekday = $weekday_ets*$user->incentive_week_day;
+        if($payroll->incentive_weekday){
+            $incentive_weekday = IncentiveWeekDay::where('payroll_id','=',$id)->update(
+                ['multiplier'=>$weekday_ets,'total_amount'=>$total_amount_incentive_weekday]
+            );
+            $incentive_weekday = $payroll->incentive_weekday;
+            
+        }else{
+            $incentive_weekday = new IncentiveWeekDay;
+            $incentive_weekday->payroll_id = $id;
+            $incentive_weekday->amount = $user->incentive_week_day;
+            $incentive_weekday->multiplier = $weekday_ets;
+            $incentive_weekday->total_amount = $total_amount_incentive_weekday;
+            $incentive_weekday->save();
+            
+        }
+        //WeekEnd
+        $weekend_ets = Ets::where('user_id','=', $user->id)
                                     ->where('period_id', $period->id)
                                     ->where('has_incentive_week_end','=',TRUE)
-                                    ->get();
+                                    ->get()->count();
+        $total_amount_incentive_weekend = $weekend_ets*$user->incentive_week_end;
+        if($payroll->incentive_weekend){
+            $incentive_weekend = IncentiveWeekEnd::where('payroll_id','=',$id)->update(
+                ['multiplier'=>$weekend_ets,'total_amount'=>$total_amount_incentive_weekend]
+            );
+            $incentive_weekend = $payroll->incentive_weekend;
+            
+        }else{
+            $incentive_weekend = new IncentiveWeekEnd;
+            $incentive_weekend->payroll_id = $id;
+            $incentive_weekend->amount = $user->incentive_week_end;
+            $incentive_weekend->multiplier = $weekend_ets;
+            $incentive_weekend->total_amount = $total_amount_incentive_weekend;
+            $incentive_weekend->save();
+            
+        }
 
         if($user->type =='office'){
             $man_hour_total = $I_total+$II_total+$III_total+$IV_total;
@@ -269,8 +305,6 @@ class PayrollController extends Controller
             ->with('ets_lists', $ets_lists)
             ->with('normal_count', $normal_count)
             ->with('normal_total', $normal_total)
-            ->with('incentive_week_day_count', $incentive_week_day_count->count())
-            ->with('incentive_week_end_count', $incentive_week_end_count->count())
             ->with('I_count', $I_count)
             ->with('I_total', $I_total)
 
@@ -299,6 +333,8 @@ class PayrollController extends Controller
             ->with('competency_allowance', $competency_allowance)
             ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
             ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
+            ->with('incentive_weekday', $incentive_weekday)
+            ->with('incentive_weekend', $incentive_weekend)
             ->with('payroll', $payroll);
         }
 
@@ -576,8 +612,13 @@ class PayrollController extends Controller
         //build extra payroll payment substractor
         $epp_balance = $epp_adder - $epp_substractor;
 
+        //Collect incentive weekday
+        $incentive_weekday_amount = $payroll->incentive_weekday ? $payroll->incentive_weekday->total_amount :0;
+        //Collect incentive weekend
+        $incentive_weekend_amount = $payroll->incentive_weekend ? $payroll->incentive_weekend->total_amount :0;
+        $total_from_incentive =$incentive_weekday_amount+$incentive_weekend_amount;
 
-        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance;
+        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance+$total_from_incentive;
         //update thp amount of this payroll
         if($settlement_balance < 0){
             $thp_amount = $thp_amount+(abs($settlement_balance));

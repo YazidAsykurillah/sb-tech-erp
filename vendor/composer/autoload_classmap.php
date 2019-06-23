@@ -86,6 +86,8 @@ return array(
     'CreateDeliveryOrdersTable' => $baseDir . '/database/migrations/2019_04_26_122619_create_delivery_orders_table.php',
     'CreateEtsTable' => $baseDir . '/database/migrations/2017_10_26_082638_create_ets_table.php',
     'CreateExtraPayrollPaymentsTable' => $baseDir . '/database/migrations/2019_06_22_204614_create_extra_payroll_payments_table.php',
+    'CreateIncentiveWeekDaysTable' => $baseDir . '/database/migrations/2019_06_23_065727_create_incentive_week_days_table.php',
+    'CreateIncentiveWeekEndsTable' => $baseDir . '/database/migrations/2019_06_23_073403_create_incentive_week_ends_table.php',
     'CreateInternalRequestsTable' => $baseDir . '/database/migrations/2017_04_27_050032_create_internal_requests_table.php',
     'CreateInvoiceCustomerTaxesTable' => $baseDir . '/database/migrations/2017_07_29_083621_create_invoice_customer_taxes_table.php',
     'CreateInvoiceCustomersTable' => $baseDir . '/database/migrations/2017_04_22_172048_create_invoice_customers_table.php',
