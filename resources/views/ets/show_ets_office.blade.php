@@ -6,6 +6,9 @@
 
 @section('additional_styles')
   <style type="text/css">
+    table#table-ets{
+      width: 100%;
+    }
     td.centered-bordered{
       text-align: center;
     }
@@ -58,19 +61,19 @@
            </table>
            <p></p>
            <p></p>
-           <table class="table" id="table-ets">
+           <table id="table-ets">
               <thead>
                 <tr>
-                  <td style="width: 5%;">#</td>
-                  <td style="width: 10%;">Date</td>
-                  <td style="width: 10%;">Start Time</td>
-                  <td style="width: 10%;">End Time</td>
-                  <td style="width: 15%;">Description</td>
-                  <td>Location</td>
-                  <td>Project Number</td>
-                  <td>Incentive Week Day</td>
-                  <td>Incentive Week End</td>
-                  <td>Checker Notes</td>
+                  <th style="width: 5%;">#</th>
+                  <th style="width: 10%;">Date</th>
+                  <th style="width: 10%;">Start Time</th>
+                  <th style="width: 10%;">End Time</th>
+                  <th style="width: 15%;">Description</th>
+                  <th>Location</th>
+                  <th>Project Number</th>
+                  <th>Incentive Week Day</th>
+                  <th>Incentive Week End</th>
+                  <th>Checker Notes</th>
                 </tr>  
               </thead>
               <tbody>

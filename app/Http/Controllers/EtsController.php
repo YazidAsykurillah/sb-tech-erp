@@ -576,8 +576,16 @@ class EtsController extends Controller
                 ->withInput()
                 ->with('errorMessage', "Please upload the file");
             }
-        }
-        
-        
+        }   
+    }
+
+
+    public function liveEdit(Request $request)
+    {
+        $property = $request->name;
+        $id = $request->pk;
+        $value = $request->value;
+        $ets = Ets::where('id','=',$id)->update(["$property"=>$value]);
+
     }
 }

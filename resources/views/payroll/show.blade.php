@@ -553,6 +553,17 @@
                   @endforeach
                 @endif
               </tbody>
+              <tfoot>
+                <tr>
+                  <td style="text-align: center;">Total</td>
+                  <td style="text-align:center;"></td>
+                  <td style="text-align:center;">{{$normal_count}}</td>
+                  <td style="text-align:center;">{{abs($I_count)}}</td>
+                  <td style="text-align:center;">{{abs($II_count)}}</td>
+                  <td style="text-align:center;">{{abs($III_count)}}</td>
+                  <td style="text-align:center;">{{abs($IV_count)}}</td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div><!-- /.box-body -->

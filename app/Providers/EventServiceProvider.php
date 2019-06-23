@@ -24,6 +24,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\PayrollIsDeleted' => [
             'App\Listeners\DeleteAllowanceParameters',
+            'App\Listeners\DeleteExtraPayrollPayment',
+            'App\Listeners\DeleteIncentiveWeekDay',
+            'App\Listeners\DeleteIncentiveWeekEnd',
+            'App\Listeners\DeleteBpjsKesehatan',
+            'App\Listeners\DeleteBpjsKetenagakerjaan',
         ],
         'App\Events\PayrollIsCreated' => [
             'App\Listeners\RegisterWokshopAllowance',

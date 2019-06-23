@@ -415,6 +415,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('exporter/cash_transaction', 'ExporterController@exportCashTransaction');
 
 	//ETS
+	Route::post('ets/liveEdit','EtsController@liveEdit');
 	Route::post('ets/importMyEts','EtsController@importMyEts');
 	Route::get('ets/myEtsDataTables','EtsController@myEtsDataTables');
 	Route::get('ets/my-ets','EtsController@myEts');
