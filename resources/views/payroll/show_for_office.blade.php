@@ -273,9 +273,46 @@
               <!--ENDBlock Medical Allowance-->
               <!--ENDGroup Allowance-->
 
+              <!--Group BPJSn-->
               <tr>
-                <td colspan="5"></td>
+                <td colspan="5"><strong>BPJS</strong></td>
               </tr>
+              <tr>
+                <td colspan="5">
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="text-align:left;width:20%;">
+                          <strong>Kesehatan</strong>
+                      </td>
+                      <td style="width:5%;text-align:center;">:</td>
+                      <td style="text-align:right;">
+                        <strong>
+                          <strong>{{number_format($bpjs_kesehatan->amount,2)}}</strong>
+                        </strong>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5">
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="text-align:left;width:20%;">
+                          <strong>Ketenagakerjaan</strong>
+                      </td>
+                      <td style="width:5%;text-align:center;">:</td>
+                      <td style="text-align:right;">
+                        <strong>
+                          <strong>{{number_format($bpjs_ketenagakerjaan->amount,2)}}</strong>
+                        </strong>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!--/Group BPJSn-->
+
               <tr>
                 <td colspan="5"></td>
               </tr>

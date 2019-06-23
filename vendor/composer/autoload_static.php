@@ -435,6 +435,8 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'CreateAssetsTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_04_140443_create_assets_table.php',
         'CreateBankAccountsTable' => __DIR__ . '/../..' . '/database/migrations/2017_03_25_191644_create_bank_accounts_table.php',
         'CreateBankAdministrationsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_22_100504_create_bank_administrations_table.php',
+        'CreateBpjsKesehatansTable' => __DIR__ . '/../..' . '/database/migrations/2019_06_23_092235_create_bpjs_kesehatans_table.php',
+        'CreateBpjsKetenagakerjaansTable' => __DIR__ . '/../..' . '/database/migrations/2019_06_23_093243_create_bpjs_ketenagakerjaans_table.php',
         'CreateCashbondSitesTable' => __DIR__ . '/../..' . '/database/migrations/2017_10_02_122127_create_cashbond_sites_table.php',
         'CreateCashbondsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_16_094746_create_cashbonds_table.php',
         'CreateCashesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_16_125614_create_cashes_table.php',

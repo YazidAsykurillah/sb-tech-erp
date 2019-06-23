@@ -29,6 +29,8 @@ use App\InternalRequest;
 use App\ExtraPayrollPayment;
 use App\IncentiveWeekDay;
 use App\IncentiveWeekEnd;
+use App\BpjsKesehatan;
+use App\BpjsKetenagakerjaan;
 
 class PayrollController extends Controller
 {
@@ -261,7 +263,31 @@ class PayrollController extends Controller
         $extra_payroll_payments_substractor = ExtraPayrollPayment::where('payroll_id','=',$id)
                                         ->where('type','=', 'substractor')
                                         ->get();
+        //Bpjs Kesehatan
+        //get or create
+        if($payroll->bpjs_kesehatan){
+            $bpjs_kesehatan = $payroll->bpjs_kesehatan;
+        }else{
+            $newBpjsKesehatan = new BpjsKesehatan;
+            $newBpjsKesehatan->payroll_id = $id;
+            $newBpjsKesehatan->amount = $user->bpjs_ke;
+            $newBpjsKesehatan->save();
+            $bpjs_kesehatan = BpjsKesehatan::find($newBpjsKesehatan);
 
+        }
+
+        //Bpjs Ketenagakerjaan
+        //get or create
+        if($payroll->bpjs_ketenagakerjaan){
+            $bpjs_ketenagakerjaan = $payroll->bpjs_ketenagakerjaan;
+        }else{
+            $newBpjsKetenagakerjaan = new BpjsKetenagakerjaan;
+            $newBpjsKetenagakerjaan->payroll_id = $id;
+            $newBpjsKetenagakerjaan->amount = $user->bpjs_ke;
+            $newBpjsKetenagakerjaan->save();
+            $bpjs_ketenagakerjaan = BpjsKetenagakerjaan::find($newBpjsKetenagakerjaan);
+
+        }
 
         //if user type is site show payroll page for site
         //otherwise show payroll page for office
@@ -299,6 +325,8 @@ class PayrollController extends Controller
             ->with('competency_allowance', $competency_allowance)
             ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
             ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
+            ->with('bpjs_kesehatan', $bpjs_kesehatan)
+            ->with('bpjs_ketenagakerjaan', $bpjs_ketenagakerjaan)
             ->with('payroll', $payroll);    
         }else{
             return view('payroll.show_for_office')
@@ -335,6 +363,8 @@ class PayrollController extends Controller
             ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
             ->with('incentive_weekday', $incentive_weekday)
             ->with('incentive_weekend', $incentive_weekend)
+            ->with('bpjs_kesehatan', $bpjs_kesehatan)
+            ->with('bpjs_ketenagakerjaan', $bpjs_ketenagakerjaan)
             ->with('payroll', $payroll);
         }
 
@@ -618,7 +648,15 @@ class PayrollController extends Controller
         $incentive_weekend_amount = $payroll->incentive_weekend ? $payroll->incentive_weekend->total_amount :0;
         $total_from_incentive =$incentive_weekday_amount+$incentive_weekend_amount;
 
-        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance+$total_from_incentive;
+        //Collect Bpjs Kesehatan
+        $bpjs_kesehatan = $payroll->bpjs_kesehatan ? $payroll->bpjs_kesehatan->amount : 0;
+        //Collect Bpjs Ketenagakerjaan
+        $bpjs_ketenagakerjaan = $payroll->bpjs_ketenagakerjaan ? $payroll->bpjs_ketenagakerjaan->amount : 0;
+
+        //count total cut from BPJS
+        $cut_amount_from_bpjs = $bpjs_kesehatan+$bpjs_ketenagakerjaan;
+
+        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance+$total_from_incentive-$cut_amount_from_bpjs;
         //update thp amount of this payroll
         if($settlement_balance < 0){
             $thp_amount = $thp_amount+(abs($settlement_balance));

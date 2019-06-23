@@ -28,6 +28,8 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\PayrollIsCreated' => [
             'App\Listeners\RegisterWokshopAllowance',
             'App\Listeners\RegisterCompetencyAllowance',
+            'App\Listeners\RegisterBpjsKesehatan',
+            'App\Listeners\RegisterBpjsKetenagakerjaan',
         ],
     ];
 

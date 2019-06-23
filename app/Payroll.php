@@ -42,4 +42,15 @@ class Payroll extends Model
     {
         return $this->hasOne('App\IncentiveWeekEnd');
     }
+
+
+    public function bpjs_kesehatan()
+    {
+        return $this->hasOne('App\BpjsKesehatan');
+    }
+
+    public function bpjs_ketenagakerjaan()
+    {
+        return $this->hasOne('App\BpjsKetenagakerjaan');
+    }
 }

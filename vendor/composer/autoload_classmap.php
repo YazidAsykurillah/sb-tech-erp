@@ -76,6 +76,8 @@ return array(
     'CreateAssetsTable' => $baseDir . '/database/migrations/2019_04_04_140443_create_assets_table.php',
     'CreateBankAccountsTable' => $baseDir . '/database/migrations/2017_03_25_191644_create_bank_accounts_table.php',
     'CreateBankAdministrationsTable' => $baseDir . '/database/migrations/2017_05_22_100504_create_bank_administrations_table.php',
+    'CreateBpjsKesehatansTable' => $baseDir . '/database/migrations/2019_06_23_092235_create_bpjs_kesehatans_table.php',
+    'CreateBpjsKetenagakerjaansTable' => $baseDir . '/database/migrations/2019_06_23_093243_create_bpjs_ketenagakerjaans_table.php',
     'CreateCashbondSitesTable' => $baseDir . '/database/migrations/2017_10_02_122127_create_cashbond_sites_table.php',
     'CreateCashbondsTable' => $baseDir . '/database/migrations/2017_05_16_094746_create_cashbonds_table.php',
     'CreateCashesTable' => $baseDir . '/database/migrations/2017_05_16_125614_create_cashes_table.php',
