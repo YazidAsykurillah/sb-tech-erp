@@ -730,7 +730,11 @@ class PayrollController extends Controller
 
     public function changeStatus(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
+        $payroll = Payroll::findOrFail($request->payroll_id_to_change);
+        $payroll->status = $request->new_payroll_status;
+        $payroll->save();
+        return redirect()->back();
     }
 
 }

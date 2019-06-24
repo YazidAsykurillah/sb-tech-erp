@@ -505,7 +505,7 @@
                     </a>
                   @elseif($payroll->status == 'checked')
                     &nbsp;<a href="#" id="btn-approve-payroll" class="btn btn-default btn-xs">
-                      <i class="fa fa-approve-circle"></i> Check
+                      <i class="fa fa-check-circle"></i> Approve
                     </a>
                   @else
                    
@@ -946,6 +946,15 @@
       $('#new_payroll_status').val('checked');
       $('#modal-change-payroll-status').modal('show');
     });
+
+    //Update payroll handling
+    $('#btn-approve-payroll').on('click', function(event){
+      event.preventDefault();
+      $('#new_payroll_status_description').html('Approved');
+      $('#new_payroll_status').val('approved');
+      $('#modal-change-payroll-status').modal('show');
+    });
+
 
     update_thp_amount();
 
