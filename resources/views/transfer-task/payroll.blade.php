@@ -77,7 +77,7 @@
               </div>  
             </div><!-- /.box-body -->
             <div class="box-footer clearfix">
-            
+              <div id="button-table-tools" class=""></div>
             </div>
         </div><!-- /.box -->
     </div>
@@ -187,6 +187,18 @@
       tablePayroll.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
+
+
+    var buttonTableTools = new $.fn.dataTable.Buttons(tablePayroll,{
+        buttons: [
+          {
+            extend: 'excelHtml5',
+            exportOptions: {
+                columns: [0,1,2,3]
+            }
+          },
+        ],
+      }).container().appendTo($('#button-table-tools'));
 
     //Payroll row selection handler
     var selectedPayroll = [];

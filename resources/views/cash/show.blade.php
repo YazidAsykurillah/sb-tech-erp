@@ -528,7 +528,6 @@
   <script type="text/javascript">
     var tableTransaction =  $('#table-transaction').DataTable({
       "lengthMenu": [[10, 25, 100, 500, -1], [10, 25, 100, 500, "All"]],
-
       processing :true,
       serverSide : true,
       ajax : {
