@@ -671,4 +671,55 @@ class PayrollController extends Controller
         );
 
     }
+
+
+    public function setStatusCheck(Request $request)
+    {
+        if($request->has('id_to_check')){
+            //multiple approval
+            if(is_array($request->id_to_check)){
+                $counter = 0;
+                foreach($request->id_to_check as $id){
+                    $payroll = Payroll::findOrFail($id);
+                    $payroll->status = 'checked';
+                    $payroll->save();
+                    $counter++;
+                }
+                return redirect()->back()
+                    ->with('successMessage', "$counter has been checked");
+            }
+            //single approval
+            else{
+
+            }
+        }else{
+            return redirect()->back()
+                ->with('errorMessage', "There are no selected purchase request");
+        }
+    }
+
+    public function setStatusApprove(Request $request)
+    {
+        if($request->has('id_to_approve')){
+            //multiple approval
+            if(is_array($request->id_to_approve)){
+                $counter = 0;
+                foreach($request->id_to_approve as $id){
+                    $payroll = Payroll::findOrFail($id);
+                    $payroll->status = 'approved';
+                    $payroll->save();
+                    $counter++;
+                }
+                return redirect()->back()
+                    ->with('successMessage', "$counter has been approved");
+            }
+            //single approval
+            else{
+
+            }
+        }else{
+            return redirect()->back()
+                ->with('errorMessage', "There are no selected purchase request");
+        }
+    }
 }

@@ -437,6 +437,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cash-flow', 'CashFlowController');
 
 	//Payroll
+	Route::post('payroll/setStatusApprove', 'PayrollController@setStatusApprove');
+	Route::post('payroll/setStatusCheck', 'PayrollController@setStatusCheck');
 	Route::post('deletePayroll', 'PayrollController@deletePayroll');
 	Route::post('payroll/update_thp_amount', 'PayrollController@update_thp_amount');
 	Route::get('payroll/dataTables', 'PayrollController@dataTables');

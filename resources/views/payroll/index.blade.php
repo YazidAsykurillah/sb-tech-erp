@@ -25,11 +25,21 @@
         <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Payroll</h3>
-              @if(\Auth::user()->can('create-payroll'))
-              <a href="{{ URL::to('payroll/create')}}" class="btn btn-primary pull-right" title="Create new Payroll">
-                <i class="fa fa-plus"></i>&nbsp;Add New
-              </a>
-              @endif
+              <div class="pull-right">
+                <a href="#" class="btn btn-default btn-xs" id="btn-set-check" title="Mark payroll status to be checked">
+                  <i class="fa fa-check"></i>&nbsp;Check
+                </a>
+                <a href="#" class="btn btn-default btn-xs" id="btn-set-approve" title="Mark payroll status to be approved">
+                  <i class="fa fa-check-circle"></i>&nbsp;Approve
+                </a>
+                @if(\Auth::user()->can('create-payroll'))
+                <a href="{{ URL::to('payroll/create')}}" class="btn btn-primary btn-xs" title="Create new Payroll">
+                  <i class="fa fa-plus"></i>&nbsp;Add New
+                </a>
+                @endif
+                
+              </div>
+              
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
@@ -40,7 +50,7 @@
                       <th style="width:10%;">Period</th>
                       <th style="width:20%;">Member</th>
                       <th>THP Amount</th>
-                      <th>Is Printed</th>
+                      <th>Status</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
@@ -93,7 +103,53 @@
   </div>
 <!--ENDModal Delete Payroll-->
 
- 
+ <!--Modal Check-->
+  <div class="modal fade" id="modal-check" tabindex="-1" role="dialog" aria-labelledby="modal-checkLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'payroll/setStatusCheck', 'id'=> 'form-check', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-checkLabel">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <p class="text text-danger">
+            <span class="selected_payroll_counter"></span> payroll(s) will be checkd
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info">check</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Check-->
+
+<!--Modal Approve Payroll-->
+  <div class="modal fade" id="modal-approve" tabindex="-1" role="dialog" aria-labelledby="modal-approveLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'payroll/setStatusApprove', 'id'=> 'form-approve', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-approveLabel">Approve Payroll Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <p class="text text-danger">
+            <span class="selected_payroll_counter"></span> payroll(s) will be approved
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info">approve</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Approve Payroll-->
 @endsection
 
 @section('additional_scripts')
@@ -107,7 +163,7 @@
         { data: 'period.code', name: 'period.code' },
         { data: 'user.name', name: 'user.name' },
         { data: 'thp_amount', name: 'thp_amount' },
-        { data: 'is_printed', name: 'is_printed', searchable:false, orderable:false },
+        { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
 
@@ -133,5 +189,55 @@
     });
     //ENDBlock search input and select
     
+    //Payroll row selection handler
+    var selectedPayroll = [];
+    tablePayroll.on( 'click', 'tr', function () {
+      $(this).toggleClass('selected');
+    });
+    //ENDPurchase request row selection handler
+
+    //Set Check handler
+    $('#btn-set-check').on('click', function(event){
+      event.preventDefault();
+      selectedPayroll = [];
+      var selected_payroll_id = tablePayroll.rows('.selected').data();
+      $.each( selected_payroll_id, function( key, value ) {
+        selectedPayroll.push(selected_payroll_id[key].id);
+      });
+      if(selectedPayroll.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-check').find('.id_to_check').remove();
+        $('#selected_purchase_request_counter').html(selectedPayroll.length);
+        $.each( selectedPayroll, function( key, value ) {
+          $('#form-check').append('<input type="hidden" class="id_to_check" name="id_to_check[]" value="'+value+'"/>');
+        });
+        $('#modal-check').modal('show');  
+      }
+      
+    });
+    //ENDSet Check handler
+
+    //Set Approve handler
+    $('#btn-set-approve').on('click', function(event){
+      event.preventDefault();
+      selectedPayroll = [];
+      var selected_payroll_id = tablePayroll.rows('.selected').data();
+      $.each( selected_payroll_id, function( key, value ) {
+        selectedPayroll.push(selected_payroll_id[key].id);
+      });
+      if(selectedPayroll.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-approve').find('.id_to_approve').remove();
+        $('#selected_purchase_request_counter').html(selectedPayroll.length);
+        $.each( selectedPayroll, function( key, value ) {
+          $('#form-approve').append('<input type="hidden" class="id_to_approve" name="id_to_approve[]" value="'+value+'"/>');
+        });
+        $('#modal-approve').modal('show');  
+      }
+      
+    });
+    //ENDSet Approve handler
   </script>
 @endsection
