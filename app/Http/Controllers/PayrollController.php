@@ -58,7 +58,7 @@ class PayrollController extends Controller
                 return $payrolls ? $payrolls->period->code : NULL;
             })
             ->editColumn('user_id', function($payrolls){
-                return $payrolls ? $payrolls->user->name : NULL;
+                return $payrolls->user ? $payrolls->user->name : NULL;
             })
             ->editColumn('thp_amount', function($payrolls){
                 return number_format($payrolls->thp_amount, 2);
