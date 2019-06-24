@@ -238,7 +238,6 @@ class PayrollController extends Controller
         //get user's settlements
         $settlements = Settlement::with('internal_request')
             ->where('status','=','approved')
-            ->where('accounted',FALSE)
             ->whereHas('internal_request', function($query) use($user, $period){
                 $query->where('requester_id', '=', $user->id);
                 $query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
