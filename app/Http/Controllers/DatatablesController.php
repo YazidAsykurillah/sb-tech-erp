@@ -2451,7 +2451,10 @@ class DatatablesController extends Controller
         $payrolls = Payroll::with(['period', 'user'])->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'payrolls.*',
-        ])->get();
+        ])
+        ->where('payrolls.status','=','approved')
+        ->where('payrolls.accounted','=',FALSE)
+        ->get();
 
         $data_payrolls = Datatables::of($payrolls)
             ->editColumn('period_id', function($payrolls){
@@ -2475,9 +2478,6 @@ class DatatablesController extends Controller
                     $actions_html ='<a href="'.url('payroll/'.$payrolls->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
 
                     return $actions_html;
             });

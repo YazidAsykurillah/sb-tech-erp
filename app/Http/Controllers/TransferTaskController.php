@@ -21,6 +21,7 @@ use App\CashbondInstallment;
 use App\Cash;
 use App\Transaction;
 use App\TheLog;
+use App\Payroll;
 
 class TransferTaskController extends Controller
 {
@@ -881,4 +882,52 @@ class TransferTaskController extends Controller
         return view('transfer-task.payroll');
     }
 
+    public function transferPayroll(Request $request)
+    {
+        // dd($request->all());
+        $cash_id = $request->remitter_bank_id;
+        if($request->has('id_to_transfer')){
+            foreach($request->id_to_transfer as $id){
+                $this->run_transfer_payroll($id, $cash_id);
+            }
+            return redirect()->back()
+                ->with('successMessage', "Payroll has been accounted");
+        }
+    }
+
+    protected function run_transfer_payroll($id, $cash_id)
+    {
+        try{
+            $payroll = Payroll::findOrFail($id);
+            $cash = Cash::findOrFail($cash_id);
+
+            $transaction = new Transaction;
+            $transaction->cash_id = $cash->id;
+            $transaction->refference = 'payroll';
+            $transaction->refference_id = $payroll->id;
+            $transaction->refference_number = $payroll->user->name."_".$payroll->period->code;
+            $transaction->notes = $payroll->period->code;
+            $transaction->transaction_date = Carbon::now();
+            $transaction->type = 'debet';
+            $transaction->amount = abs($payroll->thp_amount);
+            $transaction->reference_amount = $cash->amount - abs($payroll->thp_amount);
+            $transaction->save();
+
+            //now fix the cash amount id,
+            if($cash){
+                $cash->amount = $cash->amount - abs($payroll->thp_amount);
+                $cash->save();
+            }
+
+            //set payroll accounted to TRUE;
+            $payroll->accounted = TRUE;
+            $payroll->save();
+            return TRUE;
+        }
+        catch(Exception $e){
+            print_r($e);
+        }
+
+        
+    }
 }

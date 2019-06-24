@@ -23,6 +23,8 @@ use App\AccountingExpense;
 use App\CashbondInstallment;
 use App\Period;
 
+use App\Payroll;
+
 //User Maatwebsite Excel package
 use Excel;
 
@@ -669,6 +671,9 @@ class TransactionController extends Controller
         elseif ($refference == 'cashbond-site') {
             $this->rollback_related_models_from_cashbond_site($transaction);
         }
+        elseif ($refference == 'payroll') {
+            $this->rollback_related_models_from_payroll($transaction);
+        }
         else{
             echo $refference;
             exit();
@@ -679,6 +684,29 @@ class TransactionController extends Controller
             ->with('successMessage', "Deleted $transaction->refference_number from transaction list");
     }
 
+
+    protected function rollback_related_models_from_payroll($transaction)
+    {
+        //get transaction properties
+        $tr_cash_id = $transaction->cash_id;
+        $tr_type = $transaction->type;
+        $tr_amount = $transaction->amount;
+        //rollback cash model state
+            $cash = Cash::findOrFail($transaction->cash_id);
+            if($tr_type == 'debet'){
+                $cash->amount = $cash->amount+$tr_amount;
+                $cash->save();
+            }else{
+                $cash->amount = $cash->amount-$tr_amount;
+                $cash->save();
+            }
+            //
+        //reset Payroll property
+            $payroll = Payroll::findOrFail($transaction->refference_id);
+            $payroll->accounted = FALSE;
+            $payroll->remitter_bank_id = NULL;
+            $payroll->save();
+    }
 
     protected function rollback_related_models_from_cashbond_site($transaction)
     {

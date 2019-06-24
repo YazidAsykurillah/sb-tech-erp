@@ -243,6 +243,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//Transfer Task
 		//Payroll
+		Route::post('transfer-task/payroll/transfer', 'TransferTaskController@transferPayroll');
 		Route::get('transfer-task/payroll', 'TransferTaskController@payroll');
 
 		//cashbond

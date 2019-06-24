@@ -14,7 +14,7 @@ class AddRelatedAccountingColumnsToTablePayrolls extends Migration
     {
         Schema::table('payrolls', function(Blueprint $table){
             $table->boolean('accounted')->default(FALSE);
-            $table->integer('remitter_bank_id')->nullable()->default();
+            $table->integer('remitter_bank_id')->default(0);
         });
     }
 

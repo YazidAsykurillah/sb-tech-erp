@@ -25,6 +25,12 @@
         <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Payroll</h3>
+              <div class="pull-right">
+                <button type="button" class="btn btn-info btn-xs" id="btn-transfer">
+                  <i class="fa fa-money"></i> Transfer
+                </button>
+                
+              </div>
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
@@ -69,42 +75,17 @@
   <div class="modal fade" id="modal-transfer-payroll" tabindex="-1" role="dialog" aria-labelledby="modal-transfer-payrollLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-      {!! Form::open(['url'=>'transfer-task/payroll/transfer', 'role'=>'form', 'class'=>'form-horizontal', 'method'=>'post']) !!}
+      {!! Form::open(['url'=>'transfer-task/payroll/transfer', 'role'=>'form', 'id'=>'form-transfer', 'class'=>'form-horizontal', 'method'=>'post']) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-transfer-payrollCustomerLabel">Transfer Confirmation</h4>
         </div>
         <div class="modal-body">
-          <p>
-            payroll <b id="payroll_code_to_transfer"></b> will be transfered from <b id="remitterBank"></b>
-          </p>
-          
-        </div>
-        <div class="modal-footer">
-          <input type="hidden" id="payroll_id_to_transfer" name="payroll_id_to_transfer" />
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-info">Transfer</button>
-        </div>
-      {!! Form::close() !!}
-      </div>
-    </div>
-  </div>
-<!--ENDModal Transfer-->
-
- <!--Modal Approve Transfer Task payroll-->
-  <div class="modal fade" id="modal-approve-transfer-payroll" tabindex="-1" role="dialog" aria-labelledby="modal-approve-transfer-payrollLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-      {!! Form::open(['url'=>'transfer-task/payroll/approve', 'role'=>'form', 'class'=>'form-horizontal', 'method'=>'post']) !!}
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-approve-transfer-payrollCustomerLabel">Confirmation</h4>
-        </div>
-        <div class="modal-body">
-          <p><small>Please select Remitter Bank to approve this payroll transfer task</small></p>
+          <span class="selected_payroll_counter"></span> Will be transfered
+          <p><small>Please select the Settlement Cash</small></p>
           <!-- Selection Remitter Bank-->
           <div class="form-group{{ $errors->has('remitter_bank_id') ? ' has-error' : '' }}">
-            {!! Form::label('remitter_bank_id', 'Remitter Bank', ['class'=>'col-sm-2 control-label']) !!}
+            {!! Form::label('remitter_bank_id', 'Settlement Cash', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
               <select name="remitter_bank_id" id="remitter_bank_id" class="form-control" style="width:100%;" required>
                 @if(Request::old('remitter_bank_id') != NULL)
@@ -123,15 +104,15 @@
           <!-- ENDSelection Remitter Bank-->
         </div>
         <div class="modal-footer">
-          <input type="hidden" id="payroll_id_to_approve" name="payroll_id_to_approve" />
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-info">Approve</button>
+          <button type="submit" class="btn btn-info">Transfer</button>
         </div>
       {!! Form::close() !!}
       </div>
     </div>
   </div>
-<!--ENDModal Approve Transfer Task payroll-->
+<!--ENDModal Transfer-->
+
 
 @endsection
 
@@ -181,7 +162,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 5) {
+      if ($(this).index() != 0 && $(this).index() != 7) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           
@@ -192,25 +173,34 @@
     });
     //ENDBlock search input and select
 
-    // Approve Transfer payroll event handler
-    tablePayroll.on('click', '.btn-approve-transfer-payroll', function(e){
-      var id = $(this).attr('data-id');
-      var code = $(this).attr('data-text');
-      $('#payroll_id_to_approve').val(id);
-      $('#modal-approve-transfer-payroll').modal('show');
+    //Payroll row selection handler
+    var selectedPayroll = [];
+    tablePayroll.on( 'click', 'tr', function () {
+      $(this).toggleClass('selected');
     });
-
-    // Run Transfer payroll event handler
-    tablePayroll.on('click', '.btn-transfer-payroll', function(e){
-      var id = $(this).attr('data-id');
-      var amount = $(this).attr('data-amount');
-      var remitterBank = $(this).attr('data-remitterBank');
-      var beneficiaryBank = $(this).attr('data-beneficiaryBank');
-      $('#payroll_id_to_transfer').val(id);
-      $('#remitterBank').text(remitterBank);
-      $('#beneficiaryBank').text(beneficiaryBank);
-      $('#modal-transfer-payroll').modal('show');
+    //ENDPurchase request row selection handler
+    
+    //Transfer handler
+    $('#btn-transfer').on('click', function(event){
+      event.preventDefault();
+      selectedPayroll = [];
+      var selected_payroll_id = tablePayroll.rows('.selected').data();
+      $.each( selected_payroll_id, function( key, value ) {
+        selectedPayroll.push(selected_payroll_id[key].id);
+      });
+      if(selectedPayroll.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-transfer').find('.id_to_transfer').remove();
+        $('.selected_payroll_counter').html(selectedPayroll.length);
+        $.each( selectedPayroll, function( key, value ) {
+          $('#form-transfer').append('<input type="hidden" class="id_to_transfer" name="id_to_transfer[]" value="'+value+'"/>');
+        });
+        $('#modal-transfer-payroll').modal('show');  
+      }
+      
     });
+    //ENDTransfer handler
 
     //Block Remitter Bank Selection
     $('#remitter_bank_id').select2({
@@ -233,5 +223,6 @@
       },
       allowClear : true,
     });
+
   </script>
 @endsection
