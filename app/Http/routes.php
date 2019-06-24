@@ -443,6 +443,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cash-flow', 'CashFlowController');
 
 	//Payroll
+	Route::post('payroll/change-status', 'PayrollController@changeStatus');
 	Route::post('payroll/setStatusApprove', 'PayrollController@setStatusApprove');
 	Route::post('payroll/setStatusCheck', 'PayrollController@setStatusCheck');
 	Route::post('deletePayroll', 'PayrollController@deletePayroll');

@@ -489,6 +489,34 @@
           </div>
         </div>
         <!--ENDBody employee salary info-->
+
+        <!--Table action to payroll-->
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <td style="width: 20%;">Status</td>
+                <td style="width: 5%;">:</td>
+                <td style="text-align: right;">
+                  {{ucwords($payroll->status)}} 
+                  @if($payroll->status == 'draft' || $payroll->status == NULL)
+                    &nbsp;<a href="#" id="btn-check-payroll" class="btn btn-default btn-xs">
+                      <i class="fa fa-check-circle"></i> Check
+                    </a>
+                  @elseif($payroll->status == 'checked')
+                    &nbsp;<a href="#" id="btn-approve-payroll" class="btn btn-default btn-xs">
+                      <i class="fa fa-approve-circle"></i> Check
+                    </a>
+                  @else
+                   
+                  @endif
+                </td>
+              </tr>      
+            </table>
+          </div>
+        </div>
+        <!--ENDTable action to payroll-->
+
       </div>
     </div>
     <!--Endcolumn Slip Gaji-->
@@ -664,6 +692,34 @@
     </div>
   </div>
   <!--ENDModal Create Extra Payroll Payment-->
+
+  <!--Modal Change Payroll Status-->
+  <div class="modal fade" id="modal-change-payroll-status" tabindex="-1" role="dialog" aria-labelledby="modal-change-payroll-statusLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'payroll/change-status', 'class'=>'form form-horizontal', 'method'=>'post', 'id'=>'form-change-payroll-status']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-change-payroll-statusLabel">
+            Confirmation
+          </h4>
+        </div>
+        <div class="modal-body">
+          
+          Payroll status will be changed to <span id="new_payroll_status_description"></span>
+      
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="payroll_id_to_change" name="payroll_id_to_change" value="{{ $payroll->id }}" />
+          <input type="hidden" id="new_payroll_status" name="new_payroll_status" value="" />
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-payroll-status">Submit</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+  <!--ENDModal Change Payroll Status-->
  
 @endsection
 
@@ -882,6 +938,14 @@
       });
     });
 
+
+    //Check payroll handling
+    $('#btn-check-payroll').on('click', function(event){
+      event.preventDefault();
+      $('#new_payroll_status_description').html('Checked');
+      $('#new_payroll_status').val('checked');
+      $('#modal-change-payroll-status').modal('show');
+    });
 
     update_thp_amount();
 

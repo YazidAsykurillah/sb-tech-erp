@@ -727,4 +727,10 @@ class PayrollController extends Controller
                 ->with('errorMessage', "There are no selected purchase request");
         }
     }
+
+    public function changeStatus(Request $request)
+    {
+        dd($request->all());
+    }
+
 }
