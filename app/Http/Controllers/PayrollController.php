@@ -236,13 +236,15 @@ class PayrollController extends Controller
         }
         
         //get user's settlements
+        $end_period_date = Carbon::parse($period->end_date)->addDay(3);
         $settlements = Settlement::with('internal_request')
             ->where('status','=','approved')
-            ->whereBetween('transaction_date', [$period->start_date, $period->end_date])
+            ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
             ->whereHas('internal_request', function($query) use($user, $period){
                 $query->where('requester_id', '=', $user->id);
                 //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
             })->get();
+
 
 
         //get or create competency allowance
@@ -606,10 +608,11 @@ class PayrollController extends Controller
 
 
         //Collect balance from settlement
+        $end_period_date = Carbon::parse($period->end_date)->addDay(3);
         $settlement_balance = 0;
         $settlements = Settlement::with('internal_request')
             ->where('status','=','approved')
-            ->whereBetween('transaction_date', [$period->start_date, $period->end_date])
+            ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
             ->whereHas('internal_request', function($query) use($user, $period){
                 $query->where('requester_id', '=', $user->id);
                 //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
