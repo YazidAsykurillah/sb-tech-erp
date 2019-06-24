@@ -2463,6 +2463,14 @@ class DatatablesController extends Controller
             ->editColumn('thp_amount', function($payrolls){
                 return number_format($payrolls->thp_amount, 2);
             })
+            ->editColumn('remitter_bank_id', function($payrolls){
+                if($payrolls->remitter_bank){
+                    return $payrolls->remitter_bank->name;
+                }else{
+                    return NULL;
+                }
+                
+            })
             ->addColumn('actions', function($payrolls){
                     $actions_html ='<a href="'.url('payroll/'.$payrolls->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';

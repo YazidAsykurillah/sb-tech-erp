@@ -239,6 +239,7 @@ class PayrollController extends Controller
         $end_period_date = Carbon::parse($period->end_date)->addDay(3);
         $settlements = Settlement::with('internal_request')
             ->where('status','=','approved')
+            ->where('accounted', FALSE)
             ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
             ->whereHas('internal_request', function($query) use($user, $period){
                 $query->where('requester_id', '=', $user->id);
@@ -612,6 +613,7 @@ class PayrollController extends Controller
         $settlement_balance = 0;
         $settlements = Settlement::with('internal_request')
             ->where('status','=','approved')
+            ->where('accounted', FALSE)
             ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
             ->whereHas('internal_request', function($query) use($user, $period){
                 $query->where('requester_id', '=', $user->id);

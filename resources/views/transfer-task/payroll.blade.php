@@ -24,7 +24,7 @@
     <div class="col-lg-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">payroll</h3>
+              <h3 class="box-title">Payroll</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
@@ -36,11 +36,15 @@
                       <th style="width:20%;">Member</th>
                       <th>THP Amount</th>
                       <th>Status</th>
+                      <th>Accounted</th>
+                      <th>Remitter Bank</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -143,6 +147,8 @@
         { data: 'user.name', name: 'user.name' },
         { data: 'thp_amount', name: 'thp_amount' },
         { data: 'status', name: 'status' },
+        { data: 'accounted', name: 'accounted' },
+        { data: 'remitter_bank_id', name: 'remitter_bank_id'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
       footerCallback: function( tfoot, data, start, end, display ) {
