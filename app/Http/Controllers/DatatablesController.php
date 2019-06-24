@@ -2446,7 +2446,8 @@ class DatatablesController extends Controller
 
     //Payroll datatables
     public function getTransferTaskPayroll(Request $request)
-    {
+    {   
+        $grand_total = 5555555;
         \DB::statement(\DB::raw('set @rownum=0'));
         $payrolls = Payroll::with(['period', 'user'])->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
@@ -2457,6 +2458,7 @@ class DatatablesController extends Controller
         ->get();
 
         $data_payrolls = Datatables::of($payrolls)
+            ->with('grand_total', $grand_total)
             ->editColumn('period_id', function($payrolls){
                 return $payrolls ? $payrolls->period->code : NULL;
             })
@@ -2473,6 +2475,9 @@ class DatatablesController extends Controller
                     return NULL;
                 }
                 
+            })
+            ->editColumn('accounted', function($payrolls){
+                return $payrolls->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
             })
             ->addColumn('actions', function($payrolls){
                     $actions_html ='<a href="'.url('payroll/'.$payrolls->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';

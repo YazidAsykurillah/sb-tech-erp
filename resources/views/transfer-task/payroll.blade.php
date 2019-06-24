@@ -61,6 +61,18 @@
                   </thead>
                   
                   <tbody></tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>  
             </div><!-- /.box-body -->
@@ -119,6 +131,7 @@
 @section('additional_scripts')
    <script type="text/javascript">
     var tablePayroll =  $('#table-payroll').DataTable({
+      "lengthMenu": [[10, 25, 100, 500, -1], [10, 25, 100, 500, "All"]],
       processing :true,
       serverSide : true,
       ajax : '{!! route('datatables.getTransferTaskPayroll') !!}',
@@ -134,6 +147,8 @@
       ],
       footerCallback: function( tfoot, data, start, end, display ) {
         var api = this.api();
+        var json = api.ajax.json();
+        var grand_total = json.grand_total;
         // Remove the formatting to get float data for summation
         var theFloat = function ( i ) {
             return typeof i === 'string' ?
@@ -150,7 +165,7 @@
                 return theFloat(a) + theFloat(b);
             }, 0 );
         // Update footer
-        $( api.column(5).footer() ).html(
+        $( api.column(3).footer() ).html(
             total.toLocaleString()
         );
       },
