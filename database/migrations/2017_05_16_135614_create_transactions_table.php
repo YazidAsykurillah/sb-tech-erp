@@ -20,7 +20,8 @@ class CreateTransactionsTable extends Migration
                 'internal_request', 'settlement', 'cashbond',
                 'invoice_customer', 'invoice_vendor', 'bank_administration',
                 'invoice_customer_tax', 'invoice_vendor_tax', 'manual',
-                'site_internal_request', 'site_settlement', 'cashbond-site'
+                'site_internal_request', 'site_settlement', 'cashbond-site',
+                'payroll'
                 ]
             );
             $table->integer('refference_id');

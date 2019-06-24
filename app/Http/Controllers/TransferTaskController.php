@@ -874,4 +874,11 @@ class TransferTaskController extends Controller
 
     }
 
+
+    //return transfer task payroll lists page
+    public function payroll()
+    {
+        return view('transfer-task.payroll');
+    }
+
 }

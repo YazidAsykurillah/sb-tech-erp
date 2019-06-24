@@ -2444,4 +2444,41 @@ class DatatablesController extends Controller
     }
     //END Accounting Expenses datatables
 
+    //Payroll datatables
+    public function getTransferTaskPayroll(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $payrolls = Payroll::with(['period', 'user'])->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'payrolls.*',
+        ])->get();
+
+        $data_payrolls = Datatables::of($payrolls)
+            ->editColumn('period_id', function($payrolls){
+                return $payrolls ? $payrolls->period->code : NULL;
+            })
+            ->editColumn('user_id', function($payrolls){
+                return $payrolls ? $payrolls->user->name : NULL;
+            })
+            ->editColumn('thp_amount', function($payrolls){
+                return number_format($payrolls->thp_amount, 2);
+            })
+            ->addColumn('actions', function($payrolls){
+                    $actions_html ='<a href="'.url('payroll/'.$payrolls->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                    $actions_html .=    '<i class="fa fa-external-link"></i>';
+                    $actions_html .='</a>&nbsp;';
+                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
+                    $actions_html .=    '<i class="fa fa-trash"></i>';
+                    $actions_html .='</button>';
+
+                    return $actions_html;
+            });
+
+        if ($keyword = $request->get('search')['value']) {
+            $data_payrolls->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_payrolls->make(true);
+    }
+    //END Payroll datatables
 }

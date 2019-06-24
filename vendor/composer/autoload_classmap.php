@@ -51,6 +51,7 @@ return array(
     'AddIsCompletedToTableProjects' => $baseDir . '/database/migrations/2019_05_06_133844_add_is_completed_to_table_projects.php',
     'AddLocationToEts' => $baseDir . '/database/migrations/2019_05_29_122917_add_location_to_ets.php',
     'AddQuotationVendorIdToPurchaseOrderVendor' => $baseDir . '/database/migrations/2017_05_22_053902_add quotation_vendor_id to purchase order vendor.php',
+    'AddRelatedAccountingColumnsToTablePayrolls' => $baseDir . '/database/migrations/2019_06_24_085634_Add related accounting columns to table payrolls.php',
     'AddStatusToPayollsTable' => $baseDir . '/database/migrations/2019_06_24_072214_add_status_to_payolls_table.php',
     'AddTaxDateToInvoiceCustomer' => $baseDir . '/database/migrations/2017_09_02_080621_add_tax_date_to_invoice_customer.php',
     'AddTaxDateToInvoiceVendorsTable' => $baseDir . '/database/migrations/2017_10_12_055433_add tax_date_to_invoice_vendors_table.php',

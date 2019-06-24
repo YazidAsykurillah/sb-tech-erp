@@ -242,6 +242,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('accounting-expense', 'AccountingExpenseController');
 
 	//Transfer Task
+		//Payroll
+		Route::get('transfer-task/payroll', 'TransferTaskController@payroll');
+
 		//cashbond
 		Route::post('transfer-task/cashbond/transfer', 'TransferTaskController@transferCashbond');
 		Route::post('transfer-task/cashbond/approve', 'TransferTaskController@approveCashbond');
@@ -338,6 +341,8 @@ Route::group(['middleware' => 'auth'], function () {
 		'getTransferTaskSettlement'=>'datatables.getTransferTaskSettlement',
 		//get transfer task Cashbond lists
 		'getTransferTaskCashbond'=>'datatables.getTransferTaskCashbond',
+		//get Transfer Task Payroll list
+		'getTransferTaskPayroll'=>'datatables.getTransferTaskPayroll',
 
 		//Tax List Groups
 		'getInvoiceCustomerTaxes'=>'datatables.getInvoiceCustomerTaxes',
