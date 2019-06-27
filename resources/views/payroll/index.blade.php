@@ -43,12 +43,30 @@
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
+                <form method="POST" id="form-filter" class="form-inline" role="form">
+                  <div class="form-group">
+                    <label class="" for="filter_period">Period</label>
+                    <select name="filter_period" id="filter_period" class="form-control" style="width: 200px;"></select>
+                  </div>
+                  <div class="form-group">
+                    <label class="" for="filter_user_type">User Type</label>
+                    <select name="filter_user_type" id="filter_user_type" class="form-control" style="width: 200px;">
+                      <option value="">All</option>
+                      <option value="office">Office</option>
+                      <option value="outsource">Outsource</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+                <br/>
                 <table class="table table-bordered" id="table-payroll">
                   <thead>
                     <tr>
                       <th style="width:5%;">#</th>
                       <th style="width:10%;">Period</th>
-                      <th style="width:20%;">Member</th>
+                      <th style="width:20%;">NIK</th>
+                      <th style="width:20%;">Member Name</th>
                       <th>THP Amount</th>
                       <th>Status</th>
                       <th style="width:10%;text-align:center;">Actions</th>
@@ -56,6 +74,7 @@
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -154,13 +173,48 @@
 
 @section('additional_scripts')
   <script type="text/javascript">
+    //Block Period selection
+    $('#filter_period').select2({
+      placeholder: 'Select Period',
+      ajax: {
+        url: '{!! url('period/select2') !!}',
+        width:'100%',
+        dataType: 'json',
+        delay: 250,
+        processResults: function (data) {
+          return {
+            results:  $.map(data, function (item) {
+                  return {
+                      text: item.code,
+                      id: item.id
+                  }
+              })
+          };
+        },
+        cache: true
+      },
+      allowClear:true
+    });
+    //ENDBlock Period selection
+
+    //Block filter user type selection
+    $('#filter_user_type').select2({});
+    //ENDBlock filter user type selection
+
     var tablePayroll =  $('#table-payroll').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! url('payroll/dataTables') !!}',
+      ajax : {
+        url : '{!! url('payroll/dataTables') !!}',
+        data: function(d){
+          d.filter_period = $('select[name=filter_period]').val();
+          d.filter_user_type = $('select[name=filter_user_type]').val();
+        }
+      },
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'period.code', name: 'period.code' },
+        { data: 'user.nik', name: 'user.nik' },
         { data: 'user.name', name: 'user.name' },
         { data: 'thp_amount', name: 'thp_amount' },
         { data: 'status', name: 'status' },
@@ -178,7 +232,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 5) {
+      if ($(this).index() != 0 && $(this).index() != 6) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           
@@ -188,7 +242,13 @@
       tablePayroll.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
-    
+
+    //Filter handling
+    $('#form-filter').on('submit', function(e) {
+      tablePayroll.draw();
+      e.preventDefault();
+    });
+
     //Payroll row selection handler
     var selectedPayroll = [];
     tablePayroll.on( 'click', 'tr', function () {

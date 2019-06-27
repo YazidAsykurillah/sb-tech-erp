@@ -51,8 +51,18 @@ class PayrollController extends Controller
         $payrolls = Payroll::with(['period', 'user'])->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'payrolls.*',
-        ])->get();
-
+        ]);
+        if($request->get('filter_period')){
+            $period_id = $request->get('filter_period');
+            $payrolls->where('period_id','=',$period_id);
+        }
+        if($request->get('filter_user_type')){
+            $user_type = $request->get('filter_user_type');
+            $payrolls->whereHas('user', function($q) use ($user_type){
+                $q->where('users.type','=',$user_type);
+            });
+        }
+        
         $data_payrolls = Datatables::of($payrolls)
             ->editColumn('period_id', function($payrolls){
                 return $payrolls ? $payrolls->period->code : NULL;
@@ -74,7 +84,8 @@ class PayrollController extends Controller
                     return $actions_html;
             });
 
-        if ($keyword = $request->get('search')['value']) {
+        
+        if ($keyword = $request->get('search')['value']){
             $data_payrolls->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }
 

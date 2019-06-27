@@ -89,16 +89,11 @@ class EtsController extends Controller
     //ETS Site Datatables
     public function getETSSitedataTables(Request $request)
     {
-        $ets = \DB::table('ets')
-        ->select(
-            'ets.period_id', 'ets.user_id',
-            \DB::raw("CONCAT(periods.the_year,'-',periods.the_month) as the_period"),
-            \DB::raw('users.name as user_name')
-        )
-        ->where('ets.type','=', 'site')
-        ->join('periods', 'periods.id', '=', 'ets.period_id')
-        ->join('users', 'users.id', '=', 'ets.user_id')
-        ->groupBy('ets.period_id', 'ets.user_id');
+
+        $ets = Ets::with(['period','user'])
+                ->where('type','=','site')
+                ->groupBy('period_id', 'user_id')
+                ->get();
 
         $data_ets = Datatables::of($ets)
             ->addColumn('actions', function($ets){
@@ -110,7 +105,7 @@ class EtsController extends Controller
             });
 
         if ($keyword = $request->get('search')['value']) {
-            exit('filter');
+            //exit('filter');
             $data_ets->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
         }
 
@@ -121,16 +116,10 @@ class EtsController extends Controller
     //ETS Office Datatables
     public function getETSOfficedataTables(Request $request)
     {
-        $ets = \DB::table('ets')
-        ->select(
-            'ets.period_id', 'ets.user_id',
-            \DB::raw("CONCAT(periods.the_year,'-',periods.the_month) as the_period"),
-            \DB::raw('users.name as user_name')
-        )
-        ->where('ets.type','=', 'office')
-        ->join('periods', 'periods.id', '=', 'ets.period_id')
-        ->join('users', 'users.id', '=', 'ets.user_id')
-        ->groupBy('ets.period_id', 'ets.user_id');
+        $ets = Ets::with(['period','user'])
+                ->where('type','=','office')
+                ->groupBy('period_id', 'user_id')
+                ->get();
 
         $data_ets = Datatables::of($ets)
             ->addColumn('actions', function($ets){

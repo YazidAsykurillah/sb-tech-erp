@@ -124,13 +124,13 @@
   <script type="text/javascript">
 
     //Datatables
-    var tableAssetCategory =  $('#table-ets').DataTable({
+    var tableEts =  $('#table-ets').DataTable({
       processing :true,
       serverSide : true,
       ajax : '{!! url('ets/site/dataTables') !!}',
       columns :[
-        { data: 'the_period', name: 'the_period'},
-        { data: 'user_name', name: 'user_name' },
+        { data: 'period.code', name: 'period.code'},
+        { data: 'user.name', name: 'user.name'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
 
@@ -145,7 +145,7 @@
     });
     //Block search input and select
     $('#searchColumn input').keyup(function() {
-      tableAssetCategory.columns($(this).data('id')).search(this.value).draw();
+      tableEts.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
     

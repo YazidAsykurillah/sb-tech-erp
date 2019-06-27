@@ -243,8 +243,7 @@ class ProjectController extends Controller
             'projects.*',
         ])->get();
         
-                if ($request->get('cost_margin_value')) {
-
+        if ($request->get('cost_margin_value')) {
             $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'projects.*',
@@ -275,7 +274,7 @@ class ProjectController extends Controller
             });
         }
 
-        if ($request->get('invoiced_value')) {
+        if($request->get('invoiced_value')){
 
             $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),

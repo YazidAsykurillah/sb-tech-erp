@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Project
+  Project
 @endsection
 
 @section('page_header')

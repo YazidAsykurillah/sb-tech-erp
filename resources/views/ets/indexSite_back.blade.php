@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('page_title')
-  ETS Office
+  ETS Site
 @endsection
 
 @section('page_header')
   <h1>
-    ETS Office
-    <small>Daftar ETS Office</small>
+    ETS Site
+    <small>Daftar ETS Site</small>
   </h1>
 @endsection
 
 @section('breadcrumb')
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li class="active"><i></i>ETS Office</li>
+    <li class="active"><i></i>ETS Site</li>
   </ol>
 @endsection
 
@@ -23,8 +23,8 @@
     <div class="col-lg-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">ETS Office</h3>
-              <a href="javascript::void()" id="btn-import-ets" class="btn btn-primary pull-right" title="Import ETS Office">
+              <h3 class="box-title">ETS Site</h3>
+              <a href="javascript::void()" id="btn-import-ets" class="btn btn-primary pull-right" title="Import ETS Site">
                 <i class="fa fa-upload"></i>&nbsp;Import
               </a>
             </div><!-- /.box-header -->
@@ -64,10 +64,10 @@
   <div class="modal fade" id="modal-import-ets" tabindex="-1" role="dialog" aria-labelledby="modal-import-etsLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-      {!! Form::open(['url'=>'ets/office/import', 'role'=>'form', 'class'=>'form-horizontal', 'method'=>'post', 'id'=>'form-import-file', 'files'=>true]) !!}
+      {!! Form::open(['url'=>'ets/site/import', 'role'=>'form', 'class'=>'form-horizontal', 'method'=>'post', 'id'=>'form-import-file', 'files'=>true]) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="modal-import-etsLabel">Import ETS Office</h4>
+          <h4 class="modal-title" id="modal-import-etsLabel">Import ETS SITE</h4>
         </div>
         <div class="modal-body">
           <p class="alert alert-info">
@@ -124,13 +124,13 @@
   <script type="text/javascript">
 
     //Datatables
-    var tableAssetCategory =  $('#table-ets').DataTable({
+    var tableEts =  $('#table-ets').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! url('ets/office/dataTables') !!}',
+      ajax : '{!! url('ets/site/dataTables') !!}',
       columns :[
-        { data: 'period.code', name: 'period.code'},
-        { data: 'user.name', name: 'user.name'},
+        { data: 'the_period', name: 'the_period'},
+        { data: 'user_name', name: 'user_name' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
 
@@ -145,11 +145,11 @@
     });
     //Block search input and select
     $('#searchColumn input').keyup(function() {
-      tableAssetCategory.columns($(this).data('id')).search(this.value).draw();
+      tableEts.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
     
-    //Import ETS Office handling
+    //Import ETS site handling
     $('#btn-import-ets').on('click',function(event){
       event.preventDefault();
       $('#modal-import-ets').modal('show');
@@ -158,11 +158,11 @@
     //User selection
     //Block User Selection
     $('#user_id').select2({
-      placeholder: 'Select Office Member',
+      placeholder: 'Select Member',
       width:'100%',
       dropdownParent: $('#modal-import-ets'),
       ajax: {
-        url: '{!! url('user/select2Office') !!}',
+        url: '{!! url('user/select2Site') !!}',
         dataType: 'json',
         delay: 250,
         processResults: function (data) {
