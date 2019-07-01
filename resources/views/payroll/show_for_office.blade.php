@@ -339,17 +339,17 @@
                 <td colspan="5">
                   <table style="width:100%;">
                     <tr>
-                      <td style="width:20%;"><strong>Settlement</strong></td>
+                      <td style="width:20%;"><strong>Settlement Payroll</strong></td>
                       <td style="width:5%;text-align:center;">:</td>
                       <td colspan="3" style="">
-                      @if($settlements->count())
+                      @if($payroll->settlement_payroll->count())
                         <table style="width:100%;" id="table-settlement-list">
-                        @foreach($settlements as $settlement)
-                          <?php $settlement_balance = $settlement->internal_request->amount - $settlement->amount;?>
+                        @foreach($payroll->settlement_payroll as $settlement_payroll)
+                          <?php $settlement_balance = $settlement_payroll->settlement->internal_request->amount - $settlement_payroll->settlement->amount;?>
                           <tr>
                             <td style="width: 20%;">
-                              <a href="{{url('settlement/'.$settlement->id)}}" target="">
-                                {{ $settlement->code}}
+                              <a href="{{url('settlement/'.$settlement_payroll->settlement->id)}}" target="">
+                                {{ $settlement_payroll->settlement->code}}
                               </a>
                             </td>
                             <td style="text-align: right;">

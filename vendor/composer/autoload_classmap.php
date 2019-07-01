@@ -117,6 +117,7 @@ return array(
     'CreateQuotationVendorsTable' => $baseDir . '/database/migrations/2017_05_10_100742_create_quotation_vendors_table.php',
     'CreateRoleUserTable' => $baseDir . '/database/migrations/2017_03_25_180549_create_role_user_table.php',
     'CreateRolesTable' => $baseDir . '/database/migrations/2017_03_25_180028_create_roles_table.php',
+    'CreateSettlementPayrollsTable' => $baseDir . '/database/migrations/2019_07_01_135504_create_settlement_payrolls_table.php',
     'CreateSettlementsTable' => $baseDir . '/database/migrations/2017_05_09_084626_create_settlements_table.php',
     'CreateSubCategoriesTable' => $baseDir . '/database/migrations/2017_05_05_095128_create_sub_categories_table.php',
     'CreateTheLogsTable' => $baseDir . '/database/migrations/2017_07_13_092406_create_the_logs_table.php',

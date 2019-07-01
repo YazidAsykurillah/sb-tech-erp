@@ -29,12 +29,14 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\DeleteIncentiveWeekEnd',
             'App\Listeners\DeleteBpjsKesehatan',
             'App\Listeners\DeleteBpjsKetenagakerjaan',
+            'App\Listeners\DeleteSettlementPayroll',
         ],
         'App\Events\PayrollIsCreated' => [
             'App\Listeners\RegisterWokshopAllowance',
             'App\Listeners\RegisterCompetencyAllowance',
             'App\Listeners\RegisterBpjsKesehatan',
             'App\Listeners\RegisterBpjsKetenagakerjaan',
+            'App\Listeners\RegisterSettlementPayroll',
         ],
     ];
 

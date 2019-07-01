@@ -29,7 +29,6 @@
     td.weekend{
       color: red;
     }
-
     table#extra_payment_table_adder td{
       vertical-align: center;
       border:none;
@@ -109,38 +108,12 @@
                 </td>
                 <td style="width:5%;text-align:center;">:</td>
                 <td style="width:35%;">
-                  <table id="table-manhour-summary" style="width:100%;">
-                    <tr>
-                      <td rowspan="2" style="width:20%;">Normal</td>
-                      <td colspan="4" style="width:80%;">Overtime</td>
-                    </tr>
-                    <tr>
-                      <td style="width:20%;">I</td>
-                      <td style="width:20%;">II</td>
-                      <td style="width:20%;">III</td>
-                      <td style="width:20%;">IV</td>
-                    </tr>
-                    <tr>
-                      <td>{{ $normal_count }}</td>
-                      <td>{{ $I_count }}</td>
-                      <td>{{ $II_count }} </td>
-                      <td>{{ $III_count }}</td>
-                      <td>{{ $IV_count }}</td>
-                    </tr>
-                    <tr>
-                      <td>{{ $normal_total }}</td>
-                      <td>{{ $I_total }}</td>
-                      <td>{{ $II_total }} </td>
-                      <td>{{ $III_total }}</td>
-                      <td>{{ $IV_total }}</td>
-                    </tr>
-                  </table>
+                  
                 </td>
-                <td rowspan="2" style="width:10%;">
-                  <p>Total Jam</p>
-                  <p style="text-align:right;"><strong>{{ $man_hour_total }}</strong></p>
+                <td rowspan="1" style="width:10%;">
+                  
                 </td>
-                <td rowspan="2" style="width:30%;">
+                <td rowspan="1" style="width:30%;">
                   <p>Basic Salary</p>
                   <p style="text-align:right;">
                     <strong>{{ number_format($basic_salary,2) }}</strong>
@@ -156,17 +129,60 @@
                   
                 </td>
               </tr>
+              <!--Group Incentives-->
               <tr>
-                <td><strong>Manhour Rate</strong></td>
-                <td style="width:5%;text-align:center;">:</td>
-                <td><strong>{{ number_format($payroll->user->man_hour_rate,2) }}</strong></td>
+                <td colspan="5"><strong>Incentives</strong></td>
               </tr>
               <tr>
-                <td colspan="5"></td>
-              </tr>
-              <tr>
-                <td colspan="5"></td>
-              </tr>
+                  <td colspan="5">
+                    <table style="width:100%;">
+                      <tr>
+                        <td style="text-align:left;width:20%;">
+                            <strong>Week Day</strong>
+                        </td>
+                        <td style="width:5%;text-align:center;">:</td>
+                        <td style="width:35%;text-align:right;">
+
+                         <strong>{{number_format($incentive_weekday->amount,2)}}</strong>
+                          
+                        </td>
+                        <td style="text-align:right">
+                          <strong>{{$incentive_weekday->multiplier}}</strong>
+                        </td>
+                        <td style="width:30%;text-align:right;">
+                          <strong>
+                            <strong>{{number_format($incentive_weekday->total_amount,2)}}</strong>
+                          </strong>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5">
+                    <table style="width:100%;">
+                      <tr>
+                        <td style="text-align:left;width:20%;">
+                            <strong>Week End</strong>
+                        </td>
+                        <td style="width:5%;text-align:center;">:</td>
+                        <td style="width:35%;text-align:right;">
+                          
+                         <strong>{{number_format($incentive_weekend->amount,2)}}</strong>
+                          
+                        </td>
+                        <td style="text-align:right">
+                          <strong>{{$incentive_weekend->multiplier}}</strong>
+                        </td>
+                        <td style="width:30%;text-align:right;">
+                          <strong>
+                            <strong>{{number_format($incentive_weekend->total_amount,2)}}</strong>
+                          </strong>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
 
               <!--Group Allowance-->
               <tr>
@@ -210,51 +226,6 @@
                   </td>
                 </tr>
                 @endforeach
-
-                <!--Block Workshop allowance-->
-                <tr>
-                  <td colspan="5">
-                    <table style="width:100%;">
-                      <tr>
-                        <td style="width: 20%;" colspan="5">
-                          <strong>Workshop Allowance</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="width: 20%;">
-                          <p>Rate</p>
-                        </td>
-                        <td style="text-align:center;width: 5%;">:</td>
-                        <td style="width:35%;text-align:right;">
-                          @if($payroll->workshop_allowance)
-                            <a href="#" id="workshop_allowance_amount" data-type="text" data-pk="{{ $payroll->workshop_allowance->id }}"  data-title="Workshop allowance amount">
-                              {{ number_format($payroll->workshop_allowance->amount,2) }}
-                            </a>
-                          @endif
-                        </td>
-                        <td style="text-align:right">
-                          @if($payroll->workshop_allowance)
-                            <a href="#" id="workshop_allowance_multiplier" data-type="text" data-pk="{{ $payroll->workshop_allowance->id }}"  data-title="Workshop allowance multiplier">
-                              {{$payroll->workshop_allowance->multiplier}}
-                            </a>
-                          @endif
-                        </td>
-                        <td style="width:30%;text-align:right;">
-                          @if($payroll->workshop_allowance)
-                            <p>
-                              <strong id="total_workshop_allowance_amount">
-                                {{ number_format($payroll->workshop_allowance->total_amount,2) }}
-                              </strong>
-                            </p>
-                          @else
-                            <p><strong id="total_workshop_allowance_amount">0</strong></p>
-                          @endif
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <!--ENDBlock Workshop allowance-->
               
               @endif
               <!--ENDLoop over the allowances exclude medical-->
@@ -301,6 +272,7 @@
               </tr>
               <!--ENDBlock Medical Allowance-->
               <!--ENDGroup Allowance-->
+
               <!--Group BPJSn-->
               <tr>
                 <td colspan="5"><strong>BPJS</strong></td>
@@ -340,8 +312,11 @@
                 </td>
               </tr>
               <!--/Group BPJSn-->
-              
-              <!--Loop cashbonds-->
+
+              <tr>
+                <td colspan="5"></td>
+              </tr>
+              <!--Loop over the Expenses-->
               <tr>
                 <td colspan="5">
                   <table style="width:100%;">
@@ -359,24 +334,22 @@
                   </table>
                 </td>
               </tr>
-              <!--ENDLoop cashbonds-->
-
               <!--Loop Settlement-->
               <tr>
                 <td colspan="5">
                   <table style="width:100%;">
                     <tr>
-                      <td style="width:20%;"><strong>Settlement Payroll</strong></td>
+                      <td style="width:20%;"><strong>Settlement</strong></td>
                       <td style="width:5%;text-align:center;">:</td>
                       <td colspan="3" style="">
-                      @if($payroll->settlement_payroll->count())
+                      @if($settlements->count())
                         <table style="width:100%;" id="table-settlement-list">
-                        @foreach($payroll->settlement_payroll as $settlement_payroll)
-                          <?php $settlement_balance = $settlement_payroll->settlement->internal_request->amount - $settlement_payroll->settlement->amount;?>
+                        @foreach($settlements as $settlement)
+                          <?php $settlement_balance = $settlement->internal_request->amount - $settlement->amount;?>
                           <tr>
                             <td style="width: 20%;">
-                              <a href="{{url('settlement/'.$settlement_payroll->settlement->id)}}" target="">
-                                {{ $settlement_payroll->settlement->code}}
+                              <a href="{{url('settlement/'.$settlement->id)}}" target="">
+                                {{ $settlement->code}}
                               </a>
                             </td>
                             <td style="text-align: right;">
@@ -478,7 +451,9 @@
                   </table>
                 </td>
               </tr>
+
               <!--ENDLoop Extra Payroll Payment-->
+
               <tr>
                 <td colspan="3" style="text-align:right;">Take Home Pay</td>
                 <td style="text-align:center;">:</td>
@@ -516,7 +491,6 @@
           </div>
         </div>
         <!--ENDTable action to payroll-->
-
       </div>
     </div>
     <!--Endcolumn Slip Gaji-->
@@ -536,28 +510,20 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
-            <table id="table-ets" class="table">
+            <table class="table" id="table-ets">
               <thead>
                 <tr>
-                  <th rowspan="3" style="text-align:center;border:1px solid;">#</th>
-                  <th rowspan="3" style="text-align:center;border:1px solid;">Date</th>
-                  <th colspan="5" style="text-align:center;border:1px solid;">Manhour</th>
-                  
-                  <th rowspan="3" style="text-align:center;border:1px solid;">Project Number</th>
-                  <th rowspan="3" style="text-align:center;border:1px solid;">Location</th>
-                  
-                </tr>
-                <tr>
-                  <th rowspan="2" style="text-align:center;border:1px solid;">Normal</th>
-                  <th colspan="4" style="text-align:center;border:1px solid;">Overtime</th>
-                  
-                </tr>
-                <tr>
-                  <th style="text-align:center;border:1px solid;">I</th>
-                  <th style="text-align:center;border:1px solid;">II</th>
-                  <th style="text-align:center;border:1px solid;">III</th>
-                  <th style="text-align:center;border:1px solid;">IV</th>
-                </tr>
+                  <td style="width: 5%;">#</td>
+                  <td style="width: 10%;">Date</td>
+                  <td style="width: 10%;">Start Time</td>
+                  <td style="width: 10%;">End Time</td>
+                  <td style="width: 15%;">Description</td>
+                  <td>Location</td>
+                  <td>Project Number</td>
+                  <td>Incentive Week Day</td>
+                  <td>Incentive Week End</td>
+                  <td>Checker Notes</td>
+                </tr>  
               </thead>
               <tbody>
                 @if($ets_lists->count())
@@ -565,34 +531,30 @@
                   @foreach($ets_lists as $ets)
                   <?php $num++;?>
                   <tr class="{{ is_date_weekend($ets->the_date) == TRUE ? 'weekend':'' }}">
-                    <td class="centered-bordered">{{ $num }}</td>
-                    <td class="centered-bordered">
+                    <td class="">{{ $num }}</td>
+                    <td class="">
                       {{ $ets->the_date }}
                       <p>{{ get_day_name($ets->the_date) }}</p>
                     </td>
-                    <td class="centered-bordered">{{ $ets->normal }}</td>
-                    <td class="centered-bordered">{{ $ets->I }}</td>
-                    <td class="centered-bordered">{{ $ets->II }}</td>
-                    <td class="centered-bordered">{{ $ets->III }}</td>
-                    <td class="centered-bordered">{{ $ets->IV }}</td>
-                    <td class="centered-bordered">{{ $ets->project_number }}</td>
-                    <td class="centered-bordered">{{ $ets->location }}</td>
+                    <td class="">{{ $ets->start_time }}</td>
+                    <td class="">{{ $ets->end_time }}</td>
+                    <td class="">{{ $ets->description }}</td>
+                    <td class="">{{ $ets->location }}</td>
+                    <td class="">{{ $ets->project_number }}</td>
+                    <td class="">
+                      <input type="checkbox" class="check_has_incentive_week_day" data-id="{{$ets->id}}" @if($ets->has_incentive_week_day == TRUE) checked @endif disabled/>
+                    </td>
+                    <td class="">
+                      <input type="checkbox" class="check_has_incentive_week_end" data-id="{{$ets->id}}" @if($ets->has_incentive_week_end == TRUE) checked @endif disabled/>
+                    </td>
+                    <td>
+                      {{ $ets->checker_notes }}
+                    </td>
                   </tr>
                   @endforeach
                 @endif
               </tbody>
-              <tfoot>
-                <tr>
-                  <td style="text-align: center;">Total</td>
-                  <td style="text-align:center;"></td>
-                  <td style="text-align:center;">{{$normal_count}}</td>
-                  <td style="text-align:center;">{{abs($I_count)}}</td>
-                  <td style="text-align:center;">{{abs($II_count)}}</td>
-                  <td style="text-align:center;">{{abs($III_count)}}</td>
-                  <td style="text-align:center;">{{abs($IV_count)}}</td>
-                </tr>
-              </tfoot>
-            </table>
+           </table>
           </div>
         </div><!-- /.box-body -->
         <div class="box-footer clearfix"></div>
@@ -825,48 +787,6 @@
         });
     });
 
-
-    //Editable Workshop Allowance Amount
-    $('#workshop_allowance_amount').editable({
-      mode : 'inline',
-      type: 'number',
-      pk: $(this).attr('data-pk'),
-      url: '{!! url('workshop-allowance/update-amount') !!}',
-      title: 'Enter amount',
-      params : {_token : _token},
-      success: function(response, newValue){
-        $('#total_workshop_allowance_amount').text(response.total_workshop_allowance_amount);
-        update_thp_amount();
-        
-      }
-    }).on('shown', function(e, editable) {
-        editable.input.$input.autoNumeric('init',{
-            aSep:',',
-            aDec:'.'
-        });
-    });
-
-    //Editable Workshop Allowance multiplier
-    $('#workshop_allowance_multiplier').editable({
-      mode : 'inline',
-      type: 'number',
-      pk: $(this).attr('data-pk'),
-      url: '{!! url('workshop-allowance/update-multiplier') !!}',
-      title: 'Enter multiplier',
-      params : {_token : _token},
-      success: function(response, newValue){
-        $('#total_workshop_allowance_amount').text(response.total_workshop_allowance_amount);
-        update_thp_amount();
-        
-      }
-    }).on('shown', function(e, editable) {
-        editable.input.$input.autoNumeric('init',{
-            aSep:',',
-            aDec:'.'
-        });
-    });
-
-
     //Create Extra Payroll Payment Handler
     $('#epp_amount').autoNumeric('init',{
       aSep:',',
@@ -938,7 +858,6 @@
       });
     });
 
-
     //Check payroll handling
     $('#btn-check-payroll').on('click', function(event){
       event.preventDefault();
@@ -955,7 +874,7 @@
       $('#modal-change-payroll-status').modal('show');
     });
 
-
+    
     update_thp_amount();
 
     function update_thp_amount(){

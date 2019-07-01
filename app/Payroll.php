@@ -58,4 +58,9 @@ class Payroll extends Model
     {
         return $this->hasOne('App\BpjsKetenagakerjaan');
     }
+
+    public function settlement_payroll()
+    {
+        return $this->hasMany('App\SettlementPayroll');
+    }
 }

@@ -31,9 +31,8 @@ use App\IncentiveWeekDay;
 use App\IncentiveWeekEnd;
 use App\BpjsKesehatan;
 use App\BpjsKetenagakerjaan;
-use App\SettlementPayroll;
 
-class PayrollController extends Controller
+class PayrollController_back extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -248,31 +247,7 @@ class PayrollController extends Controller
         }
         
         //get user's settlements
-        //try to register settlement_payroll modul for this payroll if not found
-        if($payroll->settlement_payroll->count() == 0){
-            //get user's settlements
-            $end_period_date = Carbon::parse($period->end_date)->addDay(3);
-            $settlements = Settlement::with('internal_request')
-                ->where('status','=','approved')
-                ->where('accounted', FALSE)
-                ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
-                ->whereHas('internal_request', function($query) use($user, $period){
-                    $query->where('requester_id', '=', $user->id);
-                    //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
-                })->get();
-
-            if($settlements->count()){
-                foreach($settlements as $settlement){
-                    //create SettlementPayroll
-                    $settlementPayroll = new SettlementPayroll;
-                    $settlementPayroll->settlement_id = $settlement->id;
-                    $settlementPayroll->payroll_id = $payroll->id;
-                    $settlementPayroll->save();
-                }
-            }
-        }
-        //should be removed
-       /* $end_period_date = Carbon::parse($period->end_date)->addDay(3);
+        $end_period_date = Carbon::parse($period->end_date)->addDay(3);
         $settlements = Settlement::with('internal_request')
             ->where('status','=','approved')
             ->where('accounted', FALSE)
@@ -280,7 +255,7 @@ class PayrollController extends Controller
             ->whereHas('internal_request', function($query) use($user, $period){
                 $query->where('requester_id', '=', $user->id);
                 //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
-            })->get();*/
+            })->get();
 
 
 
@@ -359,13 +334,14 @@ class PayrollController extends Controller
             ->with('medical_allowance', $medical_allowance)
 
             ->with('cash_advances', $cash_advances)
+            ->with('settlements', $settlements)
             ->with('user', $user)
             ->with('competency_allowance', $competency_allowance)
             ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
             ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
             ->with('bpjs_kesehatan', $bpjs_kesehatan)
             ->with('bpjs_ketenagakerjaan', $bpjs_ketenagakerjaan)
-            ->with('payroll', $payroll);   
+            ->with('payroll', $payroll);    
         }else{
             return view('payroll.show_for_office')
             ->with('ets_lists', $ets_lists)
@@ -394,6 +370,7 @@ class PayrollController extends Controller
             ->with('medical_allowance', $medical_allowance)
 
             ->with('cash_advances', $cash_advances)
+            ->with('settlements', $settlements)
             ->with('user', $user)
             ->with('competency_allowance', $competency_allowance)
             ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
@@ -644,15 +621,20 @@ class PayrollController extends Controller
 
         //Collect balance from settlement
         $end_period_date = Carbon::parse($period->end_date)->addDay(3);
-        $settlement_payroll_balance = 0;
+        $settlement_balance = 0;
+        $settlements = Settlement::with('internal_request')
+            ->where('status','=','approved')
+            ->where('accounted', FALSE)
+            ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
+            ->whereHas('internal_request', function($query) use($user, $period){
+                $query->where('requester_id', '=', $user->id);
+                //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
+            })->get();
 
-        //If payroll has settlement payroll, count balance from them
-        //otherwise try to register settlement payroll and 
-        //then use them to update the settlement balance if settlements found
-        if($payroll->settlement_payroll->count()){
-            foreach($payroll->settlement_payroll as $settlement_payroll){
-                $balance = $settlement_payroll->settlement->internal_request->amount - $settlement_payroll->settlement->amount;
-                $settlement_payroll_balance+=$balance;
+        if($settlements->count()){
+            foreach($settlements as $settlement){
+                $balance = $settlement->internal_request->amount - $settlement->amount;
+                $settlement_balance+=$balance;
             }
         }
 
@@ -692,10 +674,10 @@ class PayrollController extends Controller
 
         $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance+$total_from_incentive-$cut_amount_from_bpjs;
         //update thp amount of this payroll
-        if($settlement_payroll_balance < 0){
-            $thp_amount = $thp_amount+(abs($settlement_payroll_balance));
+        if($settlement_balance < 0){
+            $thp_amount = $thp_amount+(abs($settlement_balance));
         }else{
-            $thp_amount = $thp_amount-$settlement_payroll_balance;
+            $thp_amount = $thp_amount-$settlement_balance;
         }
         $payroll->thp_amount = $thp_amount;
         $payroll->save();
