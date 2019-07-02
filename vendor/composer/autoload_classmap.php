@@ -45,6 +45,7 @@ return array(
     'AddColumnVendorIdToTableInternalRequests' => $baseDir . '/database/migrations/2017_07_29_151420_add_column_vendor_id_to_table_internal_requests.php',
     'AddCompetencyAllowanceToUsersTable' => $baseDir . '/database/migrations/2019_06_21_094845_add_competency_allowance_to_users_table.php',
     'AddFileColumnToTableQuotationCustomers' => $baseDir . '/database/migrations/2017_07_14_073640_add_file_column_to_table_quotation_customers.php',
+    'AddGrossAmountToPayrollsTable' => $baseDir . '/database/migrations/2019_07_02_075521_add_gross_amount_to_payrolls_table.php',
     'AddHasIncentiveWeekdayAndHasIncentiveWeekEndToTableEts' => $baseDir . '/database/migrations/2019_06_14_031012_add_has_incentive_weekday_and_has_incentive_week_end_to_table_ets.php',
     'AddHasWorkshopAlloacneAndWorkshopAllowanceAmountToUsers' => $baseDir . '/database/migrations/2019_06_17_051225_add_has_workshop_alloacne_and_workshop_allowance_amount_to_users.php',
     'AddIncentiveToUsersTable' => $baseDir . '/database/migrations/2017_06_19_152254_add_incentive_to_users_table.php',

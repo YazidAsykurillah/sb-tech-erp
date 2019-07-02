@@ -690,13 +690,17 @@ class PayrollController extends Controller
         //count total cut from BPJS
         $cut_amount_from_bpjs = $bpjs_kesehatan+$bpjs_ketenagakerjaan;
 
-        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance+$total_from_incentive-$cut_amount_from_bpjs;
+
+        //define gross amount
+        $gross_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance+$total_from_incentive-$cut_amount_from_bpjs;
+
         //update thp amount of this payroll
         if($settlement_payroll_balance < 0){
-            $thp_amount = $thp_amount+(abs($settlement_payroll_balance));
+            $thp_amount = $gross_amount+(abs($settlement_payroll_balance));
         }else{
-            $thp_amount = $thp_amount-$settlement_payroll_balance;
+            $thp_amount = $gross_amount-$settlement_payroll_balance;
         }
+        $payroll->gross_amount = $gross_amount;
         $payroll->thp_amount = $thp_amount;
         $payroll->save();
 

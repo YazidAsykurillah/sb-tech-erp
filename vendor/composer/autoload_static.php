@@ -404,6 +404,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'AddColumnVendorIdToTableInternalRequests' => __DIR__ . '/../..' . '/database/migrations/2017_07_29_151420_add_column_vendor_id_to_table_internal_requests.php',
         'AddCompetencyAllowanceToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2019_06_21_094845_add_competency_allowance_to_users_table.php',
         'AddFileColumnToTableQuotationCustomers' => __DIR__ . '/../..' . '/database/migrations/2017_07_14_073640_add_file_column_to_table_quotation_customers.php',
+        'AddGrossAmountToPayrollsTable' => __DIR__ . '/../..' . '/database/migrations/2019_07_02_075521_add_gross_amount_to_payrolls_table.php',
         'AddHasIncentiveWeekdayAndHasIncentiveWeekEndToTableEts' => __DIR__ . '/../..' . '/database/migrations/2019_06_14_031012_add_has_incentive_weekday_and_has_incentive_week_end_to_table_ets.php',
         'AddHasWorkshopAlloacneAndWorkshopAllowanceAmountToUsers' => __DIR__ . '/../..' . '/database/migrations/2019_06_17_051225_add_has_workshop_alloacne_and_workshop_allowance_amount_to_users.php',
         'AddIncentiveToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_19_152254_add_incentive_to_users_table.php',

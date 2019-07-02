@@ -8,7 +8,7 @@ class Payroll extends Model
 {
     protected $table = 'payrolls';
 
-    protected $fillable = ['period_id', 'user_id', 'thp_amount', 'is_printed', 'status'];
+    protected $fillable = ['period_id', 'user_id', 'thp_amount', 'gross_amount', 'is_printed', 'status'];
 
     public function period()
     {
