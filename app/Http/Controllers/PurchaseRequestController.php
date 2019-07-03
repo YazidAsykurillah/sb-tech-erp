@@ -12,8 +12,11 @@ use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 
 use App\PurchaseRequest;
+use App\ItemPurchaseRequest;
 use App\Project;
 
+use Event;
+use App\Events\ItemPurchaseRequestIsReceived;
 class PurchaseRequestController extends Controller
 {
     /**
@@ -227,11 +230,20 @@ class PurchaseRequestController extends Controller
     {
         $id = $request->ipr_id;
         $mode = $request->mode;
+        $ItemPurchaseRequest = ItemPurchaseRequest::findOrFail($id);
         if($mode == "checked"){
-           return \DB::table('item_purchase_request')->where('id', $id)->update(['is_received'=>TRUE]);
+            //$response = \DB::table('item_purchase_request')->where('id', $id)->update(['is_received'=>TRUE]);
+            $ItemPurchaseRequest->is_received = TRUE;
+            $ItemPurchaseRequest->save();
+            //fire event item purchase request is received
+            Event::fire(new ItemPurchaseRequestIsReceived($ItemPurchaseRequest));
         }else{
-           return \DB::table('item_purchase_request')->where('id', $id)->update(['is_received'=>FALSE]);
+           //$response =  \DB::table('item_purchase_request')->where('id', $id)->update(['is_received'=>FALSE]);
+            $ItemPurchaseRequest->is_received = FALSE;
+            $ItemPurchaseRequest->save();
         }
+        
+        //return $ItemPurchaseRequest;
     }
 
     //PURCHASE REQUEST dataTables

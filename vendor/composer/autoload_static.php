@@ -418,6 +418,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'AddTaxNumberToInvoiceVendorTaxesTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_11_060647_add_tax_number_to_invoice_vendor_taxes_table.php',
         'AddTaxParameterColumnsToInvoiceVendorsTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_06_095649_add_tax_parameter_columns_to_invoice_vendors_table.php',
         'AddTermsToPurchaseOrderVendorsTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_22_093413_add_terms_to_purchase_order_vendors_table.php',
+        'AddTimestampsFieldToItemPurchaseRequestTable' => __DIR__ . '/../..' . '/database/migrations/2019_07_03_084159_add_timestamps_field_to_item_purchase_request_table.php',
         'AddTransactionDateToTransaction' => __DIR__ . '/../..' . '/database/migrations/2017_09_04_064249_add_transaction_date_to_transaction.php',
         'AddTypePercentAndAmountFromTypeToInvoiceVendorsTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_15_065010_add_type_percent_and_amount_from_type_to_invoice_vendors_table.php',
         'AddTypeToEts' => __DIR__ . '/../..' . '/database/migrations/2019_05_29_123409_add_type_to_ets.php',
