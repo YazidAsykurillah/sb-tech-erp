@@ -9,6 +9,7 @@ use App\Settlement;
 use App\InvoiceVendor;
 use App\InvoiceCustomer;
 use App\Cashbond;
+use App\Payroll;
 use App\AccountingExpense;
 
 class Transaction extends Model
@@ -43,8 +44,7 @@ class Transaction extends Model
                 }
                 else{
                     return NULL;
-                }
-                
+                }   
             }
             
         }
@@ -67,6 +67,14 @@ class Transaction extends Model
                 return NULL;
             }
             return NULL;
+        }
+        elseif($this->refference == 'payroll'){
+
+            $member_name = "";
+            if($payroll = Payroll::find($this->refference_id)){
+                $member_name = $payroll->user->name;
+            }
+            return $member_name;
         }
     	else{
     		return "";
