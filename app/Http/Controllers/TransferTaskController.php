@@ -900,6 +900,8 @@ class TransferTaskController extends Controller
         try{
             $payroll = Payroll::findOrFail($id);
             $cash = Cash::findOrFail($cash_id);
+            //get payroll gross amount
+            $gross_amount = $payroll->gross_amount;
 
             $transaction = new Transaction;
             $transaction->cash_id = $cash->id;
@@ -909,13 +911,13 @@ class TransferTaskController extends Controller
             $transaction->notes = $payroll->period->code;
             $transaction->transaction_date = Carbon::now();
             $transaction->type = 'debet';
-            $transaction->amount = abs($payroll->thp_amount);
-            $transaction->reference_amount = $cash->amount - abs($payroll->thp_amount);
+            $transaction->amount = abs($gross_amount);
+            $transaction->reference_amount = $cash->amount - abs($gross_amount);
             $transaction->save();
 
             //now fix the cash amount id,
             if($cash){
-                $cash->amount = $cash->amount - abs($payroll->thp_amount);
+                $cash->amount = $cash->amount - abs($gross_amount);
                 $cash->save();
             }
 

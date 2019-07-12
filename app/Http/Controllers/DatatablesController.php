@@ -1208,6 +1208,9 @@ class DatatablesController extends Controller
                 if($transactions->refference == 'cashbond-site'){
                     $link = '<a href="'.url('cash-bond-site/'.$transactions->refference_id).'">'.$transactions->refference_number.'</a>';
                 }
+                if($transactions->refference == 'payroll'){
+                    $link = '<a href="'.url('payroll/'.$transactions->refference_id).'">'.$transactions->refference_number.'</a>';
+                }
 
                 return $link;
             })
