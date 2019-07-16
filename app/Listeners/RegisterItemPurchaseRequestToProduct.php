@@ -38,6 +38,7 @@ class RegisterItemPurchaseRequestToProduct
             $product->initial_stock = 0;
             $product->stock = $itemPurchaseRequest->quantity;
             $product->unit = $itemPurchaseRequest->unit;
+            $product->price = $itemPurchaseRequest->price;
             $product->save();
         }else{
             $product = Product::where('name','=',$itemPurchaseRequest_name)->firstOrFail();

@@ -35,7 +35,9 @@ class ProductController extends Controller
         ])->get();
 
         $data_product = Datatables::of($products)
-            
+            ->editColumn('price', function($products){
+                return number_format($products->price);
+            })
             ->addColumn('actions', function($products){
                     $actions_html ='<a href="'.url('product/'.$products->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';

@@ -46,6 +46,11 @@
                   <td>{{ $product->unit }}</td>
                 </tr>
                 <tr>
+                  <td style="width: 20%;">Price</td>
+                  <td style="width: 1%;">:</td>
+                  <td>{{ number_format($product->price) }}</td>
+                </tr>
+                <tr>
                   <td style="width: 20%;">Initial Stock</td>
                   <td style="width: 1%;">:</td>
                   <td>{{ $product->initial_stock }}</td>

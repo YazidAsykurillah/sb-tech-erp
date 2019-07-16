@@ -410,6 +410,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'AddIncentiveToUsersTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_19_152254_add_incentive_to_users_table.php',
         'AddIsCompletedToTableProjects' => __DIR__ . '/../..' . '/database/migrations/2019_05_06_133844_add_is_completed_to_table_projects.php',
         'AddLocationToEts' => __DIR__ . '/../..' . '/database/migrations/2019_05_29_122917_add_location_to_ets.php',
+        'AddPriceToProductsTable' => __DIR__ . '/../..' . '/database/migrations/2019_07_16_100835_add_price_to_products_table.php',
         'AddQuotationVendorIdToPurchaseOrderVendor' => __DIR__ . '/../..' . '/database/migrations/2017_05_22_053902_add quotation_vendor_id to purchase order vendor.php',
         'AddRelatedAccountingColumnsToTablePayrolls' => __DIR__ . '/../..' . '/database/migrations/2019_06_24_085634_Add related accounting columns to table payrolls.php',
         'AddStatusToPayollsTable' => __DIR__ . '/../..' . '/database/migrations/2019_06_24_072214_add_status_to_payolls_table.php',

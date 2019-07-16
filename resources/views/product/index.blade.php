@@ -45,6 +45,7 @@
                       <th style="width:15%;">Code</th>
                       <th style="">Name</th>
                       <th style="width:10%">Unit</th>
+                      <th style="width:10%">Price</th>
                       <th style="width:10%">Initital Stock</th>
                       <th style="width:10%">Stock</th>
                       <th style="width:10%;text-align:center;">Actions</th>
@@ -52,6 +53,7 @@
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -67,6 +69,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -130,6 +133,7 @@
         { data: 'code', name: 'code' },
         { data: 'name', name: 'name' },
         { data: 'unit', name: 'unit' },
+        { data: 'price', name: 'price' },
         { data: 'initial_stock', name: 'initial_stock' },
         { data: 'stock', name: 'stock' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
@@ -148,7 +152,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 6) {
+      if ($(this).index() != 0 && $(this).index() != 7) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           
