@@ -29,11 +29,17 @@
                 <a href="{{ URL::to('cash-bond/create')}}" class="btn btn-primary btn-xs" title="Create new Cash Bond">
                   <i class="fa fa-plus"></i>&nbsp;Add New
                 </a>
-                @if(\Auth::user()->can('set-cashbond-payment-status-to-paid'))
-                <button type="button" class="btn btn-success btn-xs" id="btn-set-cashbond-payment-status-to-paid">
-                  <i class="fa fa-check"></i> Set payment status to Paid
+                @if(\Auth::user()->can('approve-cashbond'))
+                <button type="button" class="btn btn-warning btn-xs" id="btn-approve">
+                  <i class="fa fa-check-circle"></i> Approve
                 </button>  
                 @endif
+                @if(\Auth::user()->can('set-cashbond-payment-status-to-paid'))
+                <button type="button" class="btn btn-success btn-xs" id="btn-set-cashbond-payment-status-to-paid">
+                  <i class="fa fa-check"></i> Set as Paid
+                </button>  
+                @endif
+                
               </div>
               
             </div><!-- /.box-header -->
@@ -144,7 +150,7 @@
         </div>
         <div class="modal-body">
           <p class="text text-danger">
-            <span id="selected_cashbond_counter"></span> Cashbond(s) will be approved
+            <span id="selected_cashbond_counter"></span> Cashbond(s) will be paid
           </p>
         </div>
         <div class="modal-footer">
@@ -156,6 +162,30 @@
     </div>
   </div>
 <!--ENDModal Set Cashbond Payment status to paid-->
+
+<!--Modal Approve Cashbond-->
+  <div class="modal fade" id="modal-approve-cashbond" tabindex="-1" role="dialog" aria-labelledby="modal-approve-cashbondLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'cashbond/approve', 'id'=> 'form-approve-cashbond', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-approve-cashbondLabel">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <p class="text text-danger">
+            <span id="approve_cashbond_counter"></span> Cashbond(s) will be approved
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info">Submit</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Approve Cashbond-->
 @endsection
 
 @section('additional_scripts')
@@ -235,7 +265,7 @@
       $(this).toggleClass('selected');
     });
     //ENDPurchase request row selection handler
-    //Approve handler
+    //BlockSet Payment Status Handler
     $('#btn-set-cashbond-payment-status-to-paid').on('click', function(event){
       event.preventDefault();
       selectedCashbond = [];
@@ -255,5 +285,28 @@
       }
       
     });
+    //ENDBlock Set Payment Status Handler
+
+    //Block Approve Cashbond
+    $('#btn-approve').on('click', function(event){
+      event.preventDefault();
+      selectedCashbond = [];
+      var selected_cashbond_id = tableCashBond.rows('.selected').data();
+      $.each( selected_cashbond_id, function( key, value ) {
+        selectedCashbond.push(selected_cashbond_id[key].id);
+      });
+      if(selectedCashbond.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-approve-cashbond').find('.id_to_approve').remove();
+        $('#selected_cashbond_counter').html(selectedCashbond.length);
+        $.each( selectedCashbond, function( key, value ) {
+          $('#form-approve-cashbond').append('<input type="hidden" class="id_to_approve" name="id_to_approve[]" value="'+value+'"/>');
+        });
+        $('#modal-approve-cashbond').modal('show');  
+      }
+      
+    });
+    //ENDBlock Approve Cashbond
   </script>
 @endsection

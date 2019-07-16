@@ -310,4 +310,31 @@ class CashbondController extends Controller
             ->with('successMessage',$counter." cashbond has been set to paid");
 
     }
+
+    public function approve(Request $request)
+    {
+        $counter = 0;
+        if(count($request->id_to_approve)){
+            foreach($request->id_to_approve as $id){
+                try {
+                    $cashbond = Cashbond::findOrFail($id);
+                    if($cashbond->status != 'approved'){
+                        $cashbond->status = 'approved';
+                        $cashbond->save();
+                        $counter++;    
+                    }else{
+                        $cashbond->save();
+                    }
+                    
+                } catch (Exception $e) {
+                    print_r($e);
+                    exit();
+                }
+                
+            }
+        }
+        return redirect()->back()
+            ->with('successMessage',$counter." cashbond has been approved");
+
+    }
 }

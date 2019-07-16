@@ -150,6 +150,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	//Cashbond
+	Route::post('cashbond/approve', 'CashbondController@approve');
 	Route::post('cashbond/setPaymentStatusPaid', 'CashbondController@setPaymentStatusPaid');
 	Route::post('changeCashbondStatus', 'CashbondController@changeStatus');
 	Route::post('deleteCashbond', 'CashbondController@destroy');
