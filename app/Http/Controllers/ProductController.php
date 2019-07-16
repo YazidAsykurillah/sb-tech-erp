@@ -103,6 +103,7 @@ class ProductController extends Controller
                         'code'=>$value->code,
                         'name'=>$value->name,
                         'unit'=>$value->unit,
+                        'price'=>$value->price,
                         'initial_stock'=>$value->initial_stock,
                         'stock'=>$value->stock,
                     ];
