@@ -7,7 +7,7 @@
 @section('page_header')
   <h1>
     Product
-    <small>Create Product</small>
+    <small>Edit Product</small>
   </h1>
 @endsection
 
@@ -15,7 +15,7 @@
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="{{ URL::to('product') }}"><i class="fa fa-cube"></i> Product</a></li>
-    <li class="active"><i></i> Create</li>
+    <li class="active"><i></i> Edit</li>
   </ol>
 @endsection
 
@@ -24,10 +24,10 @@
     <div class="col-lg-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Product</h3>
+              <h3 class="box-title">Edit Product</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
-              {!! Form::open(['route'=>'product.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-product','files'=>true]) !!}
+              {!! Form::model($product, ['route'=>['product.update', $product->id], 'class'=>'form-horizontal','id'=>'form-edit-product', 'method'=>'put', 'files'=>true]) !!}
               <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
                 {!! Form::label('code', 'Code', ['class'=>'col-sm-2 control-label']) !!}
                 <div class="col-sm-10">

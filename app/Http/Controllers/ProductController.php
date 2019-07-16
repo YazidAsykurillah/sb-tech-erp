@@ -10,6 +10,7 @@ use Excel;
 
 use App\Http\Requests;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 
 use App\Product;
 
@@ -45,9 +46,10 @@ class ProductController extends Controller
                     $actions_html .='<a href="'.url('product/'.$products->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this product">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-product" data-id="'.$products->id.'" data-text="'.$products->name.'">';
+                    /*$actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-product" data-id="'.$products->id.'" data-text="'.$products->name.'">';
                     $actions_html .=    '<i class="fa fa-trash"></i>';
                     $actions_html .='</button>';
+                    */
 
                     return $actions_html;
             });
@@ -77,11 +79,11 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $product = new Product;
-        $product->code = 'PRD-'.time();
+        $product->code = $request->code;
         $product->name = $request->name;
         $product->unit = $request->unit;
-        $product->initial_stock = $request->initial_stock ? $request->initial_stock : 0;
-        $product->stock = $request->initial_stock ? $request->initial_stock : 0;
+        //$product->initial_stock = $request->initial_stock ? $request->initial_stock : 0;
+        $product->stock = $request->stock ? $request->stock : 0;
         $product->save();
         return redirect('product')
             ->with('successMessage', "Product $request->name has been stored");
@@ -104,7 +106,7 @@ class ProductController extends Controller
                         'name'=>$value->name,
                         'unit'=>$value->unit,
                         'price'=>$value->price,
-                        'initial_stock'=>$value->initial_stock,
+                        //'initial_stock'=>$value->initial_stock,
                         'stock'=>$value->stock,
                     ];
                 }
@@ -144,7 +146,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::findOrfail($id);
+        return view('product.edit')
+            ->with('product', $product);
     }
 
     /**
@@ -154,9 +158,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
-        //
+        $product = Product::findOrfail($id);
+        $product->code = $request->code;
+        $product->name = $request->name;
+        $product->unit = $request->unit;
+        $product->stock = $request->stock ? $request->stock : 0;
+        $product->save();
+        return redirect('product')
+            ->with('successMessage', "Product $request->name has been stored");
     }
 
     /**

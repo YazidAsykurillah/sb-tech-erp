@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class StoreProductRequest extends Request
+class UpdateProduct extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class StoreProductRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,10 +24,7 @@ class StoreProductRequest extends Request
     public function rules()
     {
         return [
-            'code'=>'required|unique:products,code',
-            'name'=>'required|unique:products,name',
-            'unit'=>'required',
-            'price'=>'required',
+            //
         ];
     }
 }
