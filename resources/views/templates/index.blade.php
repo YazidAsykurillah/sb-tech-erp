@@ -51,6 +51,13 @@
                         <a href="{{ url('templates/download/?file_name=ets_site') }}" class="btn btn-info"><i class="fa fa-download"></i></a>
                       </td>
                     </tr>
+                    <tr>
+                      <td></td>
+                      <td>Product</td>
+                      <td style="text-align:center;">
+                        <a href="{{ url('templates/download/?file_name=product') }}" class="btn btn-info"><i class="fa fa-download"></i></a>
+                      </td>
+                    </tr>
                   </tbody>
               </table>
             </div>

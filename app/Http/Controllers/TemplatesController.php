@@ -15,16 +15,24 @@ class TemplatesController extends Controller
 
     public function download(Request $request)
     {
-    	$file_name = $request->file_name;
 
+    	$file_name = $request->file_name;
 
         if($file_name == 'ets_office'){
             $pathToFile = public_path().'/files/templates/ets-office.xlsx';
             return response()->download($pathToFile, 'Template-ETS-OFFICE.xlsx');
+
+        }
+        elseif ($file_name == 'ets_site'){
+            $pathToFile = public_path().'/files/templates/ets-site.xlsx';
+            return response()->download($pathToFile, 'Template-ETS-SITE.xlsx');
+        }
+        elseif ($file_name == 'product'){
+            $pathToFile = public_path().'/files/templates/product.xlsx';
+            return response()->download($pathToFile, 'product.xlsx');
         }
         else{
-            $pathToFile = public_path().'/files/templates/ets-site.xlsx';
-            return response()->download($pathToFile, 'Template-ETS-SITE.xlsx');    
+            return "File does not exist";
         }
     	
     }
