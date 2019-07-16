@@ -9,7 +9,7 @@ class Product extends Model
     protected $table = 'products';
 
     protected $ftillable = [
-    	'code', 'name', 'initial_stock', 'stock', 'unit'
+    	'code', 'name', 'initial_stock', 'stock', 'unit', 'price'
     ];
     
 }

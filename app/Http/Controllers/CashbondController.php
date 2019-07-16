@@ -291,9 +291,14 @@ class CashbondController extends Controller
             foreach($request->id_to_set_paid as $id){
                 try {
                     $cashbond = Cashbond::findOrFail($id);
-                    $cashbond->payment_status = TRUE;
-                    $cashbond->save();
-                    $counter++;
+                    if($cashbond->status == 'approved'){
+                        $cashbond->payment_status = TRUE;
+                        $cashbond->save();
+                        $counter++;    
+                    }else{
+                        $cashbond->save();
+                    }
+                    
                 } catch (Exception $e) {
                     print_r($e);
                     exit();
