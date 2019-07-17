@@ -326,6 +326,14 @@
       </li>
       @endif
 
+      @if(\Auth::user()->can('access-product-category'))
+      <li {{{ (Request::is('product-category/*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('product-category') }}">
+          <i class="fa fa-cubes"></i> <span>Product Category</span>
+        </a>
+      </li>
+      @endif
+
       @if(\Auth::user()->can('access-product'))
       <li {{{ (Request::is('product*') ? 'class=active' : '') }}}>
         <a href="{{ URL::to('product') }}">

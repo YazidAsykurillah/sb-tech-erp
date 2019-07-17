@@ -475,6 +475,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('product/dataTables', 'ProductController@dataTables');
 	Route::resource('product', 'ProductController');
 
+	//Product Category
+	Route::post('product-category/import', 'ProductCategoryController@import');
+	Route::get('product-category/dataTables', 'ProductCategoryController@dataTables');
+	Route::resource('product-category', 'ProductCategoryController');
 
 	//Cashbond Installment
 	Route::post('cashbond-installment/changeSchedule', 'CashbondInstallmentController@changeSchedule');
