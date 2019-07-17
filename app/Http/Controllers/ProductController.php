@@ -13,6 +13,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 
 use App\Product;
+use App\ProductCategory;
 
 class ProductController extends Controller
 {
@@ -89,6 +90,8 @@ class ProductController extends Controller
             ->with('successMessage', "Product $request->name has been stored");
     }
 
+    /*
+    ####Back UP###
     public function importExcel(Request $request)
     {
         if($request->hasFile('file')){
@@ -124,6 +127,7 @@ class ProductController extends Controller
             ->with('errorMessage', "No file to be imported");
         }
     }
+    */
 
     /**
      * Display the specified resource.
@@ -182,5 +186,49 @@ class ProductController extends Controller
     }
 
 
+    public function importExcel(Request $request)
+    {
+        if($request->hasFile('file')){
+            
+            config(['excel.import.startRow' => 2]);
+            $path = $request->file('file')->getRealPath();
+            $data = Excel::load($path, function($reader){
+                    })->get();
+            //dd($data);
+            if(!empty($data) && $data->count()){
+                foreach ($data as $key => $value){
+                    $insert = [
+                        'code'=>$value->code,
+                        'product_category_id'=>$this->getProductCategoryId($value->product_category_code),
+                        'name'=>$value->name,
+                        'unit'=>$value->unit,
+                        'price'=>$value->price,
+                        'part_number'=>$value->part_number,
+                        'brand'=>$value->brand,
+                        'stock'=>$value->stock,
+                    ];
+                    $product = Product::firstOrCreate($insert);
+                }
+            }
+            return back()
+            ->with('successMessage', "Data has been imported");
+        }
+        else{
+            return redirect()->back()
+            ->with('errorMessage', "No file to be imported");
+        }
+    }
+
+    //retrurn product category id or null
+    protected function getProductCategoryId($code)
+    {
+        $result = NULL;
+        $product_category = ProductCategory::where('code', 'LIKE', "%$code%")->first();
+        if($product_category){
+            $result = $product_category->id;
+        }
+        return $result;
+
+    }
     
 }

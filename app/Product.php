@@ -8,7 +8,7 @@ class Product extends Model
 {
     protected $table = 'products';
 
-    protected $ftillable = [
+    protected $fillable = [
     	'code', 'name', 'initial_stock', 'stock', 'unit', 'price', 'brand', 'part_number', 'product_category_id'
     ];
     
