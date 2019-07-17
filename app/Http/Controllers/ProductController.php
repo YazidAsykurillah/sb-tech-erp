@@ -31,12 +31,15 @@ class ProductController extends Controller
     public function dataTables(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $products = Product::select([
+        $products = Product::with('product_category')->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'products.*',
         ])->get();
 
         $data_product = Datatables::of($products)
+            ->editColumn('product_category', function($products){
+                return $products->product_category ? $products->product_category->name : NULL;
+            })
             ->editColumn('price', function($products){
                 return number_format($products->price);
             })

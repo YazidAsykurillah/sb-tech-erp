@@ -137,7 +137,7 @@
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'code', name: 'code' },
-        { data: 'product_category_id', name: 'product_category_id' },
+        { data: 'product_category', name: 'product_category.name'},
         { data: 'name', name: 'name' },
         { data: 'unit', name: 'unit' },
         { data: 'price', name: 'price' },
