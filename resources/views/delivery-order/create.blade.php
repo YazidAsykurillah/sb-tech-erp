@@ -148,7 +148,7 @@
           <div class="form-group">
             {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              <a href="{{ url('cash-bond') }}" class="btn btn-default">
+              <a href="{{ url('delivery-order') }}" class="btn btn-default">
                 <i class="fa fa-repeat"></i>&nbsp;Cancel
               </a>&nbsp;
               <button type="submit" class="btn btn-info" id="btn-submit-delivery-order">
