@@ -78,9 +78,13 @@ class PayrollController extends Controller
                     $actions_html ='<a href="'.url('payroll/'.$payrolls->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    //Only deletable if the payroll is not accounted yet
+                    if($payrolls->accounted == FALSE){
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';    
+                    }
+                    
 
                     return $actions_html;
             });
