@@ -253,7 +253,6 @@
             total.toLocaleString()
         );
       },
-
     });
 
     // Delete button handler
