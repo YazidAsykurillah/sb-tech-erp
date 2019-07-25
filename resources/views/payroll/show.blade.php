@@ -361,46 +361,7 @@
               </tr>
               <!--ENDLoop cashbonds-->
 
-              <!--Loop Settlement-->
-              <tr>
-                <td colspan="5">
-                  <table style="width:100%;">
-                    <tr>
-                      <td style="width:20%;"><strong>Settlement Payroll</strong></td>
-                      <td style="width:5%;text-align:center;">:</td>
-                      <td colspan="3" style="">
-                      @if($payroll->settlement_payroll->count())
-                        <table style="width:100%;" id="table-settlement-list">
-                        @foreach($payroll->settlement_payroll as $settlement_payroll)
-                          <?php $settlement_balance = $settlement_payroll->settlement->internal_request->amount - $settlement_payroll->settlement->amount;?>
-                          <tr>
-                            <td style="width: 20%;">
-                              <a href="{{url('settlement/'.$settlement_payroll->settlement->id)}}" target="">
-                                {{ $settlement_payroll->settlement->code}}
-                              </a>
-                            </td>
-                            <td style="text-align: right;">
-                              @if($settlement_balance > 0)
-                                <strong>
-                                  - {{ number_format(abs($settlement_balance), 2) }}
-                                </strong>
-                              @else
-                                <strong>
-                                  + {{ number_format(abs($settlement_balance), 2) }}
-                                </strong>
-                              @endif
-                            </td>
-                          </tr>
-                        @endforeach
-                        </table>
-                      @endif
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-              <!--ENDLoop Settlement-->
-
+              
               <!--Loop Extra Payroll Payment-->
               <tr>
                 <td colspan="5"><strong>Extra Payroll Payment</strong></td>
@@ -479,6 +440,51 @@
                 </td>
               </tr>
               <!--ENDLoop Extra Payroll Payment-->
+              <tr>
+                <td colspan="3" style="text-align:right;">Gross Amount</td>
+                <td style="text-align:center;">:</td>
+                <td style="text-align:right;"><strong id="gross_amount">{{ number_format($payroll->gross_amount,2) }}</strong></td>
+              </tr>
+              <!--Loop Settlement-->
+              <tr>
+                <td colspan="5">
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="width:20%;"><strong>Settlement Payroll</strong></td>
+                      <td style="width:5%;text-align:center;">:</td>
+                      <td colspan="3" style="">
+                      @if($payroll->settlement_payroll->count())
+                        <table style="width:100%;" id="table-settlement-list">
+                        @foreach($payroll->settlement_payroll as $settlement_payroll)
+                          <?php $settlement_balance = $settlement_payroll->settlement->internal_request->amount - $settlement_payroll->settlement->amount;?>
+                          <tr>
+                            <td style="width: 20%;">
+                              <a href="{{url('settlement/'.$settlement_payroll->settlement->id)}}" target="">
+                                {{ $settlement_payroll->settlement->code}}
+                              </a>
+                            </td>
+                            <td style="text-align: right;">
+                              @if($settlement_balance > 0)
+                                <strong>
+                                  - {{ number_format(abs($settlement_balance), 2) }}
+                                </strong>
+                              @else
+                                <strong>
+                                  + {{ number_format(abs($settlement_balance), 2) }}
+                                </strong>
+                              @endif
+                            </td>
+                          </tr>
+                        @endforeach
+                        </table>
+                      @endif
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!--ENDLoop Settlement-->
+
               <tr>
                 <td colspan="3" style="text-align:right;">Take Home Pay</td>
                 <td style="text-align:center;">:</td>
