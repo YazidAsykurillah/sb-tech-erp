@@ -79,7 +79,7 @@ class PayrollController extends Controller
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
                     //Only deletable if the payroll is not accounted yet
-                    if($payrolls->accounted == FALSE){
+                    if($payrolls->accounted == FALSE && \Auth::user()->can('delete-payroll')){
                         $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';    
