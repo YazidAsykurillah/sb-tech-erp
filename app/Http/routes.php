@@ -444,6 +444,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cash-flow', 'CashFlowController');
 
 	//Payroll
+	Route::get('payroll/{id}/print', 'PayrollController@printPdf');
 	Route::post('payroll/change-status', 'PayrollController@changeStatus');
 	Route::post('payroll/setStatusApprove', 'PayrollController@setStatusApprove');
 	Route::post('payroll/setStatusCheck', 'PayrollController@setStatusCheck');

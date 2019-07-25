@@ -62,9 +62,17 @@
     <div class="col-md-12">
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <div class="panel-title">
-            <i class="fa fa-credit-card"></i>&nbsp;Slip Gaji
+          <div class="pull-left">    
+            <h3 class="panel-title">
+              <i class="fa fa-credit-card"></i>&nbsp;Slip Gaji  
+            </h3>
           </div>
+          <div class="pull-right">
+            <a href="{{ url('payroll/'.$payroll->id.'/print') }}" class="btn btn-default btn-xs" id="btn-print" title="Print">
+              <i class="fa fa-print"></i>&nbsp;Print
+            </a>
+          </div>
+          <div class="clearfix"></div>
         </div>
         <!--Body employee info-->
         <div class="panel-body">
