@@ -34,6 +34,19 @@
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
+                <form method="POST" id="form-filter" class="form-inline" role="form">
+                  <div class="form-group">
+                    <label class="" for="filter_user_type">User Type</label>
+                    <select name="filter_user_type" id="filter_user_type" class="form-control" style="width: 200px;">
+                      <option value="">All</option>
+                      <option value="office">Office</option>
+                      <option value="outsource">Outsource</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+                <br/>
                 <table class="table table-bordered" id="table-payroll">
                   <thead>
                     <tr>
@@ -134,7 +147,13 @@
       "lengthMenu": [[10, 25, 100, 500, -1], [10, 25, 100, 500, "All"]],
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getTransferTaskPayroll') !!}',
+      //ajax : '{!! route('datatables.getTransferTaskPayroll') !!}',
+      ajax : {
+        url : '{!! route('datatables.getTransferTaskPayroll') !!}',
+        data: function(d){
+          d.filter_user_type = $('select[name=filter_user_type]').val();
+        }
+      },
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'period.code', name: 'period.code' },
@@ -188,6 +207,11 @@
     });
     //ENDBlock search input and select
 
+    //Filter handling
+    $('#form-filter').on('submit', function(e) {
+      tablePayroll.draw();
+      e.preventDefault();
+    });
 
     var buttonTableTools = new $.fn.dataTable.Buttons(tablePayroll,{
         buttons: [

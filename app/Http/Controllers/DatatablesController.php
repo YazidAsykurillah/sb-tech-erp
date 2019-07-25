@@ -2457,8 +2457,15 @@ class DatatablesController extends Controller
             'payrolls.*',
         ])
         ->where('payrolls.status','=','approved')
-        ->where('payrolls.accounted','=',FALSE)
-        ->get();
+        ->where('payrolls.accounted','=',FALSE);
+
+        if($request->get('filter_user_type')){
+            $user_type = $request->get('filter_user_type');
+            $payrolls->whereHas('user', function($q) use ($user_type){
+                $q->where('users.type','=',$user_type);
+            });
+        }
+        
 
         $data_payrolls = Datatables::of($payrolls)
             ->with('grand_total', $grand_total)
