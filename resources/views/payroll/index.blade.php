@@ -85,6 +85,17 @@
                   </thead>
                   
                   <tbody></tbody>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </tfoot>
               </table>
             </div>
           </div><!-- /.box-body -->
@@ -220,6 +231,28 @@
         { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
+      footerCallback: function( tfoot, data, start, end, display ) {
+        var api = this.api();
+        // Remove the formatting to get float data for summation
+        var theFloat = function ( i ) {
+            return typeof i === 'string' ?
+                parseFloat(i.replace(/[\$,]/g, '')) :
+                typeof i === 'number' ?
+                    i : 0;
+        };
+
+        // Total over all pages
+        total = api
+            .column(4)
+            .data()
+            .reduce( function (a, b) {
+                return theFloat(a) + theFloat(b);
+            }, 0 );
+        // Update footer
+        $( api.column(4).footer() ).html(
+            total.toLocaleString()
+        );
+      },
 
     });
 
