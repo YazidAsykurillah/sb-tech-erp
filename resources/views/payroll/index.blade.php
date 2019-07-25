@@ -26,12 +26,16 @@
             <div class="box-header with-border">
               <h3 class="box-title">Payroll</h3>
               <div class="pull-right">
+                @if(\Auth::user()->can('check-payroll'))
                 <a href="#" class="btn btn-default btn-xs" id="btn-set-check" title="Mark payroll status to be checked">
                   <i class="fa fa-check"></i>&nbsp;Check
                 </a>
+                @endif
+                @if(\Auth::user()->can('approve-payroll'))
                 <a href="#" class="btn btn-default btn-xs" id="btn-set-approve" title="Mark payroll status to be approved">
                   <i class="fa fa-check-circle"></i>&nbsp;Approve
                 </a>
+                @endif
                 @if(\Auth::user()->can('create-payroll'))
                 <a href="{{ URL::to('payroll/create')}}" class="btn btn-primary btn-xs" title="Create new Payroll">
                   <i class="fa fa-plus"></i>&nbsp;Add New
@@ -51,9 +55,14 @@
                   <div class="form-group">
                     <label class="" for="filter_user_type">User Type</label>
                     <select name="filter_user_type" id="filter_user_type" class="form-control" style="width: 200px;">
+                    @if(\Auth::user()->can('index-all-user-type'))
                       <option value="">All</option>
                       <option value="office">Office</option>
                       <option value="outsource">Outsource</option>
+                    @endif
+                    @if(\Auth::user()->can('index-user-outsource'))
+                      <option value="outsource">Outsource</option>
+                    @endif
                     </select>
                   </div>
 
