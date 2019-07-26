@@ -44,7 +44,7 @@
                 <tr>
                   <td style="width: 25%;">PIC</td>
                   <td style="width: 5%;">:</td>
-                  <td style="">{{$deliveryOrder->sender->name}}</td>
+                  <td style="">{{$deliveryOrder->sender ? ->$deliveryOrder->sender->name : ""}}</td>
                 </tr>
               </table>
             </div>
