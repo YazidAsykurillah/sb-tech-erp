@@ -41,7 +41,7 @@ class DeliveryOrderController extends Controller
                 return $deliveryOrders->creator->name;
             })
             ->editColumn('sender_id', function($deliveryOrders){
-                return $deliveryOrders->sender->name;
+                return $deliveryOrders->sender ? $deliveryOrders->sender->name : NULL;
             })
             ->addColumn('actions', function($deliveryOrders){
                     $actions_html ='<a href="'.url('delivery-order/'.$deliveryOrders->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
