@@ -79,11 +79,11 @@ class PayrollController extends Controller
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
                     //Only deletable if the payroll is not accounted yet
-                    if($payrolls->accounted == FALSE && \Auth::user()->can('delete-payroll')){
+                    //if($payrolls->accounted == FALSE && \Auth::user()->can('delete-payroll')){
                         $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';    
-                    }
+                    //}
                     
 
                     return $actions_html;
@@ -251,40 +251,6 @@ class PayrollController extends Controller
                             ->get();
         }
         
-        //get user's settlements
-        //try to register settlement_payroll modul for this payroll if not found
-        if($payroll->settlement_payroll->count() == 0){
-            //get user's settlements
-            $end_period_date = Carbon::parse($period->end_date)->addDay(4);
-            $settlements = Settlement::with('internal_request')
-                ->where('status','=','approved')
-                ->where('accounted', FALSE)
-                //->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
-                ->whereHas('internal_request', function($query) use($user, $period){
-                    $query->where('requester_id', '=', $user->id);
-                })->get();
-
-            if($settlements->count()){
-                foreach($settlements as $settlement){
-                    //create SettlementPayroll
-                    $settlementPayroll = new SettlementPayroll;
-                    $settlementPayroll->settlement_id = $settlement->id;
-                    $settlementPayroll->payroll_id = $payroll->id;
-                    $settlementPayroll->save();
-                }
-            }
-        }
-        //should be removed
-       /* $end_period_date = Carbon::parse($period->end_date)->addDay(3);
-        $settlements = Settlement::with('internal_request')
-            ->where('status','=','approved')
-            ->where('accounted', FALSE)
-            ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
-            ->whereHas('internal_request', function($query) use($user, $period){
-                $query->where('requester_id', '=', $user->id);
-                //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
-            })->get();*/
-
 
 
         //get or create competency allowance

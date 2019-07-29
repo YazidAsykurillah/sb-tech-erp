@@ -31,8 +31,9 @@ use App\IncentiveWeekDay;
 use App\IncentiveWeekEnd;
 use App\BpjsKesehatan;
 use App\BpjsKetenagakerjaan;
+use App\SettlementPayroll;
 
-class PayrollController_back extends Controller
+class PayrollController_back_2019_07_30 extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -77,9 +78,13 @@ class PayrollController_back extends Controller
                     $actions_html ='<a href="'.url('payroll/'.$payrolls->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
+                    //Only deletable if the payroll is not accounted yet
+                    if($payrolls->accounted == FALSE && \Auth::user()->can('delete-payroll')){
+                        $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
+                        $actions_html .=    '<i class="fa fa-trash"></i>';
+                        $actions_html .='</button>';    
+                    }
+                    
 
                     return $actions_html;
             });
@@ -247,7 +252,30 @@ class PayrollController_back extends Controller
         }
         
         //get user's settlements
-        $end_period_date = Carbon::parse($period->end_date)->addDay(3);
+        //try to register settlement_payroll modul for this payroll if not found
+        if($payroll->settlement_payroll->count() == 0){
+            //get user's settlements
+            $end_period_date = Carbon::parse($period->end_date)->addDay(4);
+            $settlements = Settlement::with('internal_request')
+                ->where('status','=','approved')
+                ->where('accounted', FALSE)
+                //->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
+                ->whereHas('internal_request', function($query) use($user, $period){
+                    $query->where('requester_id', '=', $user->id);
+                })->get();
+
+            if($settlements->count()){
+                foreach($settlements as $settlement){
+                    //create SettlementPayroll
+                    $settlementPayroll = new SettlementPayroll;
+                    $settlementPayroll->settlement_id = $settlement->id;
+                    $settlementPayroll->payroll_id = $payroll->id;
+                    $settlementPayroll->save();
+                }
+            }
+        }
+        //should be removed
+       /* $end_period_date = Carbon::parse($period->end_date)->addDay(3);
         $settlements = Settlement::with('internal_request')
             ->where('status','=','approved')
             ->where('accounted', FALSE)
@@ -255,7 +283,7 @@ class PayrollController_back extends Controller
             ->whereHas('internal_request', function($query) use($user, $period){
                 $query->where('requester_id', '=', $user->id);
                 //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
-            })->get();
+            })->get();*/
 
 
 
@@ -334,14 +362,13 @@ class PayrollController_back extends Controller
             ->with('medical_allowance', $medical_allowance)
 
             ->with('cash_advances', $cash_advances)
-            ->with('settlements', $settlements)
             ->with('user', $user)
             ->with('competency_allowance', $competency_allowance)
             ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
             ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
             ->with('bpjs_kesehatan', $bpjs_kesehatan)
             ->with('bpjs_ketenagakerjaan', $bpjs_ketenagakerjaan)
-            ->with('payroll', $payroll);    
+            ->with('payroll', $payroll);   
         }else{
             return view('payroll.show_for_office')
             ->with('ets_lists', $ets_lists)
@@ -370,7 +397,6 @@ class PayrollController_back extends Controller
             ->with('medical_allowance', $medical_allowance)
 
             ->with('cash_advances', $cash_advances)
-            ->with('settlements', $settlements)
             ->with('user', $user)
             ->with('competency_allowance', $competency_allowance)
             ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
@@ -621,20 +647,15 @@ class PayrollController_back extends Controller
 
         //Collect balance from settlement
         $end_period_date = Carbon::parse($period->end_date)->addDay(3);
-        $settlement_balance = 0;
-        $settlements = Settlement::with('internal_request')
-            ->where('status','=','approved')
-            ->where('accounted', FALSE)
-            ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
-            ->whereHas('internal_request', function($query) use($user, $period){
-                $query->where('requester_id', '=', $user->id);
-                //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
-            })->get();
+        $settlement_payroll_balance = 0;
 
-        if($settlements->count()){
-            foreach($settlements as $settlement){
-                $balance = $settlement->internal_request->amount - $settlement->amount;
-                $settlement_balance+=$balance;
+        //If payroll has settlement payroll, count balance from them
+        //otherwise try to register settlement payroll and 
+        //then use them to update the settlement balance if settlements found
+        if($payroll->settlement_payroll->count()){
+            foreach($payroll->settlement_payroll as $settlement_payroll){
+                $balance = $settlement_payroll->settlement->internal_request->amount - $settlement_payroll->settlement->amount;
+                $settlement_payroll_balance+=$balance;
             }
         }
 
@@ -672,13 +693,17 @@ class PayrollController_back extends Controller
         //count total cut from BPJS
         $cut_amount_from_bpjs = $bpjs_kesehatan+$bpjs_ketenagakerjaan;
 
-        $thp_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance+$total_from_incentive-$cut_amount_from_bpjs;
+
+        //define gross amount
+        $gross_amount = $total_salary+$total_amount_from_allowances+$total_amount_from_medical_allowance+$workshop_allowance_amount - $total_amount_from_cashbond_installments+$competency_allowance+$epp_balance+$total_from_incentive-$cut_amount_from_bpjs;
+
         //update thp amount of this payroll
-        if($settlement_balance < 0){
-            $thp_amount = $thp_amount+(abs($settlement_balance));
+        if($settlement_payroll_balance < 0){
+            $thp_amount = $gross_amount+(abs($settlement_payroll_balance));
         }else{
-            $thp_amount = $thp_amount-$settlement_balance;
+            $thp_amount = $gross_amount-$settlement_payroll_balance;
         }
+        $payroll->gross_amount = $gross_amount;
         $payroll->thp_amount = $thp_amount;
         $payroll->save();
 
@@ -748,4 +773,237 @@ class PayrollController_back extends Controller
         return redirect()->back();
     }
 
+
+    //Print PDF 
+    public function printPdf(Request $request,$id)
+    {
+
+        error_reporting(0);
+        $payroll = Payroll::findOrFail($id);
+        $period = $payroll->period;
+        $user = $payroll->user;
+
+        //initiate needed variables
+        $man_hour_total=0;
+        $basic_salary = $user->salary;
+
+        $ets_lists = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->get();
+        
+        $normal_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('normal');
+        $normal_total = $normal_count*1;
+
+        $I_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('I');
+        $I_total = $I_count*1.5;
+
+        $II_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('II');
+        $II_total = $II_count*2;
+
+        $III_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('III');
+        $III_total = $III_count*3;
+
+        $IV_count = Ets::where('user_id','=', $user->id)->where('period_id', $period->id)->sum('IV');
+        $IV_total = $IV_count*4;
+
+        //incentives builder
+        //WeekDay
+        $weekday_ets = Ets::where('user_id','=', $user->id)
+                                    ->where('period_id', $period->id)
+                                    ->where('has_incentive_week_day','=',TRUE)
+                                    ->get()->count();
+        $total_amount_incentive_weekday = $weekday_ets*$user->incentive_week_day;
+        if($payroll->incentive_weekday){
+            $incentive_weekday = IncentiveWeekDay::where('payroll_id','=',$id)->update(
+                ['multiplier'=>$weekday_ets,'total_amount'=>$total_amount_incentive_weekday]
+            );
+            $incentive_weekday = $payroll->incentive_weekday;
+            
+        }else{
+            $incentive_weekday = new IncentiveWeekDay;
+            $incentive_weekday->payroll_id = $id;
+            $incentive_weekday->amount = $user->incentive_week_day;
+            $incentive_weekday->multiplier = $weekday_ets;
+            $incentive_weekday->total_amount = $total_amount_incentive_weekday;
+            $incentive_weekday->save();
+            
+        }
+        //WeekEnd
+        $weekend_ets = Ets::where('user_id','=', $user->id)
+                                    ->where('period_id', $period->id)
+                                    ->where('has_incentive_week_end','=',TRUE)
+                                    ->get()->count();
+        $total_amount_incentive_weekend = $weekend_ets*$user->incentive_week_end;
+        if($payroll->incentive_weekend){
+            $incentive_weekend = IncentiveWeekEnd::where('payroll_id','=',$id)->update(
+                ['multiplier'=>$weekend_ets,'total_amount'=>$total_amount_incentive_weekend]
+            );
+            $incentive_weekend = $payroll->incentive_weekend;
+            
+        }else{
+            $incentive_weekend = new IncentiveWeekEnd;
+            $incentive_weekend->payroll_id = $id;
+            $incentive_weekend->amount = $user->incentive_week_end;
+            $incentive_weekend->multiplier = $weekend_ets;
+            $incentive_weekend->total_amount = $total_amount_incentive_weekend;
+            $incentive_weekend->save();
+            
+        }
+
+        if($user->type =='office'){
+            $man_hour_total = $I_total+$II_total+$III_total+$IV_total;
+        }
+        elseif($user->type =='outsource' && $basic_salary >0){
+            $man_hour_total = $I_total+$II_total+$III_total+$IV_total;
+        }
+        else{
+            $man_hour_total = $normal_total+$I_total+$II_total+$III_total+$IV_total;    
+        }
+        
+
+        $total_man_hour_salary = $user->man_hour_rate * $man_hour_total;
+
+        //check allowance
+        $check_allowances = $this->check_allowances($user, $period);
+
+        $allowances = Allowance::where('user_id', $user->id)
+                        ->where('period_id', $period->id)
+                        ->get();
+        /*dd($allowances);
+        exit();*/
+        //check medical allowance
+        $check_medical_allowance = $this->check_medical_allowance($user, $period);
+        $medical_allowance = MedicalAllowance::where('user_id', $user->id)
+                        ->where('period_id', $period->id)
+                        ->get();
+
+
+        
+        //get user's cashbonds
+        $cashbonds = Cashbond::select('id')->where('user_id', '=', $user->id)->get();
+        $cashbond_ids = [];
+        $cash_advances = [];
+        if(count($cashbonds)){
+            $cashbond_ids = array_flatten($cashbonds->toArray());
+        }
+        if(count($cashbond_ids)){
+            $cash_advances =  CashbondInstallment::whereIn('cashbond_id',$cashbond_ids)
+                            ->whereBetween('installment_schedule', [$period->start_date, $period->end_date])
+                            ->where('cashbond_installments.status', '=', 'unpaid')
+                            ->get();
+        }
+        
+        //get user's settlements
+        //try to register settlement_payroll modul for this payroll if not found
+        if($payroll->settlement_payroll->count() == 0){
+            //get user's settlements
+            $end_period_date = Carbon::parse($period->end_date)->addDay(4);
+            $settlements = Settlement::with('internal_request')
+                ->where('status','=','approved')
+                ->where('accounted', FALSE)
+                //->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
+                ->whereHas('internal_request', function($query) use($user, $period){
+                    $query->where('requester_id', '=', $user->id);
+                })->get();
+
+            if($settlements->count()){
+                foreach($settlements as $settlement){
+                    //create SettlementPayroll
+                    $settlementPayroll = new SettlementPayroll;
+                    $settlementPayroll->settlement_id = $settlement->id;
+                    $settlementPayroll->payroll_id = $payroll->id;
+                    $settlementPayroll->save();
+                }
+            }
+        }
+        //should be removed
+       /* $end_period_date = Carbon::parse($period->end_date)->addDay(3);
+        $settlements = Settlement::with('internal_request')
+            ->where('status','=','approved')
+            ->where('accounted', FALSE)
+            ->whereBetween('transaction_date', [$period->start_date, $end_period_date->format('Y-m-d')])
+            ->whereHas('internal_request', function($query) use($user, $period){
+                $query->where('requester_id', '=', $user->id);
+                //$query->whereBetween('transaction_date', [$period->start_date, $period->end_date]);
+            })->get();*/
+
+
+
+        //get or create competency allowance
+        if($payroll->competency_allowance){
+            $competency_allowance = $payroll->competency_allowance;
+        }else{
+            $competency_allowance = new CompetencyAllowance;
+            $competency_allowance->payroll_id = $id;
+            $competency_allowance->amount = $user->competency_allowance;
+            $competency_allowance->save();
+        }
+
+        //Get Adder extra payroll payment
+        $extra_payroll_payments_adder = ExtraPayrollPayment::where('payroll_id','=',$id)
+                                        ->where('type','=', 'adder')
+                                        ->get();
+        //Get Substractor extra payroll payment
+        $extra_payroll_payments_substractor = ExtraPayrollPayment::where('payroll_id','=',$id)
+                                        ->where('type','=', 'substractor')
+                                        ->get();
+        //Bpjs Kesehatan
+        //get or create
+        if($payroll->bpjs_kesehatan){
+            $bpjs_kesehatan = $payroll->bpjs_kesehatan;
+        }else{
+            $newBpjsKesehatan = new BpjsKesehatan;
+            $newBpjsKesehatan->payroll_id = $id;
+            $newBpjsKesehatan->amount = $user->bpjs_ke;
+            $newBpjsKesehatan->save();
+            $bpjs_kesehatan = BpjsKesehatan::find($newBpjsKesehatan);
+
+        }
+
+        //Bpjs Ketenagakerjaan
+        //get or create
+        if($payroll->bpjs_ketenagakerjaan){
+            $bpjs_ketenagakerjaan = $payroll->bpjs_ketenagakerjaan;
+        }else{
+            $newBpjsKetenagakerjaan = new BpjsKetenagakerjaan;
+            $newBpjsKetenagakerjaan->payroll_id = $id;
+            $newBpjsKetenagakerjaan->amount = $user->bpjs_ke;
+            $newBpjsKetenagakerjaan->save();
+            $bpjs_ketenagakerjaan = BpjsKetenagakerjaan::find($newBpjsKetenagakerjaan);
+
+        }
+        
+        $data['payroll']= $payroll;
+        $data['user']= $payroll->user;
+
+        $data['normal_count']= $normal_count;
+        $data['normal_total']= $normal_total;
+
+        $data['I_count']= $I_count;
+        $data['I_total']= $I_total;
+
+        $data['II_count']= $II_count;
+        $data['II_total']= $II_total;
+
+        $data['III_count']= $III_count;
+        $data['III_total']= $III_total;
+
+        $data['IV_count']= $IV_count;
+        $data['IV_total']= $IV_total;
+        
+        $data['man_hour_total']= $man_hour_total;
+        $data['basic_salary']= $basic_salary;
+        $data['total_man_hour_salary']= $total_man_hour_salary;
+        $data['allowances']= $allowances;
+        $data['medical_allowance']= $medical_allowance;
+        $data['cash_advances']= $cash_advances;
+        $data['competency_allowance']= $competency_allowance;
+        $data['extra_payroll_payments_adder']= $extra_payroll_payments_adder;
+        $data['extra_payroll_payments_substractor']= $extra_payroll_payments_substractor;
+        $data['bpjs_kesehatan']= $bpjs_kesehatan;
+        $data['bpjs_ketenagakerjaan']= $bpjs_ketenagakerjaan;
+
+
+        $pdf = \PDF::loadView('pdf.payroll.index', $data)->setPaper('a4', 'portrait')->setWarnings(false);
+        return $pdf->stream($payroll->id.'.pdf');
+        
+    }
 }
