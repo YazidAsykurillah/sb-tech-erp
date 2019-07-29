@@ -79,11 +79,11 @@ class PayrollController extends Controller
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
                     $actions_html .='</a>&nbsp;';
                     //Only deletable if the payroll is not accounted yet
-                    //if($payrolls->accounted == FALSE && \Auth::user()->can('delete-payroll')){
+                    if($payrolls->accounted == FALSE && \Auth::user()->can('delete-payroll')){
                         $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-payroll" data-id="'.$payrolls->id.'">';
                         $actions_html .=    '<i class="fa fa-trash"></i>';
                         $actions_html .='</button>';    
-                    //}
+                    }
                     
 
                     return $actions_html;
@@ -299,8 +299,9 @@ class PayrollController extends Controller
 
         //if user type is site show payroll page for site
         //otherwise show payroll page for office
+      /*  
         if($user->type == 'outsource'){
-            return view('payroll.show')
+            return view('payroll.show_outsource')
             ->with('ets_lists', $ets_lists)
             ->with('normal_count', $normal_count)
             ->with('normal_total', $normal_total)
@@ -374,6 +375,44 @@ class PayrollController extends Controller
             ->with('payroll', $payroll);
         }
 
+    */
+
+        return view('payroll.show.index')
+            ->with('ets_lists', $ets_lists)
+            ->with('normal_count', $normal_count)
+            ->with('normal_total', $normal_total)
+            ->with('I_count', $I_count)
+            ->with('I_total', $I_total)
+
+            ->with('II_count', $II_count)
+            ->with('II_total', $II_total)
+
+            ->with('III_count', $III_count)
+            ->with('III_total', $III_total)
+
+            ->with('IV_count', $IV_count)
+            ->with('IV_total', $IV_total)
+
+            ->with('man_hour_total', $man_hour_total)
+
+            ->with('basic_salary', $basic_salary)
+            
+            ->with('total_man_hour_salary', $total_man_hour_salary)
+
+            ->with('allowances', $allowances)
+
+            ->with('medical_allowance', $medical_allowance)
+
+            ->with('cash_advances', $cash_advances)
+            ->with('user', $user)
+            ->with('competency_allowance', $competency_allowance)
+            ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
+            ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
+            ->with('incentive_weekday', $incentive_weekday)
+            ->with('incentive_weekend', $incentive_weekend)
+            ->with('bpjs_kesehatan', $bpjs_kesehatan)
+            ->with('bpjs_ketenagakerjaan', $bpjs_ketenagakerjaan)
+            ->with('payroll', $payroll);
         
 
     }
@@ -674,7 +713,10 @@ class PayrollController extends Controller
         $payroll->save();
 
         return response()->json(
-            ['thp_amount'=>number_format($thp_amount,2)]
+            [
+                'thp_amount'=>number_format($thp_amount,2),
+                'gross_amount'=>number_format($gross_amount,2)
+            ]
         );
 
     }
