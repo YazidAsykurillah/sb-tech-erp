@@ -30,7 +30,7 @@ class Transaction extends Model
     {
     	if($this->refference == 'internal_request'){
     		$internal_request = InternalRequest::find($this->refference_id);
-    		return $internal_request->requester->name;
+    		return $internal_request->requester ? $internal_request->requester->name : NULL;
     	}
     	else if($this->refference == 'settlement'){
     		$settlement = Settlement::find($this->refference_id);
