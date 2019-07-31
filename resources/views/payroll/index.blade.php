@@ -50,7 +50,9 @@
                 <form method="POST" id="form-filter" class="form-inline" role="form">
                   <div class="form-group">
                     <label class="" for="filter_period">Period</label>
-                    <select name="filter_period" id="filter_period" class="form-control" style="width: 200px;"></select>
+                    <select name="filter_period" id="filter_period" class="form-control" style="width: 200px;">
+                      <option value="27" selected="selected">PER-2019JUL</option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label class="" for="filter_user_type">User Type</label>
@@ -239,7 +241,10 @@
         { data: 'thp_amount', name: 'thp_amount' },
         { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
+        { data: 'period_id', name: 'period_id', visible:false, searchable:false },
       ],
+      order: [[ 7, "desc" ]],
+
       footerCallback: function( tfoot, data, start, end, display ) {
         var api = this.api();
         // Remove the formatting to get float data for summation

@@ -42,6 +42,8 @@ class PayrollController extends Controller
      */
     public function index()
     {
+        
+        //dd(current_period());
         return view('payroll.index');
     }
 
@@ -296,86 +298,6 @@ class PayrollController extends Controller
             $bpjs_ketenagakerjaan = BpjsKetenagakerjaan::find($newBpjsKetenagakerjaan);
 
         }
-
-        //if user type is site show payroll page for site
-        //otherwise show payroll page for office
-      /*  
-        if($user->type == 'outsource'){
-            return view('payroll.show_outsource')
-            ->with('ets_lists', $ets_lists)
-            ->with('normal_count', $normal_count)
-            ->with('normal_total', $normal_total)
-            
-            ->with('I_count', $I_count)
-            ->with('I_total', $I_total)
-
-            ->with('II_count', $II_count)
-            ->with('II_total', $II_total)
-
-            ->with('III_count', $III_count)
-            ->with('III_total', $III_total)
-
-            ->with('IV_count', $IV_count)
-            ->with('IV_total', $IV_total)
-
-            ->with('man_hour_total', $man_hour_total)
-
-            ->with('basic_salary', $basic_salary)
-            
-            ->with('total_man_hour_salary', $total_man_hour_salary)
-
-            ->with('allowances', $allowances)
-
-            ->with('medical_allowance', $medical_allowance)
-
-            ->with('cash_advances', $cash_advances)
-            ->with('user', $user)
-            ->with('competency_allowance', $competency_allowance)
-            ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
-            ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
-            ->with('bpjs_kesehatan', $bpjs_kesehatan)
-            ->with('bpjs_ketenagakerjaan', $bpjs_ketenagakerjaan)
-            ->with('payroll', $payroll);   
-        }else{
-            return view('payroll.show_for_office')
-            ->with('ets_lists', $ets_lists)
-            ->with('normal_count', $normal_count)
-            ->with('normal_total', $normal_total)
-            ->with('I_count', $I_count)
-            ->with('I_total', $I_total)
-
-            ->with('II_count', $II_count)
-            ->with('II_total', $II_total)
-
-            ->with('III_count', $III_count)
-            ->with('III_total', $III_total)
-
-            ->with('IV_count', $IV_count)
-            ->with('IV_total', $IV_total)
-
-            ->with('man_hour_total', $man_hour_total)
-
-            ->with('basic_salary', $basic_salary)
-            
-            ->with('total_man_hour_salary', $total_man_hour_salary)
-
-            ->with('allowances', $allowances)
-
-            ->with('medical_allowance', $medical_allowance)
-
-            ->with('cash_advances', $cash_advances)
-            ->with('user', $user)
-            ->with('competency_allowance', $competency_allowance)
-            ->with('extra_payroll_payments_adder', $extra_payroll_payments_adder)
-            ->with('extra_payroll_payments_substractor', $extra_payroll_payments_substractor)
-            ->with('incentive_weekday', $incentive_weekday)
-            ->with('incentive_weekend', $incentive_weekend)
-            ->with('bpjs_kesehatan', $bpjs_kesehatan)
-            ->with('bpjs_ketenagakerjaan', $bpjs_ketenagakerjaan)
-            ->with('payroll', $payroll);
-        }
-
-    */
 
         return view('payroll.show.index')
             ->with('ets_lists', $ets_lists)

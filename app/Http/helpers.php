@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 
+use App\Period;
 
 function jakarta_date_time($date_time = NULL)
 {	
@@ -63,5 +64,23 @@ if(!function_exists('is_date_weekend')){
 	function is_date_weekend($input){
 		$date = Carbon::parse($input);
 		return $date->isWeekend();
+	}
+}
+
+
+//get current period based on now date
+
+if(!function_exists('current_period')){
+	function current_period(){
+		$result = [];
+		$now = Carbon::now();
+		$current_year = $now->format('Y');
+		$current_month = $now->format('m');
+		$current_date = $now->format('d');
+		
+		//get last and next month
+		$last_month = $now->subMonth()->format('F');
+		$next_month = $now->addMonth()->format('F');
+		return $next_month;
 	}
 }
