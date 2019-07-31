@@ -130,7 +130,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-info">Transfer</button>
+          <button type="submit" class="btn btn-info" id="btn-submit-transfer">Transfer</button>
         </div>
       {!! Form::close() !!}
       </div>
@@ -250,6 +250,11 @@
         $('#modal-transfer-payroll').modal('show');  
       }
       
+    });
+
+    //disable the button submit transfer when form is submitted
+    $('#form-transfer').on('submit', function(event){
+      $('#btn-submit-transfer').prop('disabled', true);
     });
     //ENDTransfer handler
 
