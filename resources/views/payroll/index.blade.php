@@ -50,9 +50,7 @@
                 <form method="POST" id="form-filter" class="form-inline" role="form">
                   <div class="form-group">
                     <label class="" for="filter_period">Period</label>
-                    <select name="filter_period" id="filter_period" class="form-control" style="width: 200px;">
-                      <option value="27" selected="selected">PER-2019JUL</option>
-                    </select>
+                    <select name="filter_period" id="filter_period" class="form-control" style="width: 200px;"></select>
                   </div>
                   <div class="form-group">
                     <label class="" for="filter_user_type">User Type</label>
