@@ -29,9 +29,14 @@ class Transaction extends Model
     public function getMemberNameAttribute()
     {
     	if($this->refference == 'internal_request'){
-    		/*$internal_request = InternalRequest::find($this->refference_id);
-    		return $internal_request->requester ? $internal_request->requester->name : NULL;*/
-            return "";
+    		$internal_request = InternalRequest::find($this->refference_id);
+            if($internal_request){
+                return $internal_request->requester ? $internal_request->requester->name : NULL;    
+            }else{
+                return "";    
+            }
+    		
+            
     	}
     	else if($this->refference == 'settlement'){
     		$settlement = Settlement::find($this->refference_id);
