@@ -1232,6 +1232,9 @@ class DatatablesController extends Controller
             ->editColumn('reference_amount', function($transactions){
                 return number_format($transactions->reference_amount);
             })
+            ->editColumn('notes', function($transactions){
+                return str_limit($transactions->notes, 25);
+            })
             ->editColumn('type', function($transactions){
                 return ucfirst($transactions->type);
             })
