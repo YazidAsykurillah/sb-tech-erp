@@ -982,6 +982,7 @@ class TransactionController extends Controller
             $path = $request->file('file')->getRealPath();
             $data = Excel::load($path, function($reader) {
             })->get();
+            //dd($data->chunk());
             if(!empty($data) && $data->count()){
                 foreach ($data as $key => $value) {
                     //get the cash model
