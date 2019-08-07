@@ -365,6 +365,28 @@
         @endif
       </div>
       <!--ENDBOX PO Customer Information-->
+
+      <!--BOX Man Hour-->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-users"></i>&nbsp;Man Hour Information</h3>
+        </div>
+        <div class="box-body">
+          <strong>Normal</strong>
+          <p class="text-muted">{{ $man_hour_information->total_normal }}</p>
+          <strong>I</strong>
+          <p class="text-muted">{{ $man_hour_information->total_I }}</p>
+          <strong>II</strong>
+          <p class="text-muted">{{ $man_hour_information->total_II }}</p>
+          <strong>III</strong>
+          <p class="text-muted">{{ $man_hour_information->total_III }}</p>
+          <strong>IV</strong>
+          <p class="text-muted">{{ $man_hour_information->total_IV }}</p>
+          <strong>Total Hour</strong>
+          <p class="text-muted">{{ $man_hour_information->grand_total }} hours</p>
+
+        </div>
+      </div>
     </div>
   </div>
 

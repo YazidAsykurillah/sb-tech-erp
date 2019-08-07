@@ -112,6 +112,7 @@ class ProjectController extends Controller
             $purchase_order_customer_amount_per_ppn = $purchase_order_customer_amount/1.1;
 
             $invoiced = $project->invoiced;
+            $man_hour_information = $project->man_hour_information;
             
             return view('project.show')
                 ->with('project', $project)
@@ -121,7 +122,8 @@ class ProjectController extends Controller
                 ->with('total_expense_from_settlement', $total_expense_from_settlement)
                 ->with('total_expenses', $total_expenses)
                 ->with('invoiced', $invoiced)
-                ->with('total_invoice_due', $total_invoice_due);
+                ->with('total_invoice_due', $total_invoice_due)
+                ->with('man_hour_information', json_decode($man_hour_information));
         }
         return abort(403);
 

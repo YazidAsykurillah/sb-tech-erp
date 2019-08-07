@@ -10,6 +10,7 @@ use App\InvoiceCustomer;
 use App\InvoiceVendor;
 use App\User;
 use App\PurchaseRequest;
+use App\Ets;
 
 class Project extends Model
 {
@@ -17,7 +18,7 @@ class Project extends Model
 
     protected $fillable = ['category','code', 'name', 'purchase_order_customer_id', 'sales_id', 'enabled'];
 
-    protected $appends = ['cost_margin', 'invoiced', 'estimated_cost_margin', 'customer'];
+    protected $appends = ['cost_margin', 'invoiced', 'estimated_cost_margin', 'customer', 'man_hour_information'];
 
 
     public function purchase_order_customer()
@@ -376,5 +377,35 @@ class Project extends Model
         if($this->purchase_order_customer){
             return $this->purchase_order_customer->customer;
         }
+    }
+
+    //return man hour information,
+    //collect from ets model
+    public function getManHourInformationAttribute()
+    {
+        //project_number
+        $code = $this->code;
+        
+        //get related ets
+        $ets = Ets::where('type','site')
+                ->where('project_number','LIKE',"%$code%");
+        
+
+        $total_normal = $ets->sum('normal');
+        $total_I = $ets->sum('I');
+        $total_II = $ets->sum('II');
+        $total_III = $ets->sum('III');
+        $total_IV = $ets->sum('IV');
+        $grand_total = $total_normal+$total_I+$total_II+$total_III+$total_IV;
+
+        $man_hour_information = [
+            'total_normal'=>$total_normal,
+            'total_I'=>$total_I,
+            'total_II'=>$total_II,
+            'total_III'=>$total_III,
+            'total_IV'=>$total_IV,
+            'grand_total'=>$grand_total
+        ];
+        return collect($man_hour_information)->toJson();
     }
 }
