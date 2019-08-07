@@ -96,6 +96,12 @@ class EtsController extends Controller
                 ->get();
 
         $data_ets = Datatables::of($ets)
+            ->editColumn('user.name', function($ets){
+                if($ets->user){
+                    return $ets->user->name;
+                }
+                return NULL;
+            })
             ->addColumn('actions', function($ets){
                 $actions_html = '';
                 $actions_html.='<a class="btn btn-default btn-xs" href="/ets/show/?period_id='.$ets->period_id.'&user_id='.$ets->user_id.'">';   

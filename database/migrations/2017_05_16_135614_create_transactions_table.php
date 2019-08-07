@@ -23,9 +23,9 @@ class CreateTransactionsTable extends Migration
                 'site_internal_request', 'site_settlement', 'cashbond-site',
                 'payroll'
                 ]
-            );
-            $table->integer('refference_id');
-            $table->string('refference_number');
+            )->nullable()->default(NULL);
+            $table->integer('refference_id')->nullable()->default(NULL);
+            $table->string('refference_number')->nullable()->default(NULL);
             $table->enum('type', ['credit', 'debet']);
             $table->decimal('amount', 20, 2);
             $table->timestamps();

@@ -976,8 +976,6 @@ class TransactionController extends Controller
 
     public function importExcel(Request $request)
     {
-        /*print_r($request->cash_id);
-        exit();*/
         if($request->hasFile('file')){
             $path = $request->file('file')->getRealPath();
             Excel::filter('chunk')->load($path)->chunk(650, function($data)
