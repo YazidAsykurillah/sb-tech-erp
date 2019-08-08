@@ -976,41 +976,48 @@ class TransactionController extends Controller
 
     public function importExcel(Request $request)
     {
+        //find cash
+        $cash = Cash::findOrFail($request->cash_id);
+        //init cash_amount
+        $init_cash_amount = $cash->amount;
+
         if($request->hasFile('file')){
             $path = $request->file('file')->getRealPath();
-            Excel::filter('chunk')->load($path)->chunk(650, function($data)
+            Excel::filter('chunk')->load($path)->chunk(650, function($data) use ($cash, $init_cash_amount)
             {
+                $current_cash_amount = $init_cash_amount;
                 foreach ($data as $key => $value) {
-
-                    //get the cash model
-                    $cash = Cash::findOrFail($value->cash_id);
-                    $current_cash_amount = $cash->amount;
-
                     $insert= [
-                                    'cash_id' => $value->cash_id,
-                                    'refference' => $value->refference,
-                                    'refference_id' => $value->refference_id,
-                                    'refference_number' => $value->refference_number,
-                                    'type' => $value->type,
-                                    'amount' => $value->amount,
-                                    'created_at'=> date('Y-m-d H:i:s'),
-                                    'notes' => $value->notes,
-                                    //'reference_amount'=> $saldo,
-                                    'transaction_date'=>Carbon::parse($value->transaction_date)->format('Y-m-d'),
-                                    'reference_amount'=> $value->type == 'debet' ? ($current_cash_amount - $value->amount) : ($current_cash_amount+$value->amount),
-                                ];
+                                'cash_id' =>$cash->id,
+                                'refference' => $value->refference,
+                                'refference_id' => $value->refference_id,
+                                'refference_number' => $value->refference_number,
+                                'type' => $value->type,
+                                'amount' => $value->amount,
+                                'created_at'=> date('Y-m-d H:i:s'),
+                                'notes' => $value->notes,
+                                //'reference_amount'=> $saldo,
+                                'transaction_date'=>Carbon::parse($value->transaction_date)->format('Y-m-d'),
+                                'reference_amount'=> $value->type == 'debet' ? ($current_cash_amount - $value->amount) : ($current_cash_amount+$value->amount),
+                            ];
 
                     $transaction_amount = $value->amount;
                     //now update the cash_amount
                     if($value->type == 'debet'){
-                        $cash->amount = $current_cash_amount - abs($transaction_amount);
+                        $current_cash_amount = $current_cash_amount - abs($transaction_amount);
                     }else{
-                        $cash->amount = $current_cash_amount + abs($transaction_amount);
+                        $current_cash_amount = $current_cash_amount + abs($transaction_amount);
                     }
-                    $cash->save();
                     \DB::table('transactions')->insert($insert);
                 }
             });
+
+            //count the final cash amount from (credit-debet)
+            $credit_amount = Transaction::where('cash_id','=',$cash->id)->where('type','=','credit')->sum('amount');
+            $debet_amount = Transaction::where('cash_id','=',$cash->id)->where('type','=','debet')->sum('amount');
+            $final_amount = $credit_amount-$debet_amount;
+            $cash->amount = $final_amount;
+            $cash->save();
             return back()
             ->with('successMessage', "Data has been imported");
         }

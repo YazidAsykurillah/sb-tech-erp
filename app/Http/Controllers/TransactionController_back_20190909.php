@@ -28,7 +28,7 @@ use App\Payroll;
 //User Maatwebsite Excel package
 use Excel;
 
-class TransactionController_Back_2019_08_06 extends Controller
+class TransactionController_back_20190808 extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -976,20 +976,17 @@ class TransactionController_Back_2019_08_06 extends Controller
 
     public function importExcel(Request $request)
     {
-        /*print_r($request->cash_id);
-        exit();*/
         if($request->hasFile('file')){
             $path = $request->file('file')->getRealPath();
-            $data = Excel::load($path, function($reader) {
-            })->get();
-            //dd($data->chunk());
-            if(!empty($data) && $data->count()){
+            Excel::filter('chunk')->load($path)->chunk(650, function($data)
+            {
                 foreach ($data as $key => $value) {
+
                     //get the cash model
                     $cash = Cash::findOrFail($value->cash_id);
                     $current_cash_amount = $cash->amount;
 
-                    $insert[] = [
+                    $insert= [
                                     'cash_id' => $value->cash_id,
                                     'refference' => $value->refference,
                                     'refference_id' => $value->refference_id,
@@ -1011,13 +1008,9 @@ class TransactionController_Back_2019_08_06 extends Controller
                         $cash->amount = $current_cash_amount + abs($transaction_amount);
                     }
                     $cash->save();
-                }
-
-                if(!empty($insert)){
                     \DB::table('transactions')->insert($insert);
-                    //dd('Insert Record successfully.');
                 }
-            }
+            });
             return back()
             ->with('successMessage', "Data has been imported");
         }
