@@ -59,6 +59,7 @@ class InvoiceVendorController extends Controller
      */
     public function store(StoreInvoiceVendorRequest $request)
     {
+        // dd($request->all());
         $invoice_vendor = new InvoiceVendor;
         $invoice_vendor->code = $request->code;
         $invoice_vendor->tax_number = $request->tax_number;

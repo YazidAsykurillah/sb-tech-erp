@@ -298,7 +298,7 @@ class SettlementController extends Controller
             })
             ->editColumn('project', function($settlements){
                 if($settlements->internal_request){
-                    return $settlements->internal_request->project->code;
+                    return $settlements->internal_request->project ? $settlements->internal_request->project->code : NULL;
                 }else{
                     return NULL;
                 }

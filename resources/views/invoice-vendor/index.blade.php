@@ -30,9 +30,11 @@
             <div class="box-header with-border">
               <h3 class="box-title">Invoice Vendor</h3>
               <div class="pull-right">
+                
                 <a href="{{ URL::to('invoice-vendor/create')}}" class="btn btn-primary" title="Create new Invoice Vendor">
                   <i class="fa fa-plus"></i>&nbsp;Add New
                 </a>
+                
               </div>
             </div><!-- /.box-header -->
             <div class="box-body">

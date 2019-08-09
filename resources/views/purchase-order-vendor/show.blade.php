@@ -205,9 +205,11 @@
             <h3 class="box-title"><i class="fa fa-credit-card"></i>&nbsp;Invoice Vendors</h3>
           </div>
           <div class="pull-right">
+            <!-- 
             <a href="{{ url('invoice-vendor/create-from-pov/?pov_id='.$po_vendor->id.'') }}" class="btn btn-default btn-xs" title="Click to create invoice vendor from this PO Vendor">
               <i class="fa fa-plus"></i> Add
             </a>
+             -->
           </div>
           
         </div><!-- /.box-header -->
