@@ -191,12 +191,13 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           <div class="table-responsive">
-            @if($settlement->internal_request)
+            @if($settlement->internal_request->project)
             <table class="table">
               <tr>
                 <td style="width: 25%;">Code</td>
                 <td style="width: 1%;">:</td>
                 <td>
+
                   <a href="{{ url('project/'.$settlement->internal_request->project->id.'') }}">
                     {{ $settlement->internal_request->project->code }}
                   </a>
