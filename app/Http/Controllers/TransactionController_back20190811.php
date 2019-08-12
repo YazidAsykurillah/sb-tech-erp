@@ -28,7 +28,7 @@ use App\Payroll;
 //User Maatwebsite Excel package
 use Excel;
 
-class TransactionController_back_20190808 extends Controller
+class TransactionController_back20190811 extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -974,11 +974,23 @@ class TransactionController_back_20190808 extends Controller
     }
 
 
+    protected function getReferenceAmount($cash_id, $transaction_type='', $transaction_amount=0)
+    {
+        $result = 0;
+        $cash = Cash::findOrFail($cash_id);
+        if($transaction_type =='credit'){
+            $result = $cash->amount+$transaction_amount;
+        }else{
+            $result = $cash->amount-$transaction_amount;
+        }
+        return $result;
+    }
+
     public function importExcel(Request $request)
     {
         if($request->hasFile('file')){
             $path = $request->file('file')->getRealPath();
-            Excel::filter('chunk')->load($path)->chunk(650, function($data)
+            Excel::filter('chunk')->selectSheetsByIndex(0)->load($path)->chunk(1000, function($data)
             {
                 foreach ($data as $key => $value) {
 

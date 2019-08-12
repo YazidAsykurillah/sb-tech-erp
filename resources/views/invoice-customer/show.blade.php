@@ -275,7 +275,7 @@
   <div class="modal fade" id="modal-set-paid-invoice-customer" tabindex="-1" role="dialog" aria-labelledby="modal-set-paid-invoice-customerLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-      {!! Form::open(['url'=>'setPaidInvoiceCustomer', 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'post']) !!}
+      {!! Form::open(['url'=>'setPaidInvoiceCustomer', 'class'=>'form-horizontal', 'role'=>'form', 'method'=>'post', 'id'=>'form-submit-paid-invoice-customer' ]) !!}
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="modal-set-paid-invoice-customerLabel">Confirmation</h4>
@@ -301,7 +301,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Set Paid</button>
+          <button type="submit" id="btn-submit-paid-invoice-customer" class="btn btn-primary">Set Paid</button>
         </div>
       {!! Form::close() !!}
       </div>
@@ -317,6 +317,11 @@
       $('#invoice-customer-code-to-set-paid').text($(this).attr('data-text'));
       $('#invoice_customer_id').val($(this).attr('data-id'));
       $('#modal-set-paid-invoice-customer').modal('show');
+    });
+
+    //Form submit paid invoice customer event handling
+    $('#form-submit-paid-invoice-customer').on('submit', function(){
+      $('#btn-submit-paid-invoice-customer').prop('disabled', true);
     });
   </script>
 @endsection

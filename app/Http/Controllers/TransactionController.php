@@ -1012,12 +1012,11 @@ class TransactionController extends Controller
                                     'reference_amount'=> $value->type == 'debet' ? ($current_cash_amount - $value->amount) : ($current_cash_amount+$value->amount),
                                 ];
 
-                    $transaction_amount = $value->amount;
                     //now update the cash_amount
                     if($value->type == 'debet'){
-                        $cash->amount = $current_cash_amount - abs($transaction_amount);
+                        $cash->amount = $current_cash_amount - abs($value->amount);
                     }else{
-                        $cash->amount = $current_cash_amount + abs($transaction_amount);
+                        $cash->amount = $current_cash_amount + abs($value->amount);
                     }
                     $cash->save();
                     \DB::table('transactions')->insert($insert);
