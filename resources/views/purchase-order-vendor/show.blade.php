@@ -93,16 +93,21 @@
                   </table>
                 </td>
               </tr>
-              <tr>
-                <td style="width: 20%;"><strong>Sub Total</strong></td>
+               <tr>
+                <td style="width: 20%;"><strong>Amount</strong></td>
                 <td style="width: 1%;">:</td>
-                <td>{{ number_format($po_vendor->purchase_request->after_discount) }}</td>
+                <td>{{ number_format($po_vendor->amount) }}</td>
               </tr>
               <tr>
                 <td style="width: 20%;"><strong>Discount</strong></td>
                 <td style="width: 1%;">:</td>
                 <td>{{ $po_vendor->purchase_request->discount }} %</td>
               </tr>
+              <tr>
+                <td style="width: 20%;"><strong>Sub Total</strong></td>
+                <td style="width: 1%;">:</td>
+                <td>{{ number_format($po_vendor->purchase_request->after_discount) }}</td>
+              </tr> 
               <tr>
                 <td style="width: 20%;"><strong>After Discount</strong></td>
                 <td style="width: 1%;">:</td>
@@ -118,11 +123,7 @@
                 <td style="width: 1%;">:</td>
                 <td>{{ number_format($po_vendor->purchase_request->wht) }}</td>
               </tr>
-              <tr>
-                <td style="width: 20%;"><strong>Amount</strong></td>
-                <td style="width: 1%;">:</td>
-                <td>{{ number_format($po_vendor->purchase_request->amount) }}</td>
-              </tr>
+              
               <tr>
                 <td style="width: 20%;"><strong>Terms</strong></td>
                 <td style="width: 1%;">:</td>
@@ -234,7 +235,11 @@
                       </a>
                     </td>
                     <td>
+                      @if($invoice_vendor->bill_amount !=0)
+                        Billing
+                      @else
                       {{ $invoice_vendor->type }} ( {{$invoice_vendor->type_percent }} %)
+                      @endif
                     </td>
                     <td style="text-align:right;">
                       @if($invoice_vendor->bill_amount == NULL)
@@ -250,24 +255,28 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td>
+                  <td colspan="2">
                     <strong>Total Paid</strong>
                   </td>
-                  <td></td>
                   <td style="text-align:right;">
                     <strong>{{ number_format($po_vendor->paid_invoice_vendor(), 2) }}</strong>
                   </td>
-                  <td></td>
                 </tr>
                 <tr>
-                  <td>
+                  <td colspan="2">
                     <strong>Total Pending</strong>
                   </td>
-                  <td></td>
                   <td style="text-align:right;">
                     <strong>{{ number_format($po_vendor->pending_invoice_vendor(), 2) }}</strong>
                   </td>
-                  <td></td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <strong>Invoice Vendor Due</strong>
+                  </td>
+                  <td style="text-align:right;">
+                    <strong>{{ number_format($po_vendor->invoice_vendor_due, 2) }}</strong>
+                  </td>
                 </tr>
               </tfoot>
             </table>

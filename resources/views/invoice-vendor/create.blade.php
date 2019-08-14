@@ -327,7 +327,10 @@
           <strong>Amount</strong>
           <p>
             {!! Form::text('po_vendor_amount',null,['class'=>'form-control', 'placeholder'=>'PO Vendor Amount', 'id'=>'po_vendor_amount', 'readonly'=>true]) !!}
-            
+          </p>
+          <strong>Invoice Due Amount</strong>
+          <p>
+            {!! Form::text('invoice_vendor_due',null,['class'=>'form-control', 'placeholder'=>'Invoice Vendor Due', 'id'=>'invoice_vendor_due', 'readonly'=>true]) !!}
           </p>
           
         </div>
@@ -341,7 +344,7 @@
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
     
-    $('#sub_total, #po_vendor_amount, #amount_before_type, #amount_from_type,#bill_amount, #amount, #vat,#vat_amount, #wht_amount, #after_discount' ).autoNumeric('init',{
+    $('#sub_total, #po_vendor_amount, #amount_before_type, #amount_from_type,#bill_amount, #amount, #vat,#vat_amount, #wht_amount, #after_discount, #invoice_vendor_due',  ).autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });
@@ -380,6 +383,7 @@
                   return {
                       text: item.code,
                       id: item.id,
+                      invoice_vendor_due:item.invoice_vendor_due,
                       purchase_request: item.purchase_request ? item.purchase_request : null,
                       project : item.purchase_request ? item.purchase_request.project : null,
                   }
@@ -391,7 +395,7 @@
       allowClear : true,
       templateResult : templateResultPurchaseOrderVendor,
     }).on('select2:select', function(){
-      //console.log($(this));
+      console.log($(this));
       var selected = $('#purchase_order_vendor_id').select2('data')[0];
       //console.log(selected.purchase_request.sub_amount);
       $('#project_name').val(selected.project.name);
@@ -406,6 +410,7 @@
       $('#bill_amount').autoNumeric('set',0);
       $('#po_vendor_code').val(selected.text);
       $('#po_vendor_amount').autoNumeric('set', selected.purchase_request.amount);
+      $('#invoice_vendor_due').autoNumeric('set',selected.invoice_vendor_due);
       update_vat_amount_value();
     });
 

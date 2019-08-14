@@ -15,6 +15,9 @@ class PurchaseOrderVendor extends Model
 
     protected $fillable = ['vendor_id','code', 'purchase_request_id', 'description', 'amount', 'quotation_vendor_id', 'terms'];
 
+    protected $appends = ['invoice_vendor_due'];
+
+
     public function vendor()
     {
     	return $this->belongsTo('App\Vendor', 'vendor_id');
@@ -68,5 +71,19 @@ class PurchaseOrderVendor extends Model
         }
         return floatval($result);
     }
+
+
+    //Get invoice vendor due attribute
+    public function getInvoiceVendorDueAttribute()
+    {
+        $result = 0;
+        $after_discount = $this->after_discount;
+        $paid_invoice_vendor = $this->paid_invoice_vendor();
+        $result = $after_discount - $paid_invoice_vendor;
+        
+        return $result;
+    }
+
+
 
 }
