@@ -127,6 +127,7 @@ return array(
     'CreateSettlementPayrollsTable' => $baseDir . '/database/migrations/2019_07_01_135504_create_settlement_payrolls_table.php',
     'CreateSettlementsTable' => $baseDir . '/database/migrations/2017_05_09_084626_create_settlements_table.php',
     'CreateSubCategoriesTable' => $baseDir . '/database/migrations/2017_05_05_095128_create_sub_categories_table.php',
+    'CreateTasksTable' => $baseDir . '/database/migrations/2019_08_15_031618_create_tasks_table.php',
     'CreateTheLogsTable' => $baseDir . '/database/migrations/2017_07_13_092406_create_the_logs_table.php',
     'CreateTimeReportsTable' => $baseDir . '/database/migrations/2017_05_28_200001_create_time_reports_table.php',
     'CreateTransactionsTable' => $baseDir . '/database/migrations/2017_05_16_135614_create_transactions_table.php',

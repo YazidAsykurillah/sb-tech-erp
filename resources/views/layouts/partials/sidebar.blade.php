@@ -362,6 +362,13 @@
           <i class="fa fa-book"></i> <span>My ETS</span>
         </a>
       </li>
+      @if(\Auth::user()->can('access-task'))
+      <li {{{ (Request::is('task/*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('task') }}">
+          <i class="fa fa-list"></i> <span>Task</span>
+        </a>
+      </li>
+      @endif
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->

@@ -504,6 +504,13 @@ Route::group(['middleware' => 'auth'], function () {
 	//Leave
 	Route::resource('leave', 'LeaveController');
 
+
+	//Task
+	Route::get('task/select2User', 'TaskController@select2User');
+	Route::get('task/select2Project', 'TaskController@select2Project');
+	Route::get('task/dataTables', 'TaskController@dataTables');
+	Route::resource('task', 'TaskController');
+
 	//REST APIs
 	//Preparing rest, for now it's still not used
 	Route::get('api/invoice-customer', 'Api\InvoiceCustomerController@index');
