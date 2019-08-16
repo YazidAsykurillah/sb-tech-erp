@@ -36,6 +36,11 @@
                   <i class="fa fa-trash"></i>&nbsp;Delete
                 </a>
                 @endif
+                @if(\Auth::user()->can('change-task-status'))
+                <a href="javascript::void()" id="btn-change-taks-status" class="btn btn-xs btn-info" title="Change task status">
+                  <i class="fa fa-cog"></i>&nbsp;Change Status
+                </a>
+                @endif
               </div>
               
             </div><!-- /.box-header -->
@@ -109,6 +114,38 @@
     </div>
   </div>
 <!--ENDModal Delete Task-->
+
+<!--Modal Change Task Status-->
+  <div class="modal fade" id="modal-change-task-status" tabindex="-1" role="dialog" aria-labelledby="modal-change-task-statusLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'task/change-status', 'role'=>'form', 'id'=>'form-change-task-status', 'class'=>'form-horizontal', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-change-task-statusLabel">Change status confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <span class="selected_task_counter"></span> Task(s) selected
+          <div class="form-group{{ $errors->has('task_status') ? ' has-error' : '' }}">
+            {!! Form::label('task_status', 'Status', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              <select name="task_status" id="task_status" class="form-control" style="width:100%;" required>
+                <option value="draft">Draft</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info" id="btn-submit-change-status">Change Status</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Change Task Status-->
   
 @endsection
 
@@ -150,6 +187,9 @@
     tableTask.on( 'click', 'tr', function () {
       $(this).toggleClass('selected');
     });
+    //ENDBlock event task rows selections
+
+    //Block delete task
     $('#btn-delete').on('click', function(event){
       event.preventDefault();
       selectedTask = [];
@@ -167,9 +207,30 @@
         });
         $('#modal-delete-task').modal('show');
       }
-      
     });
-    //ENDBlock event task rows selections
+    //ENDBlock delete task
+
+    //Block change task status
+    $('#btn-change-taks-status').on('click', function(event){
+      event.preventDefault();
+      selectedTask = [];
+      var selected_task_id = tableTask.rows('.selected').data();
+      $.each( selected_task_id, function( key, value ) {
+        selectedTask.push(selected_task_id[key].id);
+      });
+      if(selectedTask.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-change-task-status').find('.id_to_change').remove();
+        $('.selected_task_counter').html(selectedTask.length);
+        $.each( selectedTask, function( key, value ) {
+          $('#form-change-task-status').append('<input type="hidden" class="id_to_change" name="id_to_change[]" value="'+value+'"/>');
+        });
+        $('#modal-change-task-status').modal('show');
+      }
+    });
+    //ENDBlock change task status
+    
     
 
   </script>

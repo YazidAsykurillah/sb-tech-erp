@@ -509,6 +509,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('task/select2User', 'TaskController@select2User');
 	Route::get('task/select2Project', 'TaskController@select2Project');
 	Route::get('task/dataTables', 'TaskController@dataTables');
+	Route::post('task/change-status', 'TaskController@changeStatus');
 	Route::post('task/delete', 'TaskController@delete');
 	Route::resource('task', 'TaskController');
 

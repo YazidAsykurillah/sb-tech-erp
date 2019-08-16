@@ -161,6 +161,26 @@ class TaskController extends Controller
             ->with('successMessage', "$deleted_counter task(s) has been deleted");
     }
 
+    //Change status
+    public function changeStatus(Request $request)
+    {
+        $counter = 0;
+        $task_status = $request->task_status;
+        $ids = $request->id_to_change;
+        
+        if(count($ids)){
+            foreach($ids as $id){
+                $task = Task::findOrFail($id);
+                $task->status = $task_status;
+                $task->save();    
+                $counter++;
+            }
+        }
+        return redirect()->back()
+            ->with('successMessage', "$counter task(s) status has been changed to $task_status");
+    }
+    
+
     //Select Project
     public function select2Project(Request $request)
     {
