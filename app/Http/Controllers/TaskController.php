@@ -51,9 +51,6 @@ class TaskController extends Controller
                     $actions_html .='<a href="'.url('task/'.$tasks->id.'/edit').'" class="btn btn-success btn-xs" title="Click to edit this task">';
                     $actions_html .=    '<i class="fa fa-edit"></i>';
                     $actions_html .='</a>&nbsp;';
-                    $actions_html .='<button type="button" class="btn btn-danger btn-xs btn-delete-task" data-id="'.$tasks->id.'" data-text="'.$tasks->name.'">';
-                    $actions_html .=    '<i class="fa fa-trash"></i>';
-                    $actions_html .='</button>';
                     
 
                     return $actions_html;
@@ -119,7 +116,10 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        //
+        $task = Task::findOrFail($id);
+        return $task;
+        /*return view('task.edit')
+            ->with('task', $task);*/
     }
 
     /**
@@ -143,6 +143,22 @@ class TaskController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //Delete task
+    public function delete(Request $request)
+    {
+        $deleted_counter = 0;
+        $ids = $request->id_to_delete;
+        if(count($ids)){
+            foreach($ids as $id){
+                $task = Task::findOrFail($id);
+                $task->delete();    
+                $deleted_counter++;
+            }
+        }
+        return redirect()->back()
+            ->with('successMessage', "$deleted_counter task(s) has been deleted");
     }
 
     //Select Project

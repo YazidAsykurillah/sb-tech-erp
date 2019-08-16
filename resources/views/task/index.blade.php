@@ -31,6 +31,11 @@
                   <i class="fa fa-plus"></i>&nbsp;Add New
                 </a>
                 @endif
+                @if(\Auth::user()->can('delete-task'))
+                <a href="javascript::void()" id="btn-delete" class="btn btn-xs btn-danger" title="Delete selected task">
+                  <i class="fa fa-trash"></i>&nbsp;Delete
+                </a>
+                @endif
               </div>
               
             </div><!-- /.box-header -->
@@ -83,11 +88,35 @@
     </div>
   </div>
 
+  <!--Modal Delete Task-->
+  <div class="modal fade" id="modal-delete-task" tabindex="-1" role="dialog" aria-labelledby="modal-delete-taskLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'task/delete', 'role'=>'form', 'id'=>'form-delete-task', 'class'=>'form-horizontal', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-delete-taskLabel">Delete Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <span class="selected_task_counter"></span> Task(s) will be deleted
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger" id="btn-submit-delete">Delete</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Delete Task-->
   
 @endsection
 
 @section('additional_scripts')
  <script type="text/javascript">
+    //Initiate row selection handler
+    var selectedTask = [];
+
     var tableTask =  $('#table-task').DataTable({
       processing :true,
       serverSide : true,
@@ -116,5 +145,32 @@
       tableTask.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
+
+    //Block event task rows selections
+    tableTask.on( 'click', 'tr', function () {
+      $(this).toggleClass('selected');
+    });
+    $('#btn-delete').on('click', function(event){
+      event.preventDefault();
+      selectedTask = [];
+      var selected_task_id = tableTask.rows('.selected').data();
+      $.each( selected_task_id, function( key, value ) {
+        selectedTask.push(selected_task_id[key].id);
+      });
+      if(selectedTask.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-delete-task').find('.id_to_delete').remove();
+        $('.selected_task_counter').html(selectedTask.length);
+        $.each( selectedTask, function( key, value ) {
+          $('#form-delete-task').append('<input type="hidden" class="id_to_delete" name="id_to_delete[]" value="'+value+'"/>');
+        });
+        $('#modal-delete-task').modal('show');
+      }
+      
+    });
+    //ENDBlock event task rows selections
+    
+
   </script>
 @endsection
