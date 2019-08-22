@@ -419,7 +419,7 @@
         aSep:',',
         aDec:'.',
         mDec : 20,
-        vMax:99
+        vMax:100
     });
 
     //ENDBLock initialize autonumerical inputs
