@@ -198,7 +198,8 @@
       source: [
                 {value: 'site-local', text: 'Site Local'},
                 {value: 'site-non-local', text: 'Site Non local'},
-                {value: 'workshop', text: 'Workshop'}
+                {value: 'workshop', text: 'Workshop'},
+                {value: 'office', text: 'Office'},
               ]
     });
     //ENDLive editable text type
