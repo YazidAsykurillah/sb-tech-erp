@@ -51,7 +51,8 @@ class PurchaseRequestController extends Controller
     {
         //Block build next purchase_request code
         $count_purchase_request_id = \DB::table('purchase_requests')->count();
-        if(count($count_purchase_request_id)){
+
+        if($count_purchase_request_id){
             $max = \DB::table('purchase_requests')->max('code');
             $int_max = ltrim(preg_replace('#[^0-9]#', '', $max),'0');
             $next_purchase_request_code = str_pad(($int_max+1), 5, 0, STR_PAD_LEFT);
@@ -63,6 +64,7 @@ class PurchaseRequestController extends Controller
         $purchase_request = new PurchaseRequest;
         $purchase_request->code = 'PR-'.$next_purchase_request_code;
         $purchase_request->project_id = $request->project_id;
+        $purchase_request->description = $request->description;
         $purchase_request->quotation_vendor_id = $request->quotation_vendor_id;
         $purchase_request->amount = floatval(preg_replace('#[^0-9.]#', '', $request->amount));
         $purchase_request->sub_amount = floatval(preg_replace('#[^0-9.]#', '', $request->total_sub_amount));
