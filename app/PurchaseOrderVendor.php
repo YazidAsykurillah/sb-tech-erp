@@ -77,7 +77,7 @@ class PurchaseOrderVendor extends Model
     public function getInvoiceVendorDueAttribute()
     {
         $result = 0;
-        $after_discount = $this->after_discount;
+        $after_discount = $this->amount;
         $paid_invoice_vendor = $this->paid_invoice_vendor();
         $result = $after_discount - $paid_invoice_vendor;
         
