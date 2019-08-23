@@ -1,137 +1,54 @@
-<!--Column Slip Gaji-->
-    <div class="col-md-12">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          <div class="pull-left">    
-            <h3 class="panel-title">
-              <i class="fa fa-credit-card"></i>&nbsp;Slip Gaji  
-            </h3>
-          </div>
-          <div class="pull-right">
-            <a href="{{ url('payroll/'.$payroll->id.'/print') }}" class="btn btn-default btn-xs" id="btn-print" title="Print">
-              <i class="fa fa-print"></i>&nbsp;Print
-            </a>
-          </div>
-          <div class="clearfix"></div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h5 class="panel-title">Slip Gaji</h5>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <tr>
+              <td style="width:20%;">Name</td>
+              <td style="width:5%;">:</td>
+              <td>{{ $payroll->user->name }} </td>
+            </tr>
+            <tr>
+              <td style="width:20%;">NIK</td>
+              <td style="width:5%;">:</td>
+              <td>{{ $payroll->user->nik }} </td>
+            </tr>
+            <tr>
+              <td style="width:20%;">Position</td>
+              <td style="width:5%;">:</td>
+              <td>{{ $payroll->user->position }} </td>
+            </tr>
+            <tr>
+              <td style="width:20%;">Type</td>
+              <td style="width:5%;">:</td>
+              <td>{{ $payroll->user->type }} </td>
+            </tr>
+            <tr>
+              <td style="width:20%;">Period</td>
+              <td style="width:5%;">:</td>
+              <td>{{ $payroll->period->code }} </td>
+            </tr>
+          </table>
         </div>
-        <!--Body employee info-->
-        <div class="panel-body">
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <tr>
-                <td style="width:20%;">Name</td>
-                <td style="width:5%;">:</td>
-                <td>{{ $payroll->user->name }} </td>
-              </tr>
-              <tr>
-                <td style="width:20%;">NIK</td>
-                <td style="width:5%;">:</td>
-                <td>{{ $payroll->user->nik }} </td>
-              </tr>
-              <tr>
-                <td style="width:20%;">Position</td>
-                <td style="width:5%;">:</td>
-                <td>{{ $payroll->user->position }} </td>
-              </tr>
-              <tr>
-                <td style="width:20%;">Type</td>
-                <td style="width:5%;">:</td>
-                <td>{{ $payroll->user->type }} </td>
-              </tr>
-              <tr>
-                <td style="width:20%;">Period</td>
-                <td style="width:5%;">:</td>
-                <td>{{ $payroll->period->code }} </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <!--ENDBody employee info-->
-        <!--Body employee salary info-->
-        <div class="panel-body">
+      </div>
+      <div class="panel-body">
           <div class="table-responsive">
             <table id="table-salary-description">
               <tr>
-                <td style="width:20%;">
-                  <p><strong>Manhour Timesheet</strong></p>
-                </td>
-                <td style="width:5%;text-align:center;">:</td>
-                <td style="width:35%;">
-                  
-                </td>
-                <td rowspan="1" style="width:10%;">
-                  
-                </td>
-                <td rowspan="1" style="width:30%;">
-                  <p>Basic Salary</p>
-                  <p style="text-align:right;">
-                    <strong>{{ number_format($basic_salary,2) }}</strong>
-                  </p>
-                  <p>Tunjangan Kompetensi</p>
-                  <p style="text-align:right;">
-                    <strong>{{ number_format($competency_allowance->amount,2) }}</strong>
-                  </p>
-                  <p>(Total Jam x Rate)</p>
-                  <p style="text-align:right;">
-                    <strong>{{ number_format($total_man_hour_salary,2) }}</strong>
-                  </p>
-                  
-                </td>
-              </tr>
-              <!--Group Incentives-->
-              <tr>
-                <td colspan="5"><strong>Incentives</strong></td>
+                <td colspan="2"><strong>Basic Salary</strong></td>
+                <td style="text-align: center;"><strong>:</strong></td>
+                <td colspan="2" style="text-align: right;"><strong>{{ number_format($basic_salary,2) }}</strong></td>
               </tr>
               <tr>
-                  <td colspan="5">
-                    <table style="width:100%;">
-                      <tr>
-                        <td style="text-align:left;width:20%;">
-                            <strong>Week Day</strong>
-                        </td>
-                        <td style="width:5%;text-align:center;">:</td>
-                        <td style="width:35%;text-align:right;">
-
-                         <strong>{{number_format($incentive_weekday->amount,2)}}</strong>
-                          
-                        </td>
-                        <td style="text-align:right">
-                          <strong>{{$incentive_weekday->multiplier}}</strong>
-                        </td>
-                        <td style="width:30%;text-align:right;">
-                          <strong>
-                            <strong>{{number_format($incentive_weekday->total_amount,2)}}</strong>
-                          </strong>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="5">
-                    <table style="width:100%;">
-                      <tr>
-                        <td style="text-align:left;width:20%;">
-                            <strong>Week End</strong>
-                        </td>
-                        <td style="width:5%;text-align:center;">:</td>
-                        <td style="width:35%;text-align:right;">
-                          
-                         <strong>{{number_format($incentive_weekend->amount,2)}}</strong>
-                          
-                        </td>
-                        <td style="text-align:right">
-                          <strong>{{$incentive_weekend->multiplier}}</strong>
-                        </td>
-                        <td style="width:30%;text-align:right;">
-                          <strong>
-                            <strong>{{number_format($incentive_weekend->total_amount,2)}}</strong>
-                          </strong>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
+                <td colspan="2"><strong>Tunjangan Kompetensi</strong></td>
+                <td style="text-align: center;"><strong>:</strong></td>
+                <td colspan="2" style="text-align: right;"><strong>{{ number_format($competency_allowance->amount,2) }}</strong></td>
+              </tr>
+         
 
               <!--Group Allowance-->
               <tr>
@@ -175,10 +92,53 @@
                   </td>
                 </tr>
                 @endforeach
-              
+
+                <!--Block Workshop allowance-->
+                <tr>
+                  <td colspan="5">
+                    <table style="width:100%;">
+                      <tr>
+                        <td style="width: 20%;" colspan="5">
+                          <strong>Workshop Allowance</strong>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 20%;">
+                          <p>Rate</p>
+                        </td>
+                        <td style="text-align:center;width: 5%;">:</td>
+                        <td style="width:35%;text-align:right;">
+                          @if($payroll->workshop_allowance)
+                            <a href="#" id="workshop_allowance_amount" data-type="text" data-pk="{{ $payroll->workshop_allowance->id }}"  data-title="Workshop allowance amount">
+                              {{ number_format($payroll->workshop_allowance->amount,2) }}
+                            </a>
+                          @endif
+                        </td>
+                        <td style="text-align:right">
+                          @if($payroll->workshop_allowance)
+                            <a href="#" id="workshop_allowance_multiplier" data-type="text" data-pk="{{ $payroll->workshop_allowance->id }}"  data-title="Workshop allowance multiplier">
+                              {{$payroll->workshop_allowance->multiplier}}
+                            </a>
+                          @endif
+                        </td>
+                        <td style="width:30%;text-align:right;">
+                          @if($payroll->workshop_allowance)
+                            <p>
+                              <strong id="total_workshop_allowance_amount">
+                                {{ number_format($payroll->workshop_allowance->total_amount,2) }}
+                              </strong>
+                            </p>
+                          @else
+                            <p><strong id="total_workshop_allowance_amount">0</strong></p>
+                          @endif
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <!--ENDBlock Workshop allowance-->
               @endif
               <!--ENDLoop over the allowances exclude medical-->
-              
               <!--Block Medical Allowance-->
               <tr>
                 <td colspan="5">
@@ -262,10 +222,7 @@
               </tr>
               <!--/Group BPJSn-->
 
-              <tr>
-                <td colspan="5"></td>
-              </tr>
-              <!--Loop over the Expenses-->
+              <!--Loop cashbonds-->
               <tr>
                 <td colspan="5">
                   <table style="width:100%;">
@@ -283,7 +240,7 @@
                   </table>
                 </td>
               </tr>
-              
+              <!--ENDLoop cashbonds-->
 
               <!--Loop Extra Payroll Payment-->
               <tr>
@@ -413,105 +370,11 @@
                 <td style="text-align:center;">:</td>
                 <td style="text-align:right;"><strong id="thp_amount">{{ number_format($payroll->thp_amount,2) }}</strong></td>
               </tr>
-              
+
             </table>
+
           </div>
         </div>
-        <!--ENDBody employee salary info-->
-
-        <!--Table action to payroll-->
-        <div class="panel-body">
-          <div class="table-responsive">
-            <table class="table">
-              <tr>
-                <td style="width: 20%;">Status</td>
-                <td style="width: 5%;">:</td>
-                <td style="text-align: right;">
-                  {{ucwords($payroll->status)}} 
-                  @if($payroll->status == 'draft' || $payroll->status == NULL)
-                    &nbsp;<a href="#" id="btn-check-payroll" class="btn btn-default btn-xs">
-                      <i class="fa fa-check-circle"></i> Check
-                    </a>
-                  @elseif($payroll->status == 'checked')
-                    &nbsp;<a href="#" id="btn-approve-payroll" class="btn btn-default btn-xs">
-                      <i class="fa fa-check-circle"></i> Approve
-                    </a>
-                  @else
-                   
-                  @endif
-                </td>
-              </tr>      
-            </table>
-          </div>
-        </div>
-        <!--ENDTable action to payroll-->
-      </div>
     </div>
-    <!--Endcolumn Slip Gaji-->
-
-    <!--Column ETS-->
-    <div class="col-md-12">
-      <div class="box box-default">
-        <div class="box-header with-border">
-          <h3 class="box-title"><i class="fa fa-clock-o"></i>&nbsp;ETS</h3>
-          <div class="pull-right">
-            <!--
-            <button type="button" id="btn-import-ets" class="btn btn-xs btn-info">
-              <i class="fa fa-upload"></i> Import
-            </button>
-          -->
-          </div>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-          <div class="table-responsive">
-            <table class="table" id="table-ets">
-              <thead>
-                <tr>
-                  <td style="width: 5%;">#</td>
-                  <td style="width: 10%;">Date</td>
-                  <td style="width: 10%;">Start Time</td>
-                  <td style="width: 10%;">End Time</td>
-                  <td style="width: 15%;">Description</td>
-                  <td>Location</td>
-                  <td>Project Number</td>
-                  <td>Incentive Week Day</td>
-                  <td>Incentive Week End</td>
-                  <td>Checker Notes</td>
-                </tr>  
-              </thead>
-              <tbody>
-                @if($ets_lists->count())
-                  <?php $num = 0; ?>
-                  @foreach($ets_lists as $ets)
-                  <?php $num++;?>
-                  <tr class="{{ is_date_weekend($ets->the_date) == TRUE ? 'weekend':'' }}">
-                    <td class="">{{ $num }}</td>
-                    <td class="">
-                      {{ $ets->the_date }}
-                      <p>{{ get_day_name($ets->the_date) }}</p>
-                    </td>
-                    <td class="">{{ $ets->start_time }}</td>
-                    <td class="">{{ $ets->end_time }}</td>
-                    <td class="">{{ $ets->description }}</td>
-                    <td class="">{{ $ets->location }}</td>
-                    <td class="">{{ $ets->project_number }}</td>
-                    <td class="">
-                      <input type="checkbox" class="check_has_incentive_week_day" data-id="{{$ets->id}}" @if($ets->has_incentive_week_day == TRUE) checked @endif disabled/>
-                    </td>
-                    <td class="">
-                      <input type="checkbox" class="check_has_incentive_week_end" data-id="{{$ets->id}}" @if($ets->has_incentive_week_end == TRUE) checked @endif disabled/>
-                    </td>
-                    <td>
-                      {{ $ets->checker_notes }}
-                    </td>
-                  </tr>
-                  @endforeach
-                @endif
-              </tbody>
-           </table>
-          </div>
-        </div><!-- /.box-body -->
-        <div class="box-footer clearfix"></div>
-      </div>
-    </div>
-    <!--ENDColumn ETS-->
+  </div>
+</div>

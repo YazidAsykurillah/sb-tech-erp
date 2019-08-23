@@ -52,6 +52,7 @@
 
 <body>
   @if($user->type == 'office')
+    @include('pdf.payroll.office')
   @else
     @include('pdf.payroll.outsource')
   @endif
