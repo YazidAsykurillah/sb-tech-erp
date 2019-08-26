@@ -109,6 +109,7 @@ return array(
     'CreateLocationsTable' => $baseDir . '/database/migrations/2019_07_17_034048_create_locations_table.php',
     'CreateLockConfigurationTable' => $baseDir . '/database/migrations/2017_05_23_101624_create_lock_configuration_table.php',
     'CreateMedicalAllowancesTable' => $baseDir . '/database/migrations/2019_04_27_095819_create_medical_allowances_table.php',
+    'CreateMigosTable' => $baseDir . '/database/migrations/2019_08_26_082649_create_migos_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreatePayrollsTable' => $baseDir . '/database/migrations/2019_04_27_100740_create_payrolls_table.php',
     'CreatePeriodsTable' => $baseDir . '/database/migrations/2017_05_28_194409_create_periods_table.php',

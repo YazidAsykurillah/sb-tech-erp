@@ -113,13 +113,17 @@ class PurchaseRequestController extends Controller
      */
     public function show($id)
     {
+        
         $purchase_request = PurchaseRequest::findOrFail($id);
         $status_opts = ['pending'=>'Pending', 'approved'=>'Approved'];
-        $items = \DB::table('item_purchase_request')->where('purchase_request_id', '=', $id)->get();
+        //$items = \DB::table('item_purchase_request')->where('purchase_request_id', '=', $id)->get();
+        $items = $purchase_request->item_purchase_request;
+        $received_items = $purchase_request->received_item_purchase_request;
         return view('purchase-request.show')
             ->with('status_opts', $status_opts)
             ->with('purchase_request', $purchase_request)
-            ->with('items', $items);
+            ->with('items', $items)
+            ->with('received_items', $received_items);
     }
 
     /**

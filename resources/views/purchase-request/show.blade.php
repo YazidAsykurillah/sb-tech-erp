@@ -70,6 +70,7 @@
                         <th style="width:15%;">Unit</th>
                         <th style="width:20%;">Price/Unit</th>
                         <th style="width:20%;">Sub Amount</th>
+                        <th style="width:20%;">Is Received</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -81,6 +82,12 @@
                           <td>{{ $item->unit }}</td>
                           <td>{{ number_format($item->price, 2) }}</td>
                           <td>{{ number_format($item->sub_amount, 2) }}</td>
+                          <td>
+                            <!--Show checkbox if only this purchase request has purchase order vendor related-->
+                            @if($purchase_request->purchase_order_vendor)
+                            <input type="checkbox" class="is_received_checker" data-id="{{ $item->id }}" {{ $item->is_received == TRUE ? 'checked' : '' }}  />
+                            @endif
+                          </td>
                         </tr>
                         @endforeach
                       @else
@@ -142,13 +149,16 @@
                   @endif
                 </td>
               </tr>
-              
               <tr>
                 <td style="width: 20%;"><strong>Terms</strong></td>
                 <td style="width: 1%;">:</td>
                 <td>{!! $purchase_request->terms !!}</td>
               </tr>
-              
+              <tr>
+                <td style="width: 20%;"><strong>Received Items</strong></td>
+                <td style="width: 1%;">:</td>
+                <td>{!! $purchase_request->received_item_purchase_request->count() !!}</td>
+              </tr>
             </table>
           </div>
           
@@ -212,6 +222,31 @@
         </div><!-- /.box-body -->
       </div>
       <!--ENDBOX Purchase Order Vendor Information-->
+
+      <!--BOX Migo-->
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-book"></i> Migo</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          @if($purchase_request->migo)
+            <p>Code</p>
+            <p class="text-muted">
+              {{ $purchase_request->migo->code }}
+            </p>
+            <p>Description</p>
+            <p class="text-muted">
+              {{ $purchase_request->migo->description }}
+            </p>
+          @else
+            <p class="text text-warning"><i class="fa fa-info-circle"></i> Not Registered</p>
+            <a href="javascript::void();" id="btn-register-migo" class="btn btn-default btn-sm">
+              Register
+            </a>
+          @endif
+        </div><!-- /.box-body -->
+      </div>
+      <!--ENDBOX Migo-->
     </div>
   </div>
 
@@ -243,7 +278,40 @@
       </div>
     </div>
   </div>
-<!--ENDModal CHANGE STATUS-->
+  <!--ENDModal CHANGE STATUS-->
+
+  <!--Modal register migo-->
+  <div class="modal fade" id="modal-register-migo" tabindex="-1" role="dialog" aria-labelledby="modal-register-migoLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['route'=>'migo.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-migo','files'=>true]) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-register-migoLabel">Register Migo</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+            {!! Form::label('description', 'Description', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!! Form::textarea('description',null,['class'=>'form-control', 'placeholder'=>'Migo description', 'id'=>'description']) !!}
+              @if ($errors->has('description'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('description') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="pr_id" name="pr_id" value="{{$purchase_request->id}}"/>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-register-migo">Register</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+  <!--ENDModal register migo-->
 @endsection
 
 @section('additional_scripts')
@@ -255,5 +323,35 @@
       $('#modal-change-status').modal('show');
     });
     //ENDBlock Change Status
+
+    //Is received checker handling
+    $('.is_received_checker').on('click', function(){
+      var ipr_id = $(this).attr('data-id');
+      var mode = "";
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+      console.log(CSRF_TOKEN);
+      if($(this).is(":checked")){
+        mode = "checked";
+      }
+      else if($(this).is(":not(:checked)")){
+        mode = "unchecked";
+      }
+      $.ajax({
+        url : '{!! url('updateItemPurchaseRequestIsReceived') !!}',
+        type : 'POST',
+        data : 'ipr_id='+ipr_id+'&mode='+mode+'&_token='+CSRF_TOKEN,
+        beforeSend : function(){},
+        success : function(response){
+          console.log(response);
+        }
+      });
+    });
+
+    //Block Register migo handling
+    $('#btn-register-migo').on('click', function(event){
+      event.preventDefault();
+      $('#modal-register-migo').modal('show');
+    });
+    //EndBlock Register migo handling
   </script>
 @endsection

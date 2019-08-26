@@ -468,6 +468,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'CreateLocationsTable' => __DIR__ . '/../..' . '/database/migrations/2019_07_17_034048_create_locations_table.php',
         'CreateLockConfigurationTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_23_101624_create_lock_configuration_table.php',
         'CreateMedicalAllowancesTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_27_095819_create_medical_allowances_table.php',
+        'CreateMigosTable' => __DIR__ . '/../..' . '/database/migrations/2019_08_26_082649_create_migos_table.php',
         'CreatePasswordResetsTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
         'CreatePayrollsTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_27_100740_create_payrolls_table.php',
         'CreatePeriodsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_28_194409_create_periods_table.php',

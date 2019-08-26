@@ -513,6 +513,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('task/delete', 'TaskController@delete');
 	Route::resource('task', 'TaskController');
 
+	//Migo
+	Route::resource('migo', 'MigoController');
 	//REST APIs
 	//Preparing rest, for now it's still not used
 	Route::get('api/invoice-customer', 'Api\InvoiceCustomerController@index');

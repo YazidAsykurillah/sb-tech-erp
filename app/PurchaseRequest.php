@@ -31,6 +31,21 @@ class PurchaseRequest extends Model
         return $this->hasOne('App\PurchaseOrderVendor', 'purchase_request_id');
     }
 
+    public function item_purchase_request()
+    {
+        return $this->hasMany('App\ItemPurchaseRequest');
+    }
+
+    public function received_item_purchase_request()
+    {
+        return $this->hasMany('App\ItemPurchaseRequest')->where('is_received','=',TRUE);   
+    }
+
+    public function migo()
+    {
+        return $this->hasOne('App\Migo');
+    }    
+
     public function vat_value()
     {
         //number_format($purchase_request->vat / 100 * $purchase_request->after_discount)
