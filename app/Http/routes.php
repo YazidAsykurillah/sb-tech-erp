@@ -514,6 +514,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('task', 'TaskController');
 
 	//Migo
+	Route::get('migo/dataTables', 'MigoController@dataTables');
 	Route::resource('migo', 'MigoController');
 	//REST APIs
 	//Preparing rest, for now it's still not used

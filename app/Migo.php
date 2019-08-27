@@ -17,5 +17,9 @@ class Migo extends Model
     	return $this->belongsTo('App\PurchaseRequest');
     }
 
+    public function creator()
+    {
+    	return $this->belongsTo('App\User', 'creator_id', 'id');
+    }
     
 }

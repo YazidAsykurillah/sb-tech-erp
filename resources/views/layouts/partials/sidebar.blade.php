@@ -140,6 +140,14 @@
       </li>
       @endif
 
+      @if(\Auth::user()->can('access-migo'))
+      <li {{{ (Request::is('migo*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('migo') }}">
+          <i class="fa fa-book"></i> <span>Migo</span>
+        </a>
+      </li>
+      @endif
+
       @if(\Auth::user()->can('index-invoice-customer') && \Auth::user()->can('index-invoice-vendor'))
       <li class="treeview {{{ (Request::is('invoice*') ? 'active':'') }}}">
         <a href="#">

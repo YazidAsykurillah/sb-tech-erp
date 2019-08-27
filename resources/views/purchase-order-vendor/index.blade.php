@@ -45,11 +45,13 @@
                       <th>Amount</th>
                       <th style="width:15%;">Paid Invoice</th>
                       <th>Status</th>
+                      <th>Migo</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -70,6 +72,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -140,6 +143,7 @@
         { data: 'amount', name: 'amount' },
         { data: 'paid_invoice_vendor', name: 'paid_invoice_vendor', orderable:false, searchable:false },
         { data: 'status', name: 'status'},
+        { data: 'migo_code', name: 'purchase_request.migo.code'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
         { data: 'created_at', name: 'created_at', visible:false, sortable:true},
       ],
@@ -207,7 +211,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 11) {
+      if ($(this).index() != 0 && $(this).index() != 12) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           

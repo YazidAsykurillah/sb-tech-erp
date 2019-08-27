@@ -98,6 +98,7 @@
                 <td style="width: 1%;">:</td>
                 <td>{{ number_format($po_vendor->amount) }}</td>
               </tr>
+              @if($po_vendor->purchase_request)
               <tr>
                 <td style="width: 20%;"><strong>Discount</strong></td>
                 <td style="width: 1%;">:</td>
@@ -123,12 +124,12 @@
                 <td style="width: 1%;">:</td>
                 <td>{{ number_format($po_vendor->purchase_request->wht) }}</td>
               </tr>
-              
               <tr>
                 <td style="width: 20%;"><strong>Terms</strong></td>
                 <td style="width: 1%;">:</td>
                 <td>{!! $po_vendor->purchase_request->terms !!}</td>
               </tr>
+              @endif
               <tr>
                 <td style="width: 20%;"><strong>Status</strong></td>
                 <td style="width: 1%;">:</td>
@@ -157,21 +158,28 @@
           <h3 class="box-title"><i class="fa fa-tag"></i>&nbsp;Purchase Request Information</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-          <strong>Purchase Request Number</strong>
-          <p class="text-muted">
-            @if($po_vendor->purchase_request)
-              <a href="{{ url('purchase-request/'.$po_vendor->purchase_request->id.'') }}">
-                {{ $po_vendor->purchase_request->code }}
-              </a>
-              
-            @endif
-          </p>
-          <strong>Amount</strong>
-          <p class="text-muted">
-            @if($po_vendor->purchase_request)
-              {{ number_format($po_vendor->purchase_request->amount, 2) }}
-            @endif
-          </p>
+          @if($po_vendor->purchase_request)
+            <strong>Purchase Request Number</strong>
+            <p class="text-muted">
+              @if($po_vendor->purchase_request)
+                <a href="{{ url('purchase-request/'.$po_vendor->purchase_request->id.'') }}">
+                  {{ $po_vendor->purchase_request->code }}
+                </a>
+              @endif
+            </p>
+            <strong>Amount</strong>
+            <p class="text-muted">
+              @if($po_vendor->purchase_request)
+                {{ number_format($po_vendor->purchase_request->amount, 2) }}
+              @endif
+            </p>
+            <strong>Migo</strong>
+            <p class="text-muted">
+              @if($po_vendor->purchase_request->migo)
+                {{ $po_vendor->purchase_request->migo->code }}
+              @endif
+            </p>
+          @endif
         </div><!-- /.box-body -->
       </div>
       <!--ENDBOX Purchase Request Information-->

@@ -136,8 +136,14 @@ class PurchaseOrderVendorController extends Controller
     public function show($id)
     {
         $po_vendor = PurchaseOrderVendor::findOrFail($id);
+        $purchase_request = $po_vendor->purchase_request;
+        if($purchase_request){
+            $items = \DB::table('item_purchase_request')->where('purchase_request_id', '=', $po_vendor->purchase_request->id)->get();    
+        }else{
+            $items = [];
+        }
         //get the item from purchase request
-        $items = \DB::table('item_purchase_request')->where('purchase_request_id', '=', $po_vendor->purchase_request->id)->get();
+        
         return view('purchase-order-vendor.show')
             ->with('po_vendor', $po_vendor)
             ->with('items', $items);
@@ -285,7 +291,7 @@ class PurchaseOrderVendorController extends Controller
     public function dataTables(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $po_vendors = PurchaseOrderVendor::with('vendor', 'purchase_request', 'purchase_request.project', 'quotation_vendor')->select([
+        $po_vendors = PurchaseOrderVendor::with('vendor', 'purchase_request', 'purchase_request.project', 'purchase_request.migo', 'quotation_vendor')->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'purchase_order_vendors.*'
         ]);
@@ -313,6 +319,14 @@ class PurchaseOrderVendorController extends Controller
                     return substr($project_name, 0, 100);
                 }
                 return NULL;
+                
+            })
+            ->addColumn('migo_code', function($po_vendors){
+                $migo_code = NULL;
+                if($po_vendors->purchase_request){
+                    $migo_code = $po_vendors->purchase_request->migo ? $po_vendors->purchase_request->migo->code : NULL;
+                }
+                return $migo_code;
                 
             })
             ->editColumn('purchase_request', function($po_vendors){

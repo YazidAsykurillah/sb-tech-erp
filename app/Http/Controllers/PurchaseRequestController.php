@@ -258,13 +258,13 @@ class PurchaseRequestController extends Controller
         \DB::statement(\DB::raw('set @rownum=0'));
         $user_role = \Auth::user()->roles->first()->code;
         if($user_role == 'SUP' || $user_role == 'ADM' || $user_role =='FIN'){
-           $purchase_requests = PurchaseRequest::with('project', 'project.purchase_order_customer.customer', 'user', 'quotation_vendor', 'quotation_vendor.vendor', 'purchase_order_vendor')->select([
+           $purchase_requests = PurchaseRequest::with('project', 'project.purchase_order_customer.customer', 'user', 'quotation_vendor', 'quotation_vendor.vendor', 'purchase_order_vendor', 'migo')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'purchase_requests.*',
             ]);
        }else{
             //exit();
-            $purchase_requests = PurchaseRequest::with('project', 'project.purchase_order_customer.customer', 'user', 'quotation_vendor', 'quotation_vendor.vendor', 'purchase_order_vendor')->select([
+            $purchase_requests = PurchaseRequest::with('project', 'project.purchase_order_customer.customer', 'user', 'quotation_vendor', 'quotation_vendor.vendor', 'purchase_order_vendor', 'migo')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'purchase_requests.*',
             ])->where('purchase_requests.user_id', \Auth::user()->id);
@@ -320,6 +320,13 @@ class PurchaseRequestController extends Controller
             ->addColumn('purchase_order_vendor', function($purchase_requests){
                 if($purchase_requests->purchase_order_vendor){
                     return $purchase_requests->purchase_order_vendor->code;    
+                }
+                return NULL;
+                
+            })
+            ->addColumn('migo', function($purchase_requests){
+                if($purchase_requests->migo){
+                    return $purchase_requests->migo->code;
                 }
                 return NULL;
                 

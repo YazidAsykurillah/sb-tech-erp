@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 use App\Migo;
 use App\PurchaseRequest;
@@ -18,8 +20,47 @@ class MigoController extends Controller
      */
     public function index()
     {
-        //
+        return view('migo.index');
     }
+
+    //Migo datatables
+    public function dataTables(Request $request)
+    {
+        \DB::statement(\DB::raw('set @rownum=0'));
+        $migo = Migo::with('purchase_request', 'creator')->select([
+            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+            'migos.*'
+        ]);
+
+        $data_migo = Datatables::of($migo)
+            ->addColumn('purchase_request_code', function($migo){
+                $purchase_request_code = NULL;
+                if($migo->purchase_request){
+                    $purchase_request_code = $migo->purchase_request->code;
+                }
+                return $purchase_request_code;
+            })
+            ->addColumn('creator_name', function($migo){
+                $creator_name = NULL;
+                if($migo->creator){
+                    $creator_name = $migo->creator->name;
+                }
+                return $creator_name;
+            })
+            ->addColumn('actions', function($migo){
+                $actions_html ='<a href="'.url('migo/'.$migo->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
+                $actions_html .=    '<i class="fa fa-external-link"></i>';
+                $actions_html .='</a>&nbsp;';
+                return $actions_html;
+            });
+
+        if($keyword = $request->get('search')['value']) {
+            $data_migo->filterColumn('rownum', 'whereRaw', '@rownum  + 1 like ?', ["%{$keyword}%"]);
+        }
+
+        return $data_migo->make(true);
+    }
+    //END Migo datatables
 
     /**
      * Show the form for creating a new resource.
