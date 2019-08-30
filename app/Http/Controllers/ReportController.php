@@ -94,16 +94,6 @@ class ReportController extends Controller
         ->addColumn('rownum', function($results){
             return "#";
         })
-        ->addColumn('tax_in', function($results){
-            $tax_in_html  = '';
-            $tax_in_html .= number_format($this->count_tax_in_from_date($results['tax_month']));
-            $tax_in_html .= '<p>';
-            $tax_in_html .=     '<a class="btn btn-xs btn-tax-in-detail" data-yearmonth="'.$results['tax_month'].'">';
-            $tax_in_html .=         '<i class="fa fa-folder-open"></i>';
-            $tax_in_html .=     '</a>';
-            $tax_in_html .= '</p>';
-            return $tax_in_html;
-        })
         ->addColumn('tax_out', function($results){
             $tax_out_html  = '';
             $tax_out_html .= number_format($this->count_tax_out_from_date($results['tax_month']));
@@ -114,6 +104,17 @@ class ReportController extends Controller
             $tax_out_html .= '</p>';
             return $tax_out_html;
         })
+        ->addColumn('tax_in', function($results){
+            $tax_in_html  = '';
+            $tax_in_html .= number_format($this->count_tax_in_from_date($results['tax_month']));
+            $tax_in_html .= '<p>';
+            $tax_in_html .=     '<a class="btn btn-xs btn-tax-in-detail" data-yearmonth="'.$results['tax_month'].'">';
+            $tax_in_html .=         '<i class="fa fa-folder-open"></i>';
+            $tax_in_html .=     '</a>';
+            $tax_in_html .= '</p>';
+            return $tax_in_html;
+        })
+        
         ->addColumn('payment', function($results){
             $html = '';
             $yearmonth = $results['tax_month'];
@@ -129,21 +130,16 @@ class ReportController extends Controller
             $tax_out = $this->count_tax_out_from_date($results['tax_month']);
             //$payment = $tax_in - $tax_out;
             $payment = $tax_out-$tax_in;
-            $html.='<p>'.number_format($payment).'</p>';
+            $html .='<p>'.number_format($payment).'</p>';
+            $html .='<p>';
+            $html .=    '<a class="btn btn-info btn-xs btn-payment" href="javascript::void()">';
+            $html .=        'Bayar';
+            $html .=    '</a>';
+            $html .='</p>';
 
             return  $html;
         });
         return $data_comparations->make(true);
-    }
-
-    public function count_tax_in_from_date($yearmonth){
-        $invoice_vendor_taxes = InvoiceVendorTax::whereHas('invoice_vendor', function($query) use ($yearmonth){
-            $query->where('invoice_vendors.tax_date', 'LIKE', "%$yearmonth%");
-            $query->where('invoice_vendor_taxes.source', '=', "vat");
-            $query->where('invoice_vendor_taxes.tax_number', 'NOT LIKE', "0000%");
-        })
-        ->sum('amount');
-        return $invoice_vendor_taxes;
     }
 
     public function count_tax_out_from_date($yearmonth){
@@ -157,4 +153,16 @@ class ReportController extends Controller
         ->sum('amount');
         return $invoice_customer_taxes;
     }
+
+    public function count_tax_in_from_date($yearmonth){
+        $invoice_vendor_taxes = InvoiceVendorTax::whereHas('invoice_vendor', function($query) use ($yearmonth){
+            $query->where('invoice_vendors.tax_date', 'LIKE', "%$yearmonth%");
+            $query->where('invoice_vendor_taxes.source', '=', "vat");
+            $query->where('invoice_vendor_taxes.tax_number', 'NOT LIKE', "0000%");
+        })
+        ->sum('amount');
+        return $invoice_vendor_taxes;
+    }
+
+    
 }

@@ -33,9 +33,9 @@
                         <tr>
                           <th style="width:5%;">#</th>
                           <th style="width:15%;">Masa</th>
-                          <th style="width:20%;">Tax Masukan</th>
-                          <th style="width:20%;">Tax Keluaran</th>
-                          <th style="width:20%;">Payment</th>
+                          <th style="width:20%;">Pajak Keluaran</th>
+                          <th style="width:20%;">Pajak Masukan</th>
+                          <th style="width:20%;">Pembayaran</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -164,8 +164,8 @@
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false, orderable:false},
         { data: 'tax_month', name: 'tax_month', orderable:false},
-        { data: 'tax_in', name: 'tax_in', searchable:false, orderable:false },
         { data: 'tax_out', name: 'tax_out', searchable:false, orderable:false },
+        { data: 'tax_in', name: 'tax_in', searchable:false, orderable:false },
         { data: 'payment', name: 'payment', searchable:false, orderable:false },
         { data: 'tax_month', visible: false, searchable: false, className: 'never'},
       ],
