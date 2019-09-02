@@ -244,8 +244,6 @@ class ProjectController extends Controller
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'projects.*',
         ])->get();
-        
-        $average_cost_margin = 0;
         if ($request->get('cost_margin_value')) {
             $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
@@ -311,9 +309,11 @@ class ProjectController extends Controller
         else{
 
         }
+
+
         
         $data_projects = Datatables::of($projects)
-            ->with('average_cost_margin', $average_cost_margin)
+            
             ->editColumn('code', function($projects){
                 $code_link  = '<a href="'.url('project/'.$projects->id.'').'">';
                 $code_link .=   $projects->code;
@@ -360,7 +360,7 @@ class ProjectController extends Controller
             })
             ->editColumn('cost_margin', function($projects){
                 if($projects->cost_margin != NULL){
-                    return round($projects->cost_margin, 2).' %';    
+                    return round($projects->cost_margin, 2);
                 }else{
                     return NULL;
                 }

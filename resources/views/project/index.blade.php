@@ -189,7 +189,13 @@
         { data: 'invoiced', name: 'invoiced'},
         { data: 'pending_invoice_customer_amount', name: 'pending_invoice_customer_amount', orderable:false, searchable:false },
         { data: 'paid_invoice_customer_amount', name: 'paid_invoice_customer_amount', orderable:false, searchable:false },
-        { data: 'cost_margin', name: 'cost_margin', orderable:true, searchable:true},
+        { data: 'cost_margin', name: 'cost_margin', orderable:true, searchable:true, render:function(data, type, row, meta){
+            if(data != null){
+              return data+ '%';
+            }else{
+              return null;
+            }
+        }},
         { data: 'created_at', name: 'created_at'},
         { data: 'enabled', name: 'enabled', render:function(data, type, row, meta){
           var disp = '';
@@ -205,7 +211,8 @@
       footerCallback: function( tfoot, data, start, end, display ) {
         var api = this.api();
         var json = api.ajax.json();
-        var average_cost_margin = json.average_cost_margin;
+
+        var external_count = 0;
 
         // Remove the formatting to get float data for summation
         var theFloat = function ( i ) {
@@ -251,9 +258,28 @@
             total_paid_invoice_customer_amount.toLocaleString()
         );
 
-       
+        console.log(json.data);
+
+
+        $.each(json.data, function (i, obj) {
+          if(obj.category == 'internal'){
+            console.log('internal');
+          }else{
+            external_count++;
+          }
+        });
+
+
+        total_cost_margin = api
+            .column(11)
+            .data()
+            .reduce( function (a, b) {
+                return theFloat(a) + theFloat(b);
+            }, 0 );
+        var average_cost_margin = total_cost_margin/external_count;
         $( api.column(11).footer() ).html(
-            average_cost_margin.toLocaleString()
+          
+          average_cost_margin.toLocaleString()+'%'
         );
       },
       order : [
