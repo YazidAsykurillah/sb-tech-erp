@@ -114,7 +114,27 @@ class ReportController extends Controller
             $tax_in_html .= '</p>';
             return $tax_in_html;
         })
-        
+        ->addColumn('credit', function($results){
+            $html_credit = '';
+            $yearmonth = $results['tax_month'];
+            $dt = Carbon::parse($yearmonth);
+            $prevMonth = $dt->subMonth()->format('Y-m');
+            $prev_month_tax_in = $this->count_tax_in_from_date($prevMonth);
+            $prev_month_tax_out = $this->count_tax_out_from_date($prevMonth);
+            
+            //$prevMonthPayment = $prev_month_tax_in - $prev_month_tax_out;
+            $prevMonthPayment = $prev_month_tax_out - $prev_month_tax_in;
+
+            $tax_in = $this->count_tax_in_from_date($results['tax_month']);
+            $tax_out = $this->count_tax_out_from_date($results['tax_month']);
+            $credit_amount = 0;
+            $credit = $tax_out-$tax_in;
+            if($credit < 0){
+                $credit_amount = $credit;
+            }
+            $html_credit .='<p>'.number_format($credit_amount).'</p>';
+            return  $html_credit;
+        })
         ->addColumn('payment', function($results){
             $html = '';
             $yearmonth = $results['tax_month'];

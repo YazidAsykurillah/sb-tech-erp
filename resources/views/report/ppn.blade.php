@@ -35,6 +35,7 @@
                           <th style="width:15%;">Masa</th>
                           <th style="width:20%;">Pajak Keluaran</th>
                           <th style="width:20%;">Pajak Masukan</th>
+                          <th style="width:20%;">Credit</th>
                           <th style="width:20%;">Pembayaran</th>
                         </tr>
                       </thead>
@@ -166,6 +167,7 @@
         { data: 'tax_month', name: 'tax_month', orderable:false},
         { data: 'tax_out', name: 'tax_out', searchable:false, orderable:false },
         { data: 'tax_in', name: 'tax_in', searchable:false, orderable:false },
+        { data: 'credit', name: 'credit', searchable:false, orderable:false },
         { data: 'payment', name: 'payment', searchable:false, orderable:false },
         { data: 'tax_month', visible: false, searchable: false, className: 'never'},
       ],
