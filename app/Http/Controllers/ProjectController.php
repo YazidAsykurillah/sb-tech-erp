@@ -245,6 +245,7 @@ class ProjectController extends Controller
             'projects.*',
         ])->get();
         
+        $average_cost_margin = 0;
         if ($request->get('cost_margin_value')) {
             $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
@@ -312,6 +313,7 @@ class ProjectController extends Controller
         }
         
         $data_projects = Datatables::of($projects)
+            ->with('average_cost_margin', $average_cost_margin)
             ->editColumn('code', function($projects){
                 $code_link  = '<a href="'.url('project/'.$projects->id.'').'">';
                 $code_link .=   $projects->code;
@@ -357,7 +359,12 @@ class ProjectController extends Controller
                 return $projects->paid_invoice_customer() ? number_format($projects->paid_invoice_customer(), 2) : 0;
             })
             ->editColumn('cost_margin', function($projects){
-                return round($projects->cost_margin, 2).' %';
+                if($projects->cost_margin != NULL){
+                    return round($projects->cost_margin, 2).' %';    
+                }else{
+                    return NULL;
+                }
+                
             })
             ->addColumn('created_at', function($projects){
                 return $projects->created_at != NULL ? Carbon::parse($projects->created_at)->format('Y-m-d') : '';

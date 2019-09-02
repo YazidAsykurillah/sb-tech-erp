@@ -303,14 +303,19 @@ class Project extends Model
         $cost_margin = 100 - ($total_expenses / $purchase_order_customer_amount_per_ppn * 100);
         return $cost_margin;
         */
-
-        $total_expenses = $this->total_amount_invoice_vendor_without_ppn()+$this->total_amount_invoice_vendor_with_ppn()+ $this->total_amount_internal_request() + $this->total_expense_from_settlement();
-        $purchase_order_customer_amount = ($this->purchase_order_customer ? $this->purchase_order_customer->amount : 1);
-        $purchase_order_customer_amount = $purchase_order_customer_amount;
-        if($purchase_order_customer_amount == 0){
-            $purchase_order_customer_amount = 1;
+        $cost_margin = NULL;
+        if($this->category == 'internal'){
+            
+        }else{
+            $total_expenses = $this->total_amount_invoice_vendor_without_ppn()+$this->total_amount_invoice_vendor_with_ppn()+ $this->total_amount_internal_request() + $this->total_expense_from_settlement();
+            $purchase_order_customer_amount = ($this->purchase_order_customer ? $this->purchase_order_customer->amount : 1);
+            $purchase_order_customer_amount = $purchase_order_customer_amount;
+            if($purchase_order_customer_amount == 0){
+                $purchase_order_customer_amount = 1;
+            }
+            $cost_margin = 100 - ($total_expenses / $purchase_order_customer_amount * 100);
         }
-        $cost_margin = 100 - ($total_expenses / $purchase_order_customer_amount * 100);
+        
         return $cost_margin;
 
     }

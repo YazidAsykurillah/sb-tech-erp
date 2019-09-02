@@ -204,6 +204,9 @@
       ],
       footerCallback: function( tfoot, data, start, end, display ) {
         var api = this.api();
+        var json = api.ajax.json();
+        var average_cost_margin = json.average_cost_margin;
+
         // Remove the formatting to get float data for summation
         var theFloat = function ( i ) {
             return typeof i === 'string' ?
@@ -246,6 +249,11 @@
         // Update footer
         $( api.column(10).footer() ).html(
             total_paid_invoice_customer_amount.toLocaleString()
+        );
+
+       
+        $( api.column(11).footer() ).html(
+            average_cost_margin.toLocaleString()
         );
       },
       order : [
