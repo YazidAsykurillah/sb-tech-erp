@@ -216,6 +216,32 @@
       </div>
       <!--ENDBOX Purchase Order Vendor Information-->
 
+      <!--Box Purchase Request Information-->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-bookmark-o"></i>&nbsp;Purchase Request Information</h3>
+        </div>
+        <div class="box-body">
+          @if($purchase_request)
+            <strong>Purchase Request Code</strong>
+            <p class="text-muted">
+              <a href="{{ url('purchase-request/'.$purchase_request->id.'') }}">
+                  {{ $purchase_request->code }}
+              </a>
+            </p>
+            <strong>Amount</strong>
+            <p class="text-muted">
+              {{ number_format($purchase_request->amount) }}
+            </p>
+            <strong>Migo</strong>
+            <p class="text-muted">
+              {{ $purchase_request->migo ? $purchase_request->migo->code : NULL}}
+            </p>
+          @endif
+        </div>
+      </div>
+      <!--ENDBOX Purchase Request Information-->
+
       
       <!--Box Project Information-->
       <div class="box">

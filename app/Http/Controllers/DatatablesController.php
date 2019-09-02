@@ -1674,6 +1674,7 @@ class DatatablesController extends Controller
     //TRANSFER TASK INVOICE VENDORS
     public function getTransferTaskInvoiceVendors(Request $request)
     {
+
         \DB::statement(\DB::raw('set @rownum=0'));
         $user_role = \Auth::user()->roles()->first()->code;
         if($request->filter && $request->filter = 'over_last_week_overdue'){
@@ -1690,7 +1691,8 @@ class DatatablesController extends Controller
             ->where('accounted', false);
         }
         else{
-            $invoice_vendors = InvoiceVendor::with('project', 'purchase_order_vendor','purchase_order_vendor.vendor', 'remitter_bank')->select([
+
+            $invoice_vendors = InvoiceVendor::with('project', 'purchase_order_vendor','purchase_order_vendor.vendor', 'remitter_bank', 'purchase_order_vendor.purchase_request', 'purchase_order_vendor.purchase_request.migo')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'invoice_vendors.*',
             ])
@@ -1768,6 +1770,17 @@ class DatatablesController extends Controller
                     $disp = "No";
                 }
                 return $disp;
+            })
+            ->editColumn('purchase_request_migo', function($invoice_vendors){
+                $migo = NULL;
+                if($invoice_vendors->purchase_order_vendor){
+                    if($invoice_vendors->purchase_order_vendor->purchase_request){
+                        if($invoice_vendors->purchase_order_vendor->purchase_request->migo){
+                            $migo = $invoice_vendors->purchase_order_vendor->purchase_request->migo->code;
+                        }
+                    }
+                }
+               return $migo;
             })
             ->addColumn('actions', function($invoice_vendors) use ($user_role){
                 $actions_html = "";

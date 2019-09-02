@@ -54,11 +54,13 @@
                       <th>Beneficiary Bank (Vendor's Bank)</th>
                       <th>Accounted Status</th>
                       <th>Accounted Approval Status</th>
+                      <th>MIGO</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -82,6 +84,7 @@
                       <th></th>
                       <th></th>
                       <th style="text-align:right;"></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -271,6 +274,7 @@
         { data: 'beneficiary_bank', name: 'purchase_order_vendor.vendor.bank_account' },
         { data: 'accounted', name: 'accounted' },
         { data: 'accounted_approval', name: 'accounted_approval' },
+        { data: 'purchase_request_migo', name: 'purchase_order_vendor.purchase_request.migo.code' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
       footerCallback: function( tfoot, data, start, end, display ) {
@@ -304,7 +308,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 11) {
+      if ($(this).index() != 0 && $(this).index() != 12) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           

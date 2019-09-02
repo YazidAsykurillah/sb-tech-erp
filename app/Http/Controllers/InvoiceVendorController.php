@@ -103,10 +103,14 @@ class InvoiceVendorController extends Controller
     public function show($id)
     {
         $invoice_vendor = InvoiceVendor::findOrFail($id);
+        $purchase_order_vendor = $invoice_vendor->purchase_order_vendor ? $invoice_vendor->purchase_order_vendor : NULL;
+        $purchase_request = $purchase_order_vendor ? $purchase_order_vendor->purchase_request : NULL;
         $the_logs = TheLog::where('source', '=', 'invoice_vendor')
                     ->where('refference_id','=', $id)->get();
         return view('invoice-vendor.show')
             ->with('invoice_vendor', $invoice_vendor)
+            ->with('purchase_order_vendor', $purchase_order_vendor)
+            ->with('purchase_request', $purchase_request)
             ->with('the_logs', $the_logs);
     }
 
