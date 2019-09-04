@@ -97,6 +97,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	//Invoice Customer
+	Route::post('invoice-customer/set-claimed-by-salesman-status', 'InvoiceCustomerController@setClaimedBySalesmanStatus');
 	Route::get('invoice-customer/dataTables', 'InvoiceCustomerController@dataTables');
 	Route::get('invoice-customer/file', 'InvoiceCustomerController@downloadFile');
 	Route::get('invoice-customer/{id}/print_pdf', 'InvoiceCustomerController@print_pdf');

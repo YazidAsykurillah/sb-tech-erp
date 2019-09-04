@@ -478,6 +478,9 @@ class InvoiceCustomerController extends Controller
             ->editColumn('accounted', function($invoice_customers){
                 return $invoice_customers->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
             })
+            ->editColumn('claimed_by_salesman', function($invoice_customers){
+                return $invoice_customers->claimed_by_salesman == TRUE ? '<i class="fa fa-check" title="Claimed"></i>' : '<i class="fa fa-hourglass" title="Not claimed"></i>';
+            })
             ->addColumn('actions', function($invoice_customers){
                     $actions_html ='<a href="'.url('invoice-customer/'.$invoice_customers->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';
                     $actions_html .=    '<i class="fa fa-external-link"></i>';
@@ -500,4 +503,30 @@ class InvoiceCustomerController extends Controller
         return $data_invoice_customers->make(true);
     }
     //END INVOICE CUSTOMER datatables
+
+
+    //Block Set Claimed By Salesman
+    public function setClaimedBySalesmanStatus(Request $request)
+    {
+        $counter = 0;
+        $claim_status = $request->claimed_by_salesman == 0 ? "Not Claimed" : "Claimed";
+        $selected_invoice_customers = $request->selected_invoice_customers;
+        if(count($selected_invoice_customers) > 0){
+            foreach($selected_invoice_customers as $ivc_id){
+                try {
+                    $invoice_customer = InvoiceCustomer::findOrFail($ivc_id);
+                    $invoice_customer->claimed_by_salesman = $request->claimed_by_salesman;
+                    $invoice_customer->save();
+                    $counter++;
+                } catch (Exception $e) {
+                    return $e;
+                }
+                
+            }
+        }
+
+        return redirect()->back()
+            ->with('successMessage', "$counter invoice customer claimed_by_salesman has been updated to $claim_status");
+    }
+    //ENDBlock Set Claimed By Salesman 
 }

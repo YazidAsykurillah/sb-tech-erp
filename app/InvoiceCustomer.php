@@ -13,7 +13,7 @@ class InvoiceCustomer extends Model
 
     protected $fillable = ['code', 'tax_number', 'sub_amount','vat', 'wht', 'amount', 
         'project_id', 'due_date', 'description', 'status', 'submitted_date', 'prepared_by', 'file',
-        'type', 'posting_date', 'tax_date', 'cash_id'
+        'type', 'posting_date', 'tax_date', 'cash_id', 'claimed_by_salesman'
     ];
 
     public function project()

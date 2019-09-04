@@ -375,6 +375,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'AddBrandAndPartNumberToProductsTable' => __DIR__ . '/../..' . '/database/migrations/2019_07_17_065010_add_brand_and_part_number_to_products_table.php',
         'AddCashIdToTableInvoiceVendorTaxes' => __DIR__ . '/../..' . '/database/migrations/2017_09_11_103145_add_cash_id_to_table_invoice_vendor_taxes.php',
         'AddCheckerNotesToEts' => __DIR__ . '/../..' . '/database/migrations/2019_06_14_032100_add_checker_notes_to_ets.php',
+        'AddClaimedBySalesmanToInvoiceCustomersTable' => __DIR__ . '/../..' . '/database/migrations/2019_09_04_041934_add_claimed_by_salesman_to_invoice_customers_table.php',
         'AddColumnAccountedApprovalToTableInternalRequest' => __DIR__ . '/../..' . '/database/migrations/2017_07_28_195947_add_column_accounted_approval_to_table_internal_Request.php',
         'AddColumnAccountedApprovalToTableSettlements' => __DIR__ . '/../..' . '/database/migrations/2017_08_24_043208_add_column_accounted_approval_to_table_settlements.php',
         'AddColumnAccountingExpenseIdToTransactionsTable' => __DIR__ . '/../..' . '/database/migrations/2019_04_27_101458_add_column_accounting_expense_id_to_transactions_table.php',

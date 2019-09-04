@@ -29,6 +29,10 @@
               <!-- <a href="{{ URL::to('invoice-customer/create')}}" class="btn btn-primary pull-right" title="Create new Invoice Customer">
                 <i class="fa fa-plus"></i>&nbsp;Add New
               </a> -->
+              <div class="pull-right">
+                <button type="button" class="btn btn-info btn-xs" id="btn-set-claimed-sales"><i class="fa fa-book"></i> Claimed by Salesman
+                </button>
+              </div>
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
@@ -46,11 +50,13 @@
                       <th>Tax Date</th>
                       <th>Status</th>
                       <th>Accounted</th>
+                      <th>Claimed Sales</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -78,6 +84,7 @@
                       <th></th>
                       <th></th>
                       <th style="text-align:right;"></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -121,6 +128,47 @@
     </div>
   </div>
 <!--ENDModal Delete Invoice Customer-->
+
+<!--Modal Set Claimed Sales-->
+  <div class="modal fade" id="modal-set-claimed-sales" tabindex="-1" role="dialog" aria-labelledby="modal-set-claimed-salesLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'invoice-customer/set-claimed-by-salesman-status', 'role'=>'form','id'=>'form-set-claimed-sales', 'class'=>'form-horizontal', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-set-claimed-salesLabel">Set Sales Claimed</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            Please select claimed by salesman status
+          </p>
+          <!-- Claimed By Salesman Selection-->
+          <div class="form-group{{ $errors->has('claimed_by_salesman') ? ' has-error' : '' }}">
+            {!! Form::label('claimed_by_salesman', 'Status', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              <select name="claimed_by_salesman" id="claimed_by_salesman" class="form-control" style="width:100%;" required>
+                <option value="0">Not Claimed</option>
+                <option value="1">Claimed</option>
+              </select>
+              @if ($errors->has('claimed_by_salesman'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('claimed_by_salesman') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <!-- ENDClaimed By Salesman Selection-->
+        </div>
+        <div class="modal-footer">
+          
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info">Update</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Set Claimed Sales-->
 @endsection
 
 @section('additional_scripts')
@@ -142,6 +190,7 @@
         { data: 'tax_date', name:'tax_date' },
         { data: 'status', name:'status' },
         { data: 'accounted', name:'accounted' },
+        { data: 'claimed_by_salesman', name:'claimed_by_salesman' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
       footerCallback: function( tfoot, data, start, end, display ) {
@@ -183,6 +232,37 @@
         ],
       }).container().appendTo($('#button-table-tools'));
     
+    var selectedInvoiceCustomer = [];
+    tableInvoiceCustomer.on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+
+    });
+    var selected_invoice_customer_ids = tableInvoiceCustomer.rows('.selected').data();
+    $.each( selected_invoice_customer_ids, function( key, value ) {
+      selectedInvoiceCustomer.push(selected_invoice_customer_ids[key].id);
+    });
+
+    //Set claimed sales event handler
+    $('#btn-set-claimed-sales').on('click', function(event){
+      event.preventDefault();
+      selectedInvoiceCustomer = [];
+      var selected_invoice_customer_ids = tableInvoiceCustomer.rows('.selected').data();
+      $.each( selected_invoice_customer_ids, function( key, value ) {
+        selectedInvoiceCustomer.push(selected_invoice_customer_ids[key].id);
+      });
+      if(selectedInvoiceCustomer.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-set-claimed-sales').find('.selected_invoice_customers').remove();
+        $.each( selectedInvoiceCustomer, function( key, value ) {
+          $('#form-set-claimed-sales').append('<input type="text" class="selected_invoice_customers" name="selected_invoice_customers[]" value="'+value+'"/>');
+        });
+        $('#modal-set-claimed-sales').modal('show');  
+      }
+      
+    });
+    //ENDSet claimed sales event handler
+
     // Delete button handler
     tableInvoiceCustomer.on('click', '.btn-delete-invoice-customer', function(e){
       var id = $(this).attr('data-id');
@@ -194,7 +274,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 11) {
+      if ($(this).index() != 0 && $(this).index() != 12) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           

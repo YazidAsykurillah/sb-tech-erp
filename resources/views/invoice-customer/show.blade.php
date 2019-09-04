@@ -205,6 +205,18 @@
                 </td>
               </tr>
 
+              <tr>
+                <td style="width: 20%;">Claimed By Salesman Status</td>
+                <td style="width: 1%;">:</td>
+                <td>
+                  @if($invoice_customer->claimed_by_salesman == TRUE)
+                    Claimed
+                  @else
+                    Not Claimed
+                  @endif
+                </td>
+              </tr>
+
             </table>
           </div>
           
