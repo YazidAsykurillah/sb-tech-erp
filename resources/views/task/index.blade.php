@@ -51,9 +51,9 @@
                     <tr>
                       <th style="width:5%;">#</th>
                       <th style="width:10%;">Project</th>
-                      <th style="width:10%">PIC</th>
                       <th style="">Name</th>
                       <th style="width:10%">Description</th>
+                      <th style="width:10%">Creator</th>
                       <th style="width:10%">Status</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
@@ -161,9 +161,9 @@
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'project.name', name: 'project.name' },
-        { data: 'pic.name', name: 'pic.name' },
         { data: 'name', name: 'name' },
         { data: 'description', name: 'description' },
+        { data: 'creator.name', name: 'creator.name' },
         { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],

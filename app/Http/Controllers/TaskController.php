@@ -29,7 +29,7 @@ class TaskController extends Controller
     public function dataTables(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $tasks = Task::with('project', 'pic')->select([
+        $tasks = Task::with('project', 'creator')->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'tasks.*',
         ]);
@@ -83,7 +83,7 @@ class TaskController extends Controller
     {
         $task = new Task;
         $task->project_id = $request->project_id;
-        $task->user_id = $request->user_id;
+        $task->user_id = \Auth::user()->id;
         $task->name = $request->name;
         $task->description = $request->description;
         $task->save();
@@ -100,12 +100,12 @@ class TaskController extends Controller
     public function show($id)
     {
         $task = Task::findOrFail($id);
-        $pic = $task->pic ? $task->pic : NULL;
+        $creator = $task->creator ? $task->creator : NULL;
         $project = $task->project ? $task->project : NULL;
         return view('task.show')
             ->with('task', $task)
             ->with('project', $project)
-            ->with('pic', $pic);
+            ->with('creator', $creator);
     }
 
     /**

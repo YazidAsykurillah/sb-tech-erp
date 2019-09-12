@@ -24,7 +24,7 @@ class Task extends Model
     }
 
     //PIC
-    public function pic()
+    public function creator()
     {
     	return $this->belongsTo('App\User', 'user_id');
     }

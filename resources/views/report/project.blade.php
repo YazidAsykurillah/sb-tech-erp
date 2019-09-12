@@ -29,7 +29,7 @@
             <div class="box-body">
               <div class="row">
                 <div class="col-md-12">
-                  <div id="curve_chart" style="width: 100%; height: 500px;"></div>    
+                  <div id="chart_div"></div>    
                 </div>
               </div>
               
@@ -44,33 +44,36 @@
 
 @section('additional_scripts')
   <script type="text/javascript">
+    
     google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawProjectChart);
+    
+    function drawProjectChart() {
 
-    // Load the Visualization API and the piechart package.
-    google.charts.load('current', {'packages':['corechart']});
-      
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.charts.setOnLoadCallback(drawChart);
-      
-    function drawChart() {
-      var jsonData = $.ajax({
-        url : '/report/data-project',
-        dataType: "json",
-        async: false
-      }).responseText;
-          
-      // Create our data table out of JSON data loaded from server.
-      var data = new google.visualization.DataTable(jsonData);
+      // Some raw data (not necessarily accurate)
+      var data = google.visualization.arrayToDataTable([
+        ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+        ['2004/05',  165,      938,         522,             998,           450,      614.6],
+        ['2005/06',  135,      1120,        599,             1268,          288,      682],
+        ['2006/07',  157,      1167,        587,             807,           397,      623],
+        ['2007/08',  139,      1110,        615,             968,           215,      609.4],
+        ['2008/09',  136,      691,         629,             1026,          366,      569.6]
+      ]);
+
       var options = {
-        title: 'Project data 2019',
-        curveType: 'function',
-        legend: { position: 'bottom' }
+        title : 'Monthly Coffee Production by Country',
+        vAxis: {title: 'Cups'},
+        hAxis: {title: 'Month'},
+        height:350,
+        seriesType: 'bars',
+        series: {5: {type: 'line'}}
       };
-      // Instantiate and draw our chart, passing in some options.
-      var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+      var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
       chart.draw(data, options);
+
     }
+
 
   </script>
 

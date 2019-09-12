@@ -84,22 +84,22 @@
       </div>
       <!--ENDBox Project-->
 
-      <!--Box PIC-->
+      <!--Box Creator-->
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title"> <i class="fa fa-user"></i> PIC Information</h3>
+          <h3 class="box-title"> <i class="fa fa-user"></i> Creator Information</h3>
         </div>
         <div class="box-body box-profile">
-          @if($pic)
-            @if($pic->profile_picture != NULL)
-              {!! Html::image('img/user/thumb_'.$pic->profile_picture.'', $pic->profile_picture, ['class'=>'profile-user-img img-responsive img-circle']) !!}
+          @if($creator)
+            @if($creator->profile_picture != NULL)
+              {!! Html::image('img/user/thumb_'.$creator->profile_picture.'', $creator->profile_picture, ['class'=>'profile-user-img img-responsive img-circle']) !!}
             @else
             @endif
-            <h5 class="profile-username text-center">{{ $pic->name }}</h5>
+            <h5 class="profile-username text-center">{{ $creator->name }}</h5>
           @endif
         </div>
       </div>
-      <!--ENDBox PIC-->
+      <!--ENDBox Creator-->
 
     </div>
     <!--ENDRight Column-->
