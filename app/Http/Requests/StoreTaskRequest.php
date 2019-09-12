@@ -26,6 +26,8 @@ class StoreTaskRequest extends Request
         return [
             'project_id'=>'required|exists:projects,id',
             'name'=>'required',
+            'start_date_schedule'=>'required',
+            'finish_date_schedule'=>'required',
         ];
     }
 }

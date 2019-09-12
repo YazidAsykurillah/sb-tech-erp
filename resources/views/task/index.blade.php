@@ -54,12 +54,16 @@
                       <th style="">Name</th>
                       <th style="width:10%">Description</th>
                       <th style="width:10%">Creator</th>
+                      <th style="width:10%">Start Date Schedule</th>
+                      <th style="width:10%">Finish Date Schedule</th>
                       <th style="width:10%">Status</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -75,6 +79,8 @@
                   </tbody>
                   <tfoot>
                     <tr>
+                      <th></th>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -164,6 +170,8 @@
         { data: 'name', name: 'name' },
         { data: 'description', name: 'description' },
         { data: 'creator.name', name: 'creator.name' },
+        { data: 'start_date_schedule', name: 'start_date_schedule' },
+        { data: 'finish_date_schedule', name: 'finish_date_schedule' },
         { data: 'status', name: 'status' },
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
@@ -172,7 +180,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 9) {
+      if ($(this).index() != 0 && $(this).index() != 8) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           

@@ -4,10 +4,14 @@
     Task
 @endsection
 
+@section('additional_styles')
+  {!! Html::style('css/datepicker/datepicker3.css') !!}
+@endsection
+
 @section('page_header')
   <h1>
     Task
-    <small>Daftar Task</small>
+    <small>Create Task</small>
   </h1>
 @endsection
 
@@ -70,6 +74,28 @@
                 @endif
               </div>
             </div>
+            <div class="form-group{{ $errors->has('start_date_schedule') ? ' has-error' : '' }}">
+              {!! Form::label('start_date_schedule', 'Start Date Schedule', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-10">
+                {!! Form::text('start_date_schedule',null,['class'=>'form-control dp-yymmdd', 'placeholder'=>'start_date_schedule of the task', 'id'=>'start_date_schedule']) !!}
+                @if ($errors->has('start_date_schedule'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('start_date_schedule') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
+            <div class="form-group{{ $errors->has('finish_date_schedule') ? ' has-error' : '' }}">
+              {!! Form::label('finish_date_schedule', 'Finish Date Schedule', ['class'=>'col-sm-2 control-label']) !!}
+              <div class="col-sm-10">
+                {!! Form::text('finish_date_schedule',null,['class'=>'form-control dp-yymmdd', 'placeholder'=>'finish_date_schedule of the task', 'id'=>'finish_date_schedule']) !!}
+                @if ($errors->has('finish_date_schedule'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('finish_date_schedule') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
             <div class="form-group">
               {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
               <div class="col-sm-10">
@@ -91,6 +117,7 @@
 @endsection
 
 @section('additional_scripts')
+{!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
 <script type="text/javascript">
   //Block Project Selection
   $('#project_id').select2({
@@ -166,6 +193,19 @@
   }
   //ENDBlock User Selection
 
+  //Block Start Date Schedule
+  $('#start_date_schedule').on('keydown', function(event){
+      event.preventDefault();
+  });
+  //ENDBlock Start Date Schedule
+  //Block Finish Date Schedule
+  $('#finish_date_schedule').on('keydown', function(event){
+      event.preventDefault();
+  });
+  //ENDBlock Finish Date Schedule
+  $('.dp-yymmdd').datepicker({
+      format : 'yyyy-mm-dd'
+  });
   //Form submission handling
   $('#form-save').on('submit',function(){
     $('#btn-save').prop('disabled', true);

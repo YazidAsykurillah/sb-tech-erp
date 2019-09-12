@@ -86,6 +86,8 @@ class TaskController extends Controller
         $task->user_id = \Auth::user()->id;
         $task->name = $request->name;
         $task->description = $request->description;
+        $task->start_date_schedule = $request->start_date_schedule;
+        $task->finish_date_schedule = $request->finish_date_schedule;
         $task->save();
         return redirect('task')
             ->with('successMessage', 'Task has been saved');

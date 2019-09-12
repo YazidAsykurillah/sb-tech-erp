@@ -40,6 +40,16 @@
               <td style="">{{ $task->description }}</td>
             </tr>
             <tr>
+              <td style="width: 50%;">Start Date Schedule</td>
+              <td style="width: 5%;">:</td>
+              <td style="">{{ $task->start_date_schedule }}</td>
+            </tr>
+            <tr>
+              <td style="width: 50%;">Finish Date Schedule</td>
+              <td style="width: 5%;">:</td>
+              <td style="">{{ $task->finish_date_schedule }}</td>
+            </tr>
+            <tr>
               <td style="width: 50%;">Status</td>
               <td style="width: 5%;">:</td>
               <td style="">{{ $task->status }}</td>
@@ -87,7 +97,7 @@
       <!--Box Creator-->
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title"> <i class="fa fa-user"></i> Creator Information</h3>
+          <h3 class="box-title"> <i class="fa fa-user"></i> Creator</h3>
         </div>
         <div class="box-body box-profile">
           @if($creator)
