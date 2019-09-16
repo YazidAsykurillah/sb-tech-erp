@@ -488,6 +488,7 @@ class ComposerStaticInit1abc82cf2868f3ce64a372aa606d6a1a
         'CreateSettlementPayrollsTable' => __DIR__ . '/../..' . '/database/migrations/2019_07_01_135504_create_settlement_payrolls_table.php',
         'CreateSettlementsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_09_084626_create_settlements_table.php',
         'CreateSubCategoriesTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_05_095128_create_sub_categories_table.php',
+        'CreateTaskAssigneesTable' => __DIR__ . '/../..' . '/database/migrations/2019_09_16_014137_create_task_assignees_table.php',
         'CreateTasksTable' => __DIR__ . '/../..' . '/database/migrations/2019_08_15_031618_create_tasks_table.php',
         'CreateTheLogsTable' => __DIR__ . '/../..' . '/database/migrations/2017_07_13_092406_create_the_logs_table.php',
         'CreateTimeReportsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_28_200001_create_time_reports_table.php',

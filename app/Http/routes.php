@@ -517,6 +517,12 @@ Route::group(['middleware' => 'auth'], function () {
 	//Migo
 	Route::get('migo/dataTables', 'MigoController@dataTables');
 	Route::resource('migo', 'MigoController');
+
+	//Task Assignee
+	Route::get('task-assignee/select2User', 'TaskAssigneeController@select2User');
+	Route::get('task-assignee/getDataPerTask', 'TaskAssigneeController@getDataPerTask');
+	Route::get('task-assignee/getDataPerTask', 'TaskAssigneeController@getDataPerTask');
+	Route::resource('task-assignee', 'TaskAssigneeController');
 	//REST APIs
 	//Preparing rest, for now it's still not used
 	Route::get('api/invoice-customer', 'Api\InvoiceCustomerController@index');

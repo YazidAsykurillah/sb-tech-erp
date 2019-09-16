@@ -23,10 +23,15 @@ class Task extends Model
     	return $this->belongsTo('App\Project');
     }
 
-    //PIC
+    //Creator
     public function creator()
     {
     	return $this->belongsTo('App\User', 'user_id');
+    }
+
+    public function taskAssignees()
+    {
+        return $this->hasMany('App\TaskAssignee');
     }
 
     //###
