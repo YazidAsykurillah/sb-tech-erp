@@ -384,9 +384,25 @@
           <p class="text-muted">{{ $man_hour_information->total_IV }}</p>
           <strong>Total Hour</strong>
           <p class="text-muted">{{ $man_hour_information->grand_total }} hours</p>
-
         </div>
       </div>
+      <!--ENDBOX Man Hour-->
+      <!--BOX Cost from manhour-->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-money"></i>&nbsp;Man Hour Cost</h3>
+          <div class="pull-right">
+            <button id="btn-generate-manhour-cost" class="btn btn-default btn-xs" title="Generate manhour cost">
+              <i class="fa fa-shuffle"></i>&nbsp;Generate
+            </button>  
+          </div>
+        </div>
+        <div class="box-body">
+          <strong>Total Man hour Cost</strong>
+          <p class="text-muted" id="total_manhour_cost"></p>
+        </div>
+      </div>
+      <!--ENDBOX Cost from manhour-->
     </div>
   </div>
 
@@ -420,7 +436,11 @@
 
 @section('additional_scripts')
   <script type="text/javascript">
+    
+
     $(document).ready(function() {
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
       $('table#table-invoice-customer').DataTable();
       $('table#table-invoice-vendor').DataTable();
       $('table#table-internal-request').DataTable();
@@ -450,13 +470,54 @@
         },
       });
 
+      //Handler Complete project
+      $('#btn-complete-project').on('click', function(event){
+        event.preventDefault();
+        $('#modal-complete-project').modal('show');
+      });
+      //ENDHandler Complete project
+
+      //Handler Generate manhour cost
+      $('#btn-generate-manhour-cost').on('click', function(event){
+        event.preventDefault();
+        $.ajax({
+            url: '{!! url('project/generate-manhour-cost') !!}',
+            type: 'POST',
+            data: {_token: CSRF_TOKEN, project_id:'{!! $project->id !!}'},
+            dataType: 'JSON',
+            success: function (response) { 
+              console.log(response);
+              if(response.success == true){
+                getTotalCost();
+              }else{
+                alert('not success');
+              }
+            }
+        });
+      });
+      //ENDHandler Generate manhour cost
+      getTotalCost();
+      //get total cost of the project from manhour
+      function getTotalCost(){
+        $.ajax({
+            url: '{!! url('project/getTotalManhorCost') !!}',
+            type: 'get',
+            data: {_token: CSRF_TOKEN, project_id:'{!! $project->id !!}'},
+            dataType: 'JSON',
+            success: function (response) { 
+              console.log(response);
+              if(response.success == true){
+               console.log(response.data.total_cost);
+               $('#total_manhour_cost').text(response.data.total_cost);
+              }else{
+                alert('not success');
+              }
+            }
+        });
+      }
+
     });
 
-    //Handler Complete project
-    $('#btn-complete-project').on('click', function(event){
-      event.preventDefault();
-      $('#modal-complete-project').modal('show');
-    });
-    //ENDHandler Complete project
+    
   </script>
 @endsection

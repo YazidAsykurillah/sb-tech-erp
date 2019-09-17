@@ -429,5 +429,32 @@ class ProjectController extends Controller
         return response()->json($data);
     }
 
+
+    public function generateManHourCost(Request $request)
+    {
+        try {
+            $project = Project::findOrFail($request->project_id);
+            $project_code = $project->code;
+            $result = $project::generateManHourCost($project_code);
+            return response()->json(['success'=>true, 'data'=>$result]);
+
+        } catch (Exception $e) {
+            return $e;
+        }
+        
+    }
+
+    public function getTotalManhorCost(Request $request)
+    {
+        try {
+            $project = Project::findOrFail($request->project_id);
+            $project_code = $project->code;
+            $result = $project::getTotalManhorCost($project_code);
+            return response()->json(['success'=>true, 'data'=>['total_cost'=>$result]]);
+
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
     
 }

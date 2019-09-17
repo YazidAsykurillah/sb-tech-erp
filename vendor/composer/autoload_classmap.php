@@ -12,6 +12,7 @@ return array(
     'AddAdditionalColumnToTableCashbonds' => $baseDir . '/database/migrations/2017_08_31_083910_add_additional_column_to_table_cashbonds.php',
     'AddAdditionalColumnsToPurchaseRequestsTable' => $baseDir . '/database/migrations/2017_08_29_075414_add_additional_columns_to_purchase_requests_table.php',
     'AddAdditionalColumnsToTableInvoiceCustomers' => $baseDir . '/database/migrations/2017_07_18_113526_add_additional_columns_to_table_invoice_customers.php',
+    'AddAdditionalManhourParametersToEtsTable' => $baseDir . '/database/migrations/2019_09_17_021506_add_additional_manhour_parameters_to_ets_table.php',
     'AddBillAmountToInvoiceVendor' => $baseDir . '/database/migrations/2017_11_27_154618_add_bill_amount_to_invoice_vendor.php',
     'AddBrandAndPartNumberToProductsTable' => $baseDir . '/database/migrations/2019_07_17_065010_add_brand_and_part_number_to_products_table.php',
     'AddCashIdToTableInvoiceVendorTaxes' => $baseDir . '/database/migrations/2017_09_11_103145_add_cash_id_to_table_invoice_vendor_taxes.php',

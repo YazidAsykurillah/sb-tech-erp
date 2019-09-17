@@ -413,4 +413,55 @@ class Project extends Model
         ];
         return collect($man_hour_information)->toJson();
     }
+
+    public static function generateManHourCost($project_code = NULL)
+    {
+        $result = NULL;
+        if($project_code!=NULL){
+            $ets_list = Ets::where('type','site')
+                ->where('project_number','LIKE',"%$project_code%");
+            if($ets_list->count()){
+                foreach($ets_list->get() as $ets){
+                    $user_id = $ets->user_id;
+                    $rate = User::findOrFail($user_id)->man_hour_rate;
+                    $transport = User::findOrFail($user_id)->transportation_allowance;
+                    $allowance = User::findOrFail($user_id)->eat_allowance;
+
+                    $normal = $ets->normal;
+                    $I= $ets->I;
+                    $II= $ets->II;
+                    $III= $ets->III;
+                    $IV= $ets->IV;
+                    $total_manhour = ($normal*1)+($I*1.5)+($II*2)+($III*3)+($IV*4);
+                    
+                    $total_cost = ($rate*$total_manhour)+$transport+$allowance;
+
+                    $ets = Ets::findOrFail($ets->id);
+                    $ets->total_manhour = $total_manhour;
+                    $ets->rate = $rate;
+                    $ets->transport = $transport;
+                    $ets->allowance = $allowance;
+                    $ets->total_cost = $total_cost;
+                    $ets->save();
+                }
+            }
+            
+        }
+        return $result;
+
+    }
+
+    public static function getTotalManhorCost($project_code = NULL)
+    {
+        if($project_code !=NULL){
+            $result = 0;
+            //get related ets
+            $ets = Ets::where('type','site')
+                ->where('project_number','LIKE',"%$project_code%");
+            if($ets->count()){
+                $result = $ets->sum('total_cost');
+            }
+            return number_format($result);
+        }
+    }
 }
