@@ -507,8 +507,14 @@
             success: function (response) { 
               console.log(response);
               if(response.success == true){
-               console.log(response.data.total_cost);
-               $('#total_manhour_cost').text(response.data.total_cost);
+                var total_cost = response.data.total_cost;
+                console.log(total_cost);
+                if(total_cost != 0){
+                  $('#total_manhour_cost').text(total_cost);
+                }else{
+                  $('#total_manhour_cost').text('No data, please click the generate button and make sure this project is related to ets');
+                }
+               
               }else{
                 alert('not success');
               }

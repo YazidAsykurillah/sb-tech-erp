@@ -453,6 +453,7 @@ class Project extends Model
 
     public static function getTotalManhorCost($project_code = NULL)
     {
+        
         if($project_code !=NULL){
             $result = 0;
             //get related ets
