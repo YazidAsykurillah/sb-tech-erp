@@ -329,6 +329,13 @@
           <li><a href="{{ url('report/ppn') }}"><i class="fa fa-circle-o"></i> PPN</a></li>
         </ul>
         <ul class="treeview-menu">
+          <li>
+            <a href="{{ url('report/cash-flow-planning') }}">
+              <i class="fa fa-circle-o"></i> Cash Flow (Planning)
+            </a>
+          </li>
+        </ul>
+        <ul class="treeview-menu">
           <li><a href="{{ url('report/project') }}"><i class="fa fa-circle-o"></i> Project</a></li>
         </ul>
       </li>

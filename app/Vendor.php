@@ -10,7 +10,7 @@ use App\InvoiceVendor;
 class Vendor extends Model
 {
     protected $table = 'vendors';
-    protected $fillable = ['name', 'product_name', 'bank_account'];
+    protected $fillable = ['name', 'product_name', 'bank_account', 'payment_term_days'];
 
     public function purchase_order_vendor()
     {

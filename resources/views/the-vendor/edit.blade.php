@@ -85,6 +85,17 @@
               @endif
             </div>
           </div>
+          <div class="form-group{{ $errors->has('payment_term_days') ? ' has-error' : '' }}">
+            {!! Form::label('payment_term_days', 'Payment Term Days', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!! Form::text('payment_term_days',null,['class'=>'form-control', 'placeholder'=>'Payment Term Days of the vendor', 'id'=>'payment_term_days']) !!}
+              @if ($errors->has('payment_term_days'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('payment_term_days') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           <div class="form-group">
               {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">

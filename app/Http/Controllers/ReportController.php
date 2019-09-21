@@ -184,5 +184,19 @@ class ReportController extends Controller
         return $invoice_vendor_taxes;
     }
 
-    
+    public function cashFlowPlanning(Request $request)
+    {
+        if($request->has('year')){
+            return $request->year;
+        }
+        else{
+            $years = [];
+            for ($i=2016; $i <2025 ; $i++) { 
+                $years[]=$i;
+            }
+            return view('report.cash-flow-planning')
+                ->with('years', $years);       
+        }
+        
+    }
 }

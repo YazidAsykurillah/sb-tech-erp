@@ -54,6 +54,7 @@ return array(
     'AddIncentiveToUsersTable' => $baseDir . '/database/migrations/2017_06_19_152254_add_incentive_to_users_table.php',
     'AddIsCompletedToTableProjects' => $baseDir . '/database/migrations/2019_05_06_133844_add_is_completed_to_table_projects.php',
     'AddLocationToEts' => $baseDir . '/database/migrations/2019_05_29_122917_add_location_to_ets.php',
+    'AddPaymentTermDaysToVendorsTable' => $baseDir . '/database/migrations/2019_09_20_085857_add_payment_term_days_to_vendors_table.php',
     'AddPriceToProductsTable' => $baseDir . '/database/migrations/2019_07_16_100835_add_price_to_products_table.php',
     'AddProductCategoryIdToProductsTable' => $baseDir . '/database/migrations/2019_07_17_065254_add_product_category_id_to_products_table.php',
     'AddQuotationVendorIdToPurchaseOrderVendor' => $baseDir . '/database/migrations/2017_05_22_053902_add quotation_vendor_id to purchase order vendor.php',

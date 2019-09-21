@@ -28,6 +28,12 @@ class AddAdditionalManhourParametersToEtsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('ets', function(Blueprint $table){
+            $table->dropColumn('total_manhour');
+            $table->dropColumn('rate');
+            $table->dropColumn('transport');
+            $table->dropColumn('allowance');
+            $table->dropColumn('total_cost');
+        });
     }
 }

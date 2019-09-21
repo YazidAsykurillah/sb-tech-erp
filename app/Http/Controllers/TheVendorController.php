@@ -75,6 +75,7 @@ class TheVendorController extends Controller
         $vendor->address = $request->address;
         $vendor->product_name = $request->product_name;
         $vendor->bank_account = $request->bank_account;
+        $vendor->payment_term_days = $request->payment_term_days;
         $vendor->save();
         return redirect('the-vendor/'.$id)
             ->with('successMessage', "Vendor has been updated");

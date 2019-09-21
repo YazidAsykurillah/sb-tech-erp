@@ -49,6 +49,18 @@
                 <td style="width: 1%;">:</td>
                 <td>{{ $vendor->bank_account }}</td>
               </tr>
+              <tr>
+                <td style="width: 20%;">Payment Term Days</td>
+                <td style="width: 1%;">:</td>
+                <td>
+                  @if($vendor->payment_term_days !=NULL)
+                    {{ $vendor->payment_term_days }} Hari
+                  @else
+                    ---
+                  @endif
+                  
+                </td>
+              </tr>
               
             </table>
           </div>
