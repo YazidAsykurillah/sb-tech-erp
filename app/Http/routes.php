@@ -252,6 +252,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 		//cashbond
 		Route::post('transfer-task/cashbond/transfer', 'TransferTaskController@transferCashbond');
+		Route::post('transfer-task/cashbond/approveMultiple', 'TransferTaskController@approveCashbondMultiple');
 		Route::post('transfer-task/cashbond/approve', 'TransferTaskController@approveCashbond');
 		Route::get('transfer-task/cashbond', 'TransferTaskController@cashbond');
 
@@ -527,8 +528,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('task-assignee/getDataPerTask', 'TaskAssigneeController@getDataPerTask');
 	Route::get('task-assignee/getDataPerTask', 'TaskAssigneeController@getDataPerTask');
 	Route::resource('task-assignee', 'TaskAssigneeController');
-	//REST APIs
-	//Preparing rest, for now it's still not used
-	Route::get('api/invoice-customer', 'Api\InvoiceCustomerController@index');
 	
+	
+});
+
+// Front end group
+Route::group(['prefix' => 'front'], function () {
+    Route::get('task-list', 'FrontEndController@getTaskList');
 });

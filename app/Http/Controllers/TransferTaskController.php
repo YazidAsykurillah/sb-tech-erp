@@ -788,6 +788,30 @@ class TransferTaskController extends Controller
             ->with('successMessage', "cashbond $cashbond->code has been approved to be transfered");
     }
 
+    public function approveCashbondMultiple(Request $request)
+    {
+
+        $count = 0;
+        $remitter_bank_id = $request->remitter_bank_id_multiple;
+        if(count($request->cashbond_multiple)){
+            foreach ($request->cashbond_multiple as $cashbond_id){
+                $cashbond = Cashbond::findOrFail($cashbond_id);
+        
+                //remittter_bank_id
+                $cashbond->remitter_bank_id = $remitter_bank_id;
+                $cashbond->accounted_approval = 'approved';
+                $cashbond->save();
+
+                //register to the_logs table;
+                $log_description = "approved to be registered to transfer task";
+                $log = $this->register_to_the_logs('cashbond', 'update', $cashbond_id, $log_description );
+                $count++;
+            }
+        }
+        return redirect()->back()
+            ->with('successMessage',"$count data has been approved");
+    }
+
     public function transferCashbond(Request $request)
     {
         $cashbond = cashbond::findOrFail($request->cashbond_id_to_transfer);

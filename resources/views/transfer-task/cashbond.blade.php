@@ -24,7 +24,14 @@
     <div class="col-lg-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">cashbond</h3>
+              <h3 class="box-title">Cashbond</h3>
+              <div class="pull-right">
+                @if(\Auth::user()->roles->first()->code == 'SUP')
+                  <button type="button" class="btn btn-success btn-xs" id="btn-approve-multiple">
+                    <i class="fa fa-check"></i> Approve Multiple
+                  </button>
+                @endif
+              </div>
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">
@@ -139,10 +146,53 @@
   </div>
 <!--ENDModal Approve Transfer Task cashbond-->
 
+<!--Modal Approve Transfer Task Cashbond Multiple -->
+  <div class="modal fade" id="modal-approve-transfer-cashbond-multiple" tabindex="-1" role="dialog" aria-labelledby="modal-approve-transfer-cashbond-multipleLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['url'=>'transfer-task/cashbond/approveMultiple', 'role'=>'form', 'id'=>'form-approve-cashbond-multiple', 'class'=>'form-horizontal', 'method'=>'post']) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-approve-transfer-cashbond-multipleLabel">Approve Multiple Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <p><small>Please select Remitter Bank and Beneficiary Bank to approve this cashbond transfer task</small></p>
+          <!-- Selection Remitter Bank-->
+          <div class="form-group{{ $errors->has('remitter_bank_id_multiple') ? ' has-error' : '' }}">
+            {!! Form::label('remitter_bank_id_multiple', 'Remitter Bank', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              <select name="remitter_bank_id_multiple" id="remitter_bank_id_multiple" class="form-control" style="width:100%;" required>
+                @if(Request::old('remitter_bank_id_multiple') != NULL)
+                  <option value="{{Request::old('remitter_bank_id_multiple')}}">
+                    {{ \App\Cash::find(Request::old('remitter_bank_id_multiple'))->code }}
+                  </option>
+                @endif
+              </select>
+              @if ($errors->has('remitter_bank_id_multiple'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('remitter_bank_id_multiple') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <!-- ENDSelection Remitter Bank-->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-info">Approve</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+<!--ENDModal Approve Transfer Task Cashbond Multiple -->
+
 @endsection
 
 @section('additional_scripts')
    <script type="text/javascript">
+    var selectedCashbond = [];
+
     var tableCashbond =  $('#table-cashbond').DataTable({
       processing :true,
       serverSide : true,
@@ -223,7 +273,7 @@
     });
 
     //Block Remitter Bank Selection
-    $('#remitter_bank_id').select2({
+    $('#remitter_bank_id,#remitter_bank_id_multiple').select2({
       placeholder: 'Bank Pengirim',
       ajax: {
         url: '{!! url('select2Cash') !!}',
@@ -242,6 +292,36 @@
         cache: true
       },
       allowClear : true,
+    });
+
+    //Select cashbond row
+    tableCashbond.on( 'click', 'tr', function () {
+      $(this).toggleClass('selected');
+    });
+
+    //Approve multiple cashbond
+    var selected_cashbond_ids = tableCashbond.rows('.selected').data();
+    $.each( selected_cashbond_ids, function( key, value ) {
+      selectedCashbond.push(selected_cashbond_ids[key].id);
+    });
+
+    $('#btn-approve-multiple').on('click', function(event){
+      event.preventDefault();
+      selectedCashbond = [];
+      var selected_cashbond_ids = tableCashbond.rows('.selected').data();
+      $.each( selected_cashbond_ids, function( key, value ) {
+        selectedCashbond.push(selected_cashbond_ids[key].id);
+      });
+      if(selectedCashbond.length == 0){
+        alert('There are no selected row');
+      }else{
+        $('#form-approve-cashbond-multiple').find('.cashbond_multiple').remove();
+        $.each( selectedCashbond, function( key, value ) {
+          $('#form-approve-cashbond-multiple').append('<input type="text" class="cashbond_multiple" name="cashbond_multiple[]" value="'+value+'"/>');
+        });
+        $('#modal-approve-transfer-cashbond-multiple').modal('show');  
+      }
+      
     });
   </script>
 @endsection
