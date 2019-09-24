@@ -1,7 +1,9 @@
 <?php
 
 return [
-
+    //Application Name
+    'name'=>env('APP_NAME', 'My Application Name'),
+    
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -12,7 +14,6 @@ return [
     | services your application utilizes. Set this in your ".env" file.
     |
     */
-
     'env' => env('APP_ENV', 'production'),
 
     /*

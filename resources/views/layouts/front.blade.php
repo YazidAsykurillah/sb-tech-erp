@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>BMKN Accounting</title>
+    <title>{{ config('app.name') }}</title>
     <!-- Font Awesome CSS -->
     {!! Html::style('css/font-awesome/font-awesome.css') !!}
 
@@ -44,7 +44,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand topnav" href="{{ url('/') }}">BMKN Accounting</a>
+                <a class="navbar-brand topnav" href="{{ url('/') }}">{{ config('app.name') }}</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
