@@ -1100,12 +1100,28 @@ class DatatablesController extends Controller
     //Cash datatables
     public function getCashes(Request $request)
     {
+
         \DB::statement(\DB::raw('set @rownum=0'));
         if(\Auth::user()->can('index-cash')){       //show all cashes , wheter the type is bank or petty cash
-            $cashes = Cash::select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'cashes.*',
-            ]);    
+            if($request->status=='enabled'){
+                $cashes = Cash::select([
+                    \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                    'cashes.*',
+                ])->where('enabled', TRUE);    
+            }
+            else if($request->status=='disabled'){
+                $cashes = Cash::select([
+                    \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                    'cashes.*',
+                ])->where('enabled', FALSE);    
+            }
+            else{
+                $cashes = Cash::select([
+                    \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                    'cashes.*',
+                ]);
+            }
+            
         }
         else{           //show only petty cash
             $cashes = Cash::select([

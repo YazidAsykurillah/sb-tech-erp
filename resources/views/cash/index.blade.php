@@ -30,7 +30,25 @@
               </a>
             </div><!-- /.box-header -->
             <div class="box-body">
+              <form method="POST" id="form-filter" class="form-inline" role="form">
+                <div class="form-group">
+                  <label for="status">Status</label>
+                  <select name="status" id="status" class="form-control">
+                    <option value="enabled">Enabled</option>
+                    <option value="disabled">Disabled</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for=""></label>
+                  <button type="submit" class="btn btn-primary">Filter</button>  
+                </div>
+                
+              </form>
+            </div>
+            <div class="box-body">
               <div class="table-responsive">
+                
+                <br/>
                 <table class="table table-bordered" id="table-cash">
                   <thead>
                     <tr>
@@ -113,7 +131,13 @@
     var tableCash =  $('#table-cash').DataTable({
       processing :true,
       serverSide : true,
-      ajax : '{!! route('datatables.getCashes') !!}',
+      //ajax : '{!! route('datatables.getCashes') !!}',
+      ajax : {
+        url : '{!! route('datatables.getCashes') !!}',
+        data: function(d){
+          d.status = $('select[name=status]').val();
+        }
+      },
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false},
         { data: 'type', name: 'type' },
@@ -169,6 +193,10 @@
       tableCash.columns($(this).data('id')).search(this.value).draw();
     });
     //ENDBlock search input and select
+    $('#form-filter').on('submit', function(e) {
+      tableCash.draw();
+      e.preventDefault();
+    });
     
   </script>
 @endsection
