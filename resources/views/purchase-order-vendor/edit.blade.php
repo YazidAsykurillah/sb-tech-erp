@@ -53,7 +53,7 @@
           <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
             {!! Form::label('description', 'Description', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
-              {!! Form::textarea('description', $purchase_order_vendor->purchase_request->description,['class'=>'form-control', 'placeholder'=>'Description of the purchase order', 'id'=>'description']) !!}
+              {!! Form::textarea('description', null,['class'=>'form-control', 'placeholder'=>'Description of the purchase order', 'id'=>'description']) !!}
               @if ($errors->has('description'))
                 <span class="help-block">
                   <strong>{{ $errors->first('description') }}</strong>

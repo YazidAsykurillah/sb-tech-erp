@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     
     <style type="text/css">
-    	body{
-    		font-size: 9px;
+    	table{
+    		font-size: 10px;
     	}
 
     	#table-items{
@@ -35,41 +35,37 @@
 		<tr>
 			<td style="width:75%;">
 				<img src="img/bmkn-logo.jpeg" class="img-circle" width="200px;"/>
-				<p>PT. Bintang Mas Karya Nusantara</p>
-				<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
-				<p>Kecamatan Bekasi Selatan</p>
-				<p>Kelurahan Jaka Setia</p>
-				<p>Phone (021-82732142)</p>
+				<p></p>
+				<p>To</p>
+				<p>{{ $purchase_order_vendor->vendor->name }}</p>
+				<p>{{ $purchase_order_vendor->vendor->phone }}</p>
+				<p>{!! nl2br($purchase_order_vendor->vendor->address) !!}</p>
 			</td>
 			<td>
 				<p><strong>Purchase Order</strong></p>
 				<table style="width:100%;">
-					<tr>
-						<td style="width:40%;">Date</td>
-						<td style="width:1%;">:</td>
-						<td>{{ $purchase_order_vendor->created_at }}</td>
-					</tr>
 					<tr>
 						<td style="width:40%;">PO Number</td>
 						<td style="width:1%;">:</td>
 						<td>{{ $purchase_order_vendor->code }}</td>
 					</tr>
 					<tr>
-						<td style="width:40%;">Quotation</td>
+						<td style="width:40%;">Date</td>
 						<td style="width:1%;">:</td>
-						<td>{{ $purchase_order_vendor->quotation_vendor->code }}</td>
+						<td>{{ $purchase_order_vendor->created_at }}</td>
 					</tr>
 				</table>
 			</td>
 		</tr>
-	</table>
-	<table style="width: 100%; border: 0;">
 		<tr>
 			<td style="width:75%;" style="valign:top;">
-				<p><strong>Vendor</strong></p>
-				<p>{{ $purchase_order_vendor->vendor->name }}</p>
-				<p>{{ $purchase_order_vendor->vendor->phone }}</p>
-				<p>{!! nl2br($purchase_order_vendor->vendor->address) !!}</p>
+			</td>
+			<td>
+				<p>PT. Bintang Mas Karya Nusantara</p>
+				<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
+				<p>Kecamatan Bekasi Selatan</p>
+				<p>Kelurahan Jaka Setia</p>
+				<p>Phone (021-82732142)</p>
 			</td>
 		</tr>
 	</table>
@@ -77,7 +73,7 @@
 	<table class="table" id="table-items">
 		<thead>
 			<tr style="background:grey;">
-				<th style="width:5%;text-align:center;">#</th>
+				<th style="width:5%;text-align:center;">Item Number</th>
 				<th>Description</th>
 				<th>Qty</th>
 				<th style="text-align:right;">Unit Price</th>
@@ -90,7 +86,7 @@
 				@foreach($item_purchase_order_vendor as $item)
 				<?php $counter++; ?>
 				<tr>
-					<td style="text-align: center;">{{ $counter }}</td>
+					<td>{{ $counter }}</td>
 					<td>{{ $item->item }}</td>
 					<td>{{ $item->quantity }}&nbsp;{{ $item->unit }}</td>
 					<td style="text-align:right;">Rp&nbsp;{{ number_format($item->price) }}</td>
