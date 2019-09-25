@@ -12,28 +12,23 @@
     <title>Purchase Order Vendor</title>
 
     <!-- Bootstrap Core CSS -->
-    
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     
     <style type="text/css">
     	body{
     		font-size: 9px;
     	}
-
-    	#table-items{
-    		border-top: 1px solid;
-    		border-bottom: 1px solid;
-    		border-left: 1px solid;
-    		border-right: 1px solid;
+    	#table-po-information{
+    		border : none;
     	}
 
     </style>
 </head>
 
 <body>
-	<table style="width:100%;border:0;">
+	<table class="table">
 		<tr>
-			<td style="width:75%;">
+			<td style="width:60%;">
 				<img src="img/bmkn-logo.jpeg" class="img-circle" width="200px;"/>
 				<p>PT. Bintang Mas Karya Nusantara</p>
 				<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
@@ -42,41 +37,36 @@
 				<p>Phone (021-82732142)</p>
 			</td>
 			<td>
-				<p><strong>Purchase Order</strong></p>
-				<table style="width:100%;">
+				<table class="table" id="table-po-information">
 					<tr>
-						<td style="width:40%;">Date</td>
+						<td colspan="3">
+							<strong>Purchase Order</strong>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%;">Date</td>
 						<td style="width:1%;">:</td>
 						<td>{{ $purchase_order_vendor->created_at }}</td>
 					</tr>
 					<tr>
-						<td style="width:40%;">PO Number</td>
+						<td style="width:30%;">P.O Number</td>
 						<td style="width:1%;">:</td>
 						<td>{{ $purchase_order_vendor->code }}</td>
 					</tr>
 					<tr>
-						<td style="width:40%;">Quotation</td>
+						<td style="width:30%;">Quotation Number</td>
 						<td style="width:1%;">:</td>
 						<td>{{ $purchase_order_vendor->quotation_vendor->code }}</td>
 					</tr>
+					
 				</table>
 			</td>
 		</tr>
 	</table>
-	<table style="width: 100%; border: 0;">
-		<tr>
-			<td style="width:75%;" style="valign:top;">
-				<p><strong>Vendor</strong></p>
-				<p>{{ $purchase_order_vendor->vendor->name }}</p>
-				<p>{{ $purchase_order_vendor->vendor->phone }}</p>
-				<p>{!! nl2br($purchase_order_vendor->vendor->address) !!}</p>
-			</td>
-		</tr>
-	</table>
-	<br />
+
 	<table class="table" id="table-items">
-		<thead>
-			<tr style="background:grey;">
+		<thead style="background:grey;">
+			<tr>
 				<th style="width:5%;text-align:center;">#</th>
 				<th>Description</th>
 				<th>Qty</th>
@@ -133,17 +123,6 @@
 			</tr>
 			@endif
 		</tbody>
-	</table>
-
-	<table class="table" style="width:100%;">
-		<tr>
-			<td style="text-align:center;">Terms</td>
-		</tr>
-		<tr>
-			<td>
-				{!! $purchase_order_vendor->purchase_request->terms !!}
-			</td>
-		</tr>
 	</table>
 </body>
 
