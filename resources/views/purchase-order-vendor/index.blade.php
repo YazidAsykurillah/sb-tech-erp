@@ -148,7 +148,7 @@
         { data: 'created_at', name: 'created_at', visible:false, sortable:true},
       ],
       order : [
-        [12, 'desc']
+        [13, 'desc']
       ],
       footerCallback: function( tfoot, data, start, end, display ) {
         var api = this.api();
