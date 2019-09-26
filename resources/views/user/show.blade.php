@@ -113,9 +113,19 @@
                         <td>{{ number_format($user->eat_allowance, 2) }} </td>
                       </tr>
                       <tr>
+                        <td style="width:40%;">Eat Allowance Non Local</td>
+                        <td style="width:5%;">:</td>
+                        <td>{{ number_format($user->eat_allowance_non_local, 2) }} </td>
+                      </tr>
+                      <tr>
                         <td style="width:40%;">Transportation Allowance</td>
                         <td style="width:5%;">:</td>
                         <td>{{ number_format($user->transportation_allowance, 2) }} </td>
+                      </tr>
+                      <tr>
+                        <td style="width:40%;">Transportation Allowance Non Local</td>
+                        <td style="width:5%;">:</td>
+                        <td>{{ number_format($user->transportation_allowance_non_local, 2) }} </td>
                       </tr>
                       <tr>
                         <td style="width:40%;">Medical Allowance</td>

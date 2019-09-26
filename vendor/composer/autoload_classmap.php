@@ -47,6 +47,7 @@ return array(
     'AddColumnUserIdToTablePurchaseRequests' => $baseDir . '/database/migrations/2017_07_18_084223_add_column_user_id_to_table_purchase_requests.php',
     'AddColumnVendorIdToTableInternalRequests' => $baseDir . '/database/migrations/2017_07_29_151420_add_column_vendor_id_to_table_internal_requests.php',
     'AddCompetencyAllowanceToUsersTable' => $baseDir . '/database/migrations/2019_06_21_094845_add_competency_allowance_to_users_table.php',
+    'AddEatAllowanceAndTransportationAllowanceNonLocalToUsersTable' => $baseDir . '/database/migrations/2019_09_26_082249_add_eat_allowance_and_transportation_allowance_non_local_to_users_table.php',
     'AddFileColumnToTableQuotationCustomers' => $baseDir . '/database/migrations/2017_07_14_073640_add_file_column_to_table_quotation_customers.php',
     'AddGrossAmountToPayrollsTable' => $baseDir . '/database/migrations/2019_07_02_075521_add_gross_amount_to_payrolls_table.php',
     'AddHasIncentiveWeekdayAndHasIncentiveWeekEndToTableEts' => $baseDir . '/database/migrations/2019_06_14_031012_add_has_incentive_weekday_and_has_incentive_week_end_to_table_ets.php',

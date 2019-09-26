@@ -159,6 +159,17 @@
               @endif
             </div>
           </div>
+          <div class="form-group{{ $errors->has('eat_allowance_non_local') ? ' has-error' : '' }}">
+            {!! Form::label('eat_allowance_non_local', 'Eat Allowance Non Local', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!!Form::text('eat_allowance_non_local',null,['class'=>'form-control', 'placeholder'=>'eat_allowance_non_local of the member', 'id'=>'eat_allowance_non_local'])!!}
+              @if ($errors->has('eat_allowance_non_local'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('eat_allowance_non_local') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           <div class="form-group{{ $errors->has('transportation_allowance') ? ' has-error' : '' }}">
             {!! Form::label('transportation_allowance', 'Transportation Allowance', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
@@ -166,6 +177,17 @@
               @if ($errors->has('transportation_allowance'))
                 <span class="help-block">
                   <strong>{{ $errors->first('transportation_allowance') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <div class="form-group{{ $errors->has('transportation_allowance_non_local') ? ' has-error' : '' }}">
+            {!! Form::label('transportation_allowance_non_local', 'Transportation Allowance Non local', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!!Form::text('transportation_allowance_non_local',null,['class'=>'form-control', 'placeholder'=>'transportation_allowance_non_local of the member', 'id'=>'transportation_allowance_non_local'])!!}
+              @if ($errors->has('transportation_allowance_non_local'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('transportation_allowance_non_local') }}</strong>
                 </span>
               @endif
             </div>
@@ -336,7 +358,7 @@
   {!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
-    $('#salary, #man_hour_rate, #eat_allowance, #transportation_allowance, #medical_allowance, #workshop_allowance_amount, #incentive_week_day, #incentive_week_end, #additional_allowance, #competency_allowance, #bpjs_ke, #bpjs_tk').autoNumeric('init',{
+    $('#salary, #man_hour_rate, #eat_allowance, #eat_allowance_non_local, #transportation_allowance, #transportation_allowance_non_local, #medical_allowance, #workshop_allowance_amount, #incentive_week_day, #incentive_week_end, #additional_allowance, #competency_allowance, #bpjs_ke, #bpjs_tk').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });

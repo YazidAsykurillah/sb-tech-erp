@@ -149,6 +149,17 @@
               @endif
             </div>
           </div>
+          <div class="form-group{{ $errors->has('eat_allowance_non_local') ? ' has-error' : '' }}">
+            {!! Form::label('eat_allowance_non_local', 'Eat Allowance Non Local', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!!Form::text('eat_allowance_non_local',null,['class'=>'form-control', 'placeholder'=>'Uang Makan / Hari', 'id'=>'eat_allowance_non_local'])!!}
+              @if ($errors->has('eat_allowance_non_local'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('eat_allowance_non_local') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
           <div class="form-group{{ $errors->has('transportation_allowance') ? ' has-error' : '' }}">
             {!! Form::label('transportation_allowance', 'Transportation Allowance', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">
@@ -156,6 +167,17 @@
               @if ($errors->has('transportation_allowance'))
                 <span class="help-block">
                   <strong>{{ $errors->first('transportation_allowance') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          <div class="form-group{{ $errors->has('transportation_allowance_non_local') ? ' has-error' : '' }}">
+            {!! Form::label('transportation_allowance_non_local', 'Transportation Allowance Non Local', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!!Form::text('transportation_allowance_non_local',null,['class'=>'form-control', 'placeholder'=>'Transportasi / Hari', 'id'=>'transportation_allowance_non_local'])!!}
+              @if ($errors->has('transportation_allowance_non_local'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('transportation_allowance_non_local') }}</strong>
                 </span>
               @endif
             </div>
@@ -288,7 +310,15 @@
         aSep:',',
         aDec:'.'
     });
+    $('#eat_allowance_non_local').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
     $('#transportation_allowance').autoNumeric('init',{
+        aSep:',',
+        aDec:'.'
+    });
+    $('#transportation_allowance_non_local').autoNumeric('init',{
         aSep:',',
         aDec:'.'
     });

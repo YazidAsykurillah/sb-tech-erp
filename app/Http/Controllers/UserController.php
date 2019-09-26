@@ -66,7 +66,9 @@ class UserController extends Controller
         $user->position = $request->position;
         $user->salary = floatval(preg_replace('#[^0-9.]#', '', $request->salary));
         $user->eat_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->eat_allowance));
+        $user->eat_allowance_non_local = floatval(preg_replace('#[^0-9.]#', '', $request->eat_allowance_non_local));
         $user->transportation_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->transportation_allowance));
+        $user->transportation_allowance_non_local = floatval(preg_replace('#[^0-9.]#', '', $request->transportation_allowance_non_local));
         $user->medical_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->medical_allowance));
         $user->incentive_week_day = floatval(preg_replace('#[^0-9.]#', '', $request->incentive_week_day));
         $user->incentive_week_end = floatval(preg_replace('#[^0-9.]#', '', $request->incentive_week_end));
@@ -153,7 +155,9 @@ class UserController extends Controller
         $user->salary = floatval(preg_replace('#[^0-9.]#', '', $request->salary));
         $user->man_hour_rate = floatval(preg_replace('#[^0-9.]#', '', $request->man_hour_rate));
         $user->eat_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->eat_allowance));
+        $user->eat_allowance_non_local = floatval(preg_replace('#[^0-9.]#', '', $request->eat_allowance_non_local));
         $user->transportation_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->transportation_allowance));
+        $user->transportation_allowance_non_local = floatval(preg_replace('#[^0-9.]#', '', $request->transportation_allowance_non_local));
         $user->medical_allowance = floatval(preg_replace('#[^0-9.]#', '', $request->medical_allowance));
         if($request->has_workshop_allowance =='on'){
             $user->has_workshop_allowance = TRUE;
