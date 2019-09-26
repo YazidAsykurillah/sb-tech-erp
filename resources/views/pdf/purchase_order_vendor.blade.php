@@ -16,53 +16,81 @@
     
     <style type="text/css">
     	body{
-    		font-size: 9px;
+    		font-size: 9.5px;
     	}
-    	#table-po-information{
-    		border : none;
-    	}
-
+    	.table-borderless > tbody > tr > td,
+		.table-borderless > tbody > tr > th,
+		.table-borderless > tfoot > tr > td,
+		.table-borderless > tfoot > tr > th,
+		.table-borderless > thead > tr > td,
+		.table-borderless > thead > tr > th {
+		    border: none;
+		    padding: 0;
+		}
     </style>
 </head>
 
 <body>
-	<table class="table">
-		<tr>
-			<td style="width:60%;">
-				<img src="img/bmkn-logo.jpeg" class="img-circle" width="200px;"/>
-				<p>PT. Bintang Mas Karya Nusantara</p>
-				<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
-				<p>Kecamatan Bekasi Selatan</p>
-				<p>Kelurahan Jaka Setia</p>
-				<p>Phone (021-82732142)</p>
-			</td>
-			<td>
-				<table class="table" id="table-po-information">
-					<tr>
-						<td colspan="3">
-							<strong>Purchase Order</strong>
-						</td>
-					</tr>
-					<tr>
-						<td style="width:30%;">Date</td>
-						<td style="width:1%;">:</td>
-						<td>{{ $purchase_order_vendor->created_at }}</td>
-					</tr>
-					<tr>
-						<td style="width:30%;">P.O Number</td>
-						<td style="width:1%;">:</td>
-						<td>{{ $purchase_order_vendor->code }}</td>
-					</tr>
-					<tr>
-						<td style="width:30%;">Quotation Number</td>
-						<td style="width:1%;">:</td>
-						<td>{{ $purchase_order_vendor->quotation_vendor->code }}</td>
-					</tr>
-					
-				</table>
-			</td>
-		</tr>
+	<table class="table table-borderless">
+		<tbody>
+			<tr>
+				<td style="width:60%;">
+					<img src="img/bmkn-logo.jpeg" class="img-circle" width="200px;"/>
+					<p>PT. Bintang Mas Karya Nusantara</p>
+					<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
+					<p>Kecamatan Bekasi Selatan</p>
+					<p>Kelurahan Jaka Setia</p>
+					<p>Phone (021-82732142)</p>
+				</td>
+				<td>
+					<table class="table table-borderless">
+						<tbody>
+							<tr>
+								<td colspan="3">
+									<h4>Purchase Order</h4>
+								</td>
+							</tr>
+							<tr>
+								<td style="width:40%;">Date</td>
+								<td style="width:1%;">:</td>
+								<td>{{ $purchase_order_vendor->created_at }}</td>
+							</tr>
+							<tr>
+								<td style="width:40%;">P.O Number</td>
+								<td style="width:1%;">:</td>
+								<td>{{ $purchase_order_vendor->code }}</td>
+							</tr>
+							<tr>
+								<td style="width:40%;">Quotation Number</td>
+								<td style="width:1%;">:</td>
+								<td>{{ $purchase_order_vendor->quotation_vendor->code }}</td>
+							</tr>
+							<tr>
+								<td style="width:40%;">Term</td>
+								<td style="width:1%;">:</td>
+								<td>{!! $purchase_order_vendor->purchase_request->terms !!}</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
 	</table>
+
+	<!--Table Vendor information-->
+	<table class="table table-borderless">
+		<tbody>
+			<tr>
+				<td>
+					<p><strong>Vendor</strong></p>
+					<p>{{ $purchase_order_vendor->vendor->name }}</p>
+					<p>{{ $purchase_order_vendor->vendor->phone }}</p>
+					<p>{!! nl2br($purchase_order_vendor->vendor->address) !!}</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<!--ENDTable Vendor information-->
 
 	<table class="table" id="table-items">
 		<thead style="background:grey;">
@@ -87,15 +115,7 @@
 					<td style="text-align:right;">Rp&nbsp;{{ number_format($item->sub_amount) }}</td>
 				</tr>
 				@endforeach
-				<tr>
-					<td></td>
-					<td colspan="3" style="text-align:center;">
-						@if($purchase_order_vendor->quotation_vendor)
-						<strong>Based on Ref {{ $purchase_order_vendor->quotation_vendor->code }}</strong>
-						@endif
-					</td>
-					<td></td>
-				</tr>
+				
 				<tr>
 					<td colspan="4" style="text-align:right;border:0;">Sub Total</td>
 					<td style="text-align:right;background:grey;">Rp&nbsp;{{ number_format($purchase_order_vendor->purchase_request->sub_amount) }}</td>
