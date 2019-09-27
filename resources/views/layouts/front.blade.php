@@ -26,7 +26,7 @@
             margin-right: 6px;
         }*/
         body{
-            background:url("../img/intro-bg.jpg");
+            background:url("../img/intro-{{config('app.intro-id')}}.jpg");
         }
     </style>
     <!-- Additional styles -->
