@@ -124,7 +124,7 @@
         <div class="modal-footer">
           <input type="hidden" id="category_id" name="category_id" value="{{ $category->id}}" />
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-info">Save</button>
+          <button type="submit" class="btn btn-info" id="btn-save-sub-category">Save</button>
         </div>
       {!! Form::close() !!}
       </div>

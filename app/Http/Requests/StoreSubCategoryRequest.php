@@ -25,7 +25,7 @@ class StoreSubCategoryRequest extends Request
     {
         return [
             'category_id'=>'required|integer|exists:categories,id',
-            'subCategoryName'=>'required|unique:sub_categories,name',
+            'subCategoryName'=>'required',
             'subCategoryDescription'=>'required',
         ];
     }
