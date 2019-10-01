@@ -39,7 +39,12 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        //
+        $category = new Category;
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->save();
+        return redirect('master-data/category/'.$category->id)
+            ->with('successMessage', "Category has been added");
     }
 
     /**
