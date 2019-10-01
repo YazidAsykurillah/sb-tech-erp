@@ -15,7 +15,7 @@
   <ol class="breadcrumb">
     <li><a href="{{ URL::to('home') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
     <li><a href="#"><i class="fa fa-database"></i> Master Data</a></li>
-    <li> Category</li>
+    <li> <a href="{{ url('master-data/category')}}">Category</a></li>
     <li class="active"><a href="{{ URL::to('master-data/category/'.$category->id) }}"> {{ $category->name }} </a></li>
   </ol>
 @endsection
