@@ -312,7 +312,7 @@ class SettlementController extends Controller
                 return $settlements->category->name;
             })
             ->editColumn('sub_category', function($settlements){
-                return $settlements->sub_category->name;
+                return $settlements->sub_category ? $settlements->sub_category->name : NULL;
             })
             ->editColumn('amount', function($settlements){
                 return number_format($settlements->amount, 2);
