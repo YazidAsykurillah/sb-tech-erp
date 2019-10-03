@@ -184,19 +184,89 @@ class ReportController extends Controller
         return $invoice_vendor_taxes;
     }
 
-    public function cashFlowPlanning(Request $request)
+
+    public function count_tax_out_from_yearmonth($yearmonth){
+        
+              
+
+        $invoice_customer_taxes = InvoiceCustomerTax::whereHas('invoice_customer', function($query) use ($yearmonth){
+            $query->where('invoice_customers.tax_date', 'LIKE', "%$yearmonth%");
+            $query->where('invoice_customer_taxes.source', '=', "vat");
+            $query->where('invoice_customer_taxes.tax_number', 'NOT LIKE', "0000%");
+        })
+        ->sum('amount');
+        return $invoice_customer_taxes;
+    }
+
+    public function count_tax_in_from_yearmonth($yearmonth){
+        $invoice_vendor_taxes = InvoiceVendorTax::whereHas('invoice_vendor', function($query) use ($yearmonth){
+            $query->where('invoice_vendors.tax_date', 'LIKE', "%$yearmonth%");
+            $query->where('invoice_vendor_taxes.source', '=', "vat");
+            $query->where('invoice_vendor_taxes.tax_number', 'NOT LIKE', "0000%");
+        })
+        ->sum('amount');
+        return $invoice_vendor_taxes;
+    }
+
+    public function taxFlow(Request $request)
     {
         if($request->has('year')){
-            return $request->year;
+            $year = $request->year;
+            $predictive_taxflow_data = $this->buildPredictiveTaxFlowData($year);
+            return view('report.tax-flow-detail')
+                ->with('year', $year)
+                ->with('predictive_taxflow_data', $predictive_taxflow_data);
         }
         else{
             $years = [];
             for ($i=2016; $i <2025 ; $i++) { 
                 $years[]=$i;
             }
-            return view('report.cash-flow-planning')
-                ->with('years', $years);       
+            return view('report.tax-flow')
+                ->with('years', $years); 
         }
         
+    }
+
+    protected function count_tax_credit_from_yearmonth($ym)
+    {
+        $result = 0;
+        $tax_in = $this->count_tax_in_from_yearmonth($ym);
+        $tax_out = $this->count_tax_out_from_yearmonth($ym);
+        $credit = $tax_out-$tax_in;
+        if($credit < 0){
+            $result = $credit;
+        }
+        return $result;
+    }
+
+    protected function buildPredictiveTaxFlowData($year)
+    {
+        $result = [];
+        $year_month_list =[
+            $year.'-01',
+            $year.'-02',
+            $year.'-03',
+            $year.'-04',
+            $year.'-05',
+            $year.'-06',
+            $year.'-07',
+            $year.'-08',
+            $year.'-09',
+            $year.'-10',
+            $year.'-11',
+            $year.'-12',
+        ];
+        foreach ($year_month_list as $ym) {
+            array_push($result, 
+                [
+                    'year_month'=>$ym,
+                    'tax_out'=>number_format($this->count_tax_out_from_yearmonth($ym)),
+                    'tax_in'=>number_format($this->count_tax_in_from_yearmonth($ym)),
+                    'credit'=>number_format($this->count_tax_credit_from_yearmonth($ym)),
+                ]
+            );
+        }
+        return $result;
     }
 }

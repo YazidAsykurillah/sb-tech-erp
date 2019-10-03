@@ -328,8 +328,8 @@
         </ul>
         <ul class="treeview-menu">
           <li>
-            <a href="{{ url('report/cash-flow-planning') }}">
-              <i class="fa fa-circle-o"></i> Cash Flow (Planning)
+            <a href="{{ url('report/tax-flow') }}">
+              <i class="fa fa-circle-o"></i> Tax Flow
             </a>
           </li>
         </ul>

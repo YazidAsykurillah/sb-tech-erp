@@ -504,8 +504,8 @@ Route::group(['middleware' => 'auth'], function () {
 	//Project
 	Route::get('report/data-project', 'ReportController@getDataProject');
 	Route::get('report/project', 'ReportController@project');
-	//Cashflow Planning
-	Route::get('report/cash-flow-planning', 'ReportController@cashFlowPlanning');
+	//Tax Flow Report
+	Route::get('report/tax-flow', 'ReportController@taxFlow');
 
 	//Leave
 	Route::resource('leave', 'LeaveController');
