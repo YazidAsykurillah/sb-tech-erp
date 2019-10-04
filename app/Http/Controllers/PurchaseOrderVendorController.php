@@ -101,6 +101,7 @@ class PurchaseOrderVendorController extends Controller
         $purchase_order_vendor = new PurchaseOrderVendor;
         $purchase_order_vendor->code = "POV-".$pov_format."-".$next_purchase_order_vendor_number;
         $purchase_order_vendor->vendor_id = $quotation_vendor ? $quotation_vendor->vendor->id : NULL;
+        $purchase_order_vendor->quotation_vendor_id = $quotation_vendor ? $quotation_vendor->id : NULL;
         $purchase_order_vendor->purchase_request_id = $request->purchase_request_id;
         $purchase_order_vendor->description = $request->description;
         $purchase_order_vendor->sub_amount = floatval(preg_replace('#[^0-9.]#', '', $request->sub_amount));

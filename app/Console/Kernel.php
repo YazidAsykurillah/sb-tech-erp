@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         // Commands\Inspire::class,
         Commands\FixMigration::class,
         Commands\UpdatePayrollGrossAmount::class,
+        Commands\MapPurchaseOrderVendorWithQuotationVendor::class,
     ];
 
     /**
