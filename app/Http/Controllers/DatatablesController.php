@@ -1552,9 +1552,17 @@ class DatatablesController extends Controller
                             $actions_html ='<button type="button" class="btn btn-info btn-xs btn-transfer-internal-request" data-id="'.$internal_requests->id.'" data-text="'.$internal_requests->code.'" data-remitterBank="" data-beneficiaryBank="">';
                             $actions_html .=    '<i class="fa fa-money"></i>';
                             $actions_html .='</button>&nbsp;';
-                            $actions_html .='<button type="button" class="btn btn-success btn-xs btn-approve-transfer-internal-request" data-id="'.$internal_requests->id.'" data-text="'.$internal_requests->code.'" data-requester-id="'.$internal_requests->requester->id.'">';
-                            $actions_html .=    '<i class="fa fa-cog" title="Click to approve this transfer task"></i>';
-                            $actions_html .='</button>';
+                            //if internal request type is pindah buku
+                            if($internal_requests->type =='pindah_buku'){
+                                $actions_html .='<button type="button" class="btn btn-success btn-xs btn-approve-transfer-internal-request-pindah-buku" data-id="'.$internal_requests->id.'" data-text="'.$internal_requests->code.'" data-requester-id="'.$internal_requests->requester->id.'">';
+                                $actions_html .=    '<i class="fa fa-cog" title="Click to approve this transfer task"></i>';
+                                $actions_html .='</button>';
+                            }else{
+                               $actions_html .='<button type="button" class="btn btn-success btn-xs btn-approve-transfer-internal-request" data-id="'.$internal_requests->id.'" data-text="'.$internal_requests->code.'" data-requester-id="'.$internal_requests->requester->id.'">';
+                                $actions_html .=    '<i class="fa fa-cog" title="Click to approve this transfer task"></i>';
+                                $actions_html .='</button>'; 
+                            }
+                            
                         }
                         
                     }
