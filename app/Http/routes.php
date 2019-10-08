@@ -507,6 +507,9 @@ Route::group(['middleware' => 'auth'], function () {
 	//Tax Flow Report
 	Route::get('report/tax-flow', 'ReportController@taxFlow');
 
+	//Cash Flow Report
+	Route::get('report/cash-flow', 'ReportController@cashFlow');
+
 	//Leave
 	Route::resource('leave', 'LeaveController');
 

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\InvoiceVendor;
 use App\Project;
 use App\PurchaseOrderVendor;
 
@@ -37,5 +38,11 @@ class InvoiceVendor extends Model
     public function getMigoAttribute()
     {
         return "MG";
+    }
+
+    public static function countTotalByYearMonth($yearmonth)
+    {
+        $result = InvoiceVendor::where('due_date', 'LIKE', "%$yearmonth%")->sum('amount');
+        return $result;
     }
 }

@@ -19,4 +19,16 @@ class InvoiceCustomerTax extends Model
     {
     	return $this->belongsTo('App\Cash');
     }
+
+
+    public static function countTotalByYearMonth($yearmonth)
+    {
+        $invoice_customer_taxes = InvoiceCustomerTax::whereHas('invoice_customer', function($query) use ($yearmonth){
+            $query->where('invoice_customers.tax_date', 'LIKE', "%$yearmonth%");
+            $query->where('invoice_customer_taxes.source', '=', "vat");
+            $query->where('invoice_customer_taxes.tax_number', 'NOT LIKE', "0000%");
+        })
+        ->sum('amount');
+        return $invoice_customer_taxes;
+    }
 }

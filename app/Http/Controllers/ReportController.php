@@ -10,8 +10,14 @@ use Carbon\Carbon;
 
 use App\Project;
 use App\Period;
-use App\InvoiceCustomerTax;
+
+use App\InvoiceVendor;
+use App\InvoiceCustomer;
+
 use App\InvoiceVendorTax;
+use App\InvoiceCustomerTax;
+
+use App\Transaction;
 
 class ReportController extends Controller
 {
@@ -163,8 +169,6 @@ class ReportController extends Controller
     }
 
     public function count_tax_out_from_date($yearmonth){
-        
-
         $invoice_customer_taxes = InvoiceCustomerTax::whereHas('invoice_customer', function($query) use ($yearmonth){
             $query->where('invoice_customers.tax_date', 'LIKE', "%$yearmonth%");
             $query->where('invoice_customer_taxes.source', '=', "vat");
@@ -185,35 +189,13 @@ class ReportController extends Controller
     }
 
 
-    public function count_tax_out_from_yearmonth($yearmonth){
-        
-              
-
-        $invoice_customer_taxes = InvoiceCustomerTax::whereHas('invoice_customer', function($query) use ($yearmonth){
-            $query->where('invoice_customers.tax_date', 'LIKE', "%$yearmonth%");
-            $query->where('invoice_customer_taxes.source', '=', "vat");
-            $query->where('invoice_customer_taxes.tax_number', 'NOT LIKE', "0000%");
-        })
-        ->sum('amount');
-        return $invoice_customer_taxes;
-    }
-
-    public function count_tax_in_from_yearmonth($yearmonth){
-        $invoice_vendor_taxes = InvoiceVendorTax::whereHas('invoice_vendor', function($query) use ($yearmonth){
-            $query->where('invoice_vendors.tax_date', 'LIKE', "%$yearmonth%");
-            $query->where('invoice_vendor_taxes.source', '=', "vat");
-            $query->where('invoice_vendor_taxes.tax_number', 'NOT LIKE', "0000%");
-        })
-        ->sum('amount');
-        return $invoice_vendor_taxes;
-    }
-
+    //Block TAX FLOW
     public function taxFlow(Request $request)
     {
         if($request->has('year')){
             $year = $request->year;
             $predictive_taxflow_data = $this->buildPredictiveTaxFlowData($year);
-            return view('report.tax-flow-detail')
+            return view('report.tax-flow-annual')
                 ->with('year', $year)
                 ->with('predictive_taxflow_data', $predictive_taxflow_data);
                 //test commit
@@ -232,8 +214,8 @@ class ReportController extends Controller
     protected function count_tax_credit_from_yearmonth($ym)
     {
         $result = 0;
-        $tax_in = $this->count_tax_in_from_yearmonth($ym);
-        $tax_out = $this->count_tax_out_from_yearmonth($ym);
+        $tax_out = InvoiceCustomerTax::countTotalByYearMonth($ym);
+        $tax_in = InvoiceVendorTax::countTotalByYearMonth($ym);
         $credit = $tax_out-$tax_in;
         if($credit < 0){
             $result = $credit;
@@ -244,6 +226,92 @@ class ReportController extends Controller
     protected function buildPredictiveTaxFlowData($year)
     {
         $result = [];
+        $year_month_list = $this->buildYearMonthList($year);
+        foreach ($year_month_list as $ym) {
+            $tax_out = InvoiceCustomerTax::countTotalByYearMonth($ym);
+            $tax_in = InvoiceVendorTax::countTotalByYearMonth($ym);
+            array_push($result, 
+                [
+                    'year_month'=>$ym,
+                    'tax_out'=>number_format($tax_out),
+                    'tax_in'=>number_format($tax_in),
+                    'credit'=>number_format($this->count_tax_credit_from_yearmonth($ym)),
+                ]
+            );
+        }
+        return $result;
+    }
+
+    //Block Cash FLOW
+    public function cashFlow(Request $request)
+    {
+        if($request->has('year')){
+            $year = $request->year;
+            $predictive_cashflow_data = $this->buildPredictiveCashFlowData($year);
+            $actual_cashflow_data = $this->buildActualCashFlowData($year);
+            return view('report.cash-flow-annual')
+                ->with('year', $year)
+                ->with('predictive_cashflow_data', $predictive_cashflow_data)
+                ->with('actual_cashflow_data', $actual_cashflow_data);
+                //test commit
+        }
+        else{
+            $years = [];
+            for ($i=2016; $i <2025 ; $i++) { 
+                $years[]=$i;
+            }
+            return view('report.cash-flow')
+                ->with('years', $years); 
+        }
+        
+    }
+
+    protected function buildPredictiveCashFlowData($year)
+    {
+        $result = [];
+        $year_month_list = $this->buildYearMonthList($year);
+        foreach ($year_month_list as $ym) {
+            $cash_out = InvoiceVendor::countTotalByYearMonth($ym);
+            $cash_in = InvoiceCustomer::countTotalByYearMonth($ym);
+            array_push($result, 
+                [
+                    'year_month'=>$ym,
+                    'cash_out'=>number_format($cash_out),
+                    'cash_in'=>number_format($cash_in),
+                    'balance'=>number_format($cash_in-$cash_out),
+                ]
+            );
+        }
+        return $result;
+    }
+
+    protected function buildActualCashFlowData($year)
+    {
+        $result = [];
+        $year_month_list = $this->buildYearMonthList($year);
+        foreach ($year_month_list as $ym) {
+            $cash_out = Transaction::where('refference','=', 'invoice_vendor')
+                    ->where('transaction_date', 'LIKE', "%$ym%")
+                    ->sum('amount');
+            $cash_in = Transaction::where('refference','=', 'invoice_customer')
+                    ->where('transaction_date', 'LIKE', "%$ym%")
+                    ->sum('amount');
+            array_push($result, 
+                [
+                    'year_month'=>$ym,
+                    'cash_out'=>number_format($cash_out),
+                    'cash_in'=>number_format($cash_in),
+                    'balance'=>number_format($cash_in-$cash_out),
+                ]
+            );
+        }
+        return $result;
+    }
+    
+
+    //Return Yer-month list
+    protected function buildYearMonthList($year)
+    {
         $year_month_list =[
             $year.'-01',
             $year.'-02',
@@ -258,16 +326,6 @@ class ReportController extends Controller
             $year.'-11',
             $year.'-12',
         ];
-        foreach ($year_month_list as $ym) {
-            array_push($result, 
-                [
-                    'year_month'=>$ym,
-                    'tax_out'=>number_format($this->count_tax_out_from_yearmonth($ym)),
-                    'tax_in'=>number_format($this->count_tax_in_from_yearmonth($ym)),
-                    'credit'=>number_format($this->count_tax_credit_from_yearmonth($ym)),
-                ]
-            );
-        }
-        return $result;
+        return $year_month_list;
     }
 }

@@ -19,4 +19,15 @@ class InvoiceVendorTax extends Model
     {
     	return $this->belongsTo('App\Cash');
     }
+
+    public static function countTotalByYearMonth($yearmonth)
+    {
+        $invoice_vendor_taxes = InvoiceVendorTax::whereHas('invoice_vendor', function($query) use ($yearmonth){
+            $query->where('invoice_vendors.tax_date', 'LIKE', "%$yearmonth%");
+            $query->where('invoice_vendor_taxes.source', '=', "vat");
+            $query->where('invoice_vendor_taxes.tax_number', 'NOT LIKE', "0000%");
+        })
+        ->sum('amount');
+        return $invoice_vendor_taxes;
+    }
 }

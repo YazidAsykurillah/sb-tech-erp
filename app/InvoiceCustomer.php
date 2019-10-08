@@ -27,4 +27,9 @@ class InvoiceCustomer extends Model
     	return $this->belongsTo('App\User', 'prepared_by');
     }
 
+    public static function countTotalByYearMonth($yearmonth)
+    {
+        $result = InvoiceCustomer::where('due_date', 'LIKE', "%$yearmonth%")->sum('amount');
+        return $result;
+    }
 }
