@@ -290,10 +290,10 @@ class ReportController extends Controller
         $result = [];
         $year_month_list = $this->buildYearMonthList($year);
         foreach ($year_month_list as $ym) {
-            $cash_out = Transaction::where('refference','=', 'invoice_vendor')
+            $cash_out = Transaction::where('type','=', 'debet')
                     ->where('transaction_date', 'LIKE', "%$ym%")
                     ->sum('amount');
-            $cash_in = Transaction::where('refference','=', 'invoice_customer')
+            $cash_in = Transaction::where('type','=', 'credit')
                     ->where('transaction_date', 'LIKE', "%$ym%")
                     ->sum('amount');
             array_push($result, 

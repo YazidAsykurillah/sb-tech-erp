@@ -65,8 +65,8 @@
                   <thead>
                     <tr>
                       <th>Masa</th>
-                      <th>Keluaran (Invoice Vendor)</th>
-                      <th>Masukan (Invoice Customer)</th>
+                      <th>Keluaran (Debet)</th>
+                      <th>Masukan (Credit)</th>
                       <th>Balance</th>
                     </tr>
                   </thead>
