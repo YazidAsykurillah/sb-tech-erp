@@ -71,7 +71,7 @@ class TransferTaskController extends Controller
             $internal_request = InternalRequest::findOrFail($ir);
             
             if($internal_request->type == 'pindah_buku'){
-                $this->transferInternalRequestPindahBukuMultiple($internal_request);
+                $this->transferInternalRequestPindahBuku($internal_request);
             }
             else{
                 if($internal_request->accounted_approval == 'approved'){
