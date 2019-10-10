@@ -303,6 +303,7 @@ class InvoiceVendorController extends Controller
                 if($invoice_vendors->purchase_order_vendor->purchase_request->migo){
                     $migo_code = $invoice_vendors->purchase_order_vendor->purchase_request->migo->code;     
                 }
+                //
                 return $migo_code;
             })
             ->addColumn('actions', function($invoice_vendors){
