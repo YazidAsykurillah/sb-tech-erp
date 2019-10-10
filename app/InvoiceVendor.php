@@ -18,8 +18,6 @@ class InvoiceVendor extends Model
         'bill_amount'
     ];
 
-    protected $appends = ['migo'];
-
     public function project()
     {
     	return $this->belongsTo('App\Project', 'project_id');
@@ -33,11 +31,6 @@ class InvoiceVendor extends Model
     public function remitter_bank()
     {
         return $this->belongsTo('App\Cash', 'cash_id');
-    }
-
-    public function getMigoAttribute()
-    {
-        return "MG";
     }
 
     public static function countTotalByYearMonth($yearmonth)

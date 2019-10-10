@@ -234,7 +234,8 @@ class InvoiceVendorController extends Controller
     public function dataTables(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $invoice_vendors = InvoiceVendor::with('project', 'purchase_order_vendor', 'purchase_order_vendor.vendor')->select([
+        $invoice_vendors = InvoiceVendor::with('project', 'purchase_order_vendor', 'purchase_order_vendor.vendor', 'purchase_order_vendor.purchase_request.migo')
+        ->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'invoice_vendors.*',
         ]);
@@ -296,6 +297,13 @@ class InvoiceVendorController extends Controller
             })
             ->editColumn('accounted', function($invoice_vendors){
                 return $invoice_vendors->accounted == TRUE ? '<i class="fa fa-check" title="Accounted"></i>' : '<i class="fa fa-hourglass" title="Not acounted yet"></i>';
+            })
+            ->addColumn('migo_code', function($invoice_vendors){
+                $migo_code = "";
+                if($invoice_vendors->purchase_order_vendor->purchase_request->migo){
+                    $migo_code = $invoice_vendors->purchase_order_vendor->purchase_request->migo->code;     
+                }
+                return $migo_code;
             })
             ->addColumn('actions', function($invoice_vendors){
                     $actions_html ='<a href="'.url('invoice-vendor/'.$invoice_vendors->id.'').'" class="btn btn-primary btn-xs" title="Click to view the detail">';

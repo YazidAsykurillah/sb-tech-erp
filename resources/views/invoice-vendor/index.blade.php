@@ -57,11 +57,13 @@
                       <th>Status</th>
                       <th>Accounted</th>
                       <th>Tax Date</th>
+                      <th>Migo</th>
                       <th style="width:10%;text-align:center;">Actions</th>
                     </tr>
                   </thead>
                   <thead id="searchColumn">
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -82,6 +84,7 @@
                   <tbody></tbody>
                   <tfoot>
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -158,6 +161,7 @@
         { data: 'status', name:'status'},
         { data: 'accounted', name:'accounted'},
         { data: 'tax_date', name:'tax_date'},
+        { data: 'migo_code', name:'purchase_order_vendor.purchase_request.migo.code'},
         { data: 'actions', name: 'actions', orderable:false, searchable:false, className:'dt-body-center' },
       ],
       footerCallback: function( tfoot, data, start, end, display ) {
@@ -209,7 +213,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 13) {
+      if ($(this).index() != 0 && $(this).index() != 14) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           
