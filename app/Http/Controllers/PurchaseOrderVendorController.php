@@ -287,7 +287,7 @@ class PurchaseOrderVendorController extends Controller
             case 'BMKN Accounting':
                 $data['logo'] = 'bmkn-logo.jpeg';
                 break;
-            case 'BitMaker Accounting':
+            case 'BitMaker ERP':
                 $data['logo'] = 'bitmaker-logo.png';
                 break;
             default:
