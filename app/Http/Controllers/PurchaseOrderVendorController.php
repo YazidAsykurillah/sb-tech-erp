@@ -282,6 +282,18 @@ class PurchaseOrderVendorController extends Controller
         $purchase_order_vendor = PurchaseOrderVendor::findOrFail($id);
         $data['purchase_order_vendor']= $purchase_order_vendor;
         //purchase order vendor items is grabbed from the item purchase requests
+        $data['logo'] = '';
+        switch (config('app.name')) {
+            case 'BMKN Accounting':
+                $data['logo'] = 'bmkn-logo.jpeg';
+                break;
+            case 'BitMaker Accounting':
+                $data['logo'] = 'bitmaker-logo.png';
+                break;
+            default:
+                $data['logo'] = 'bmkn-logo.jpeg';
+                break;
+        }
         $data['item_purchase_order_vendor'] = \DB::table('item_purchase_request')->where('purchase_request_id','=', $purchase_order_vendor->purchase_request->id)->get();
         $pdf = \PDF::loadView('pdf.purchase_order_vendor', $data)->setPaper('a4', 'portrait')->setWarnings(false);
         return $pdf->stream($purchase_order_vendor->code.'.pdf');
