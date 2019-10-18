@@ -542,6 +542,9 @@
     //Block function to remove additional row
     function remove_row(obj){
       $(obj).parent().parent().remove();
+      fill_total_sub_amount();
+      update_after_discount_value();
+      update_amount_value();
     }
     //ENDBlock function to remove additional row
     

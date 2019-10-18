@@ -217,10 +217,11 @@ class PurchaseRequestController extends Controller
 
     public function changeStatus(Request $request)
     {
+        
         $purchase_request = PurchaseRequest::findOrFail($request->purchase_request_id);
         $purchase_request->status = $request->status;
         $purchase_request->save();
-        return redirect('purchase-request/'.$request->id)
+        return redirect('purchase-request/'.$request->purchase_request_id)
             ->with('successMessage', "Purchase request status has been changed");
     }
 
