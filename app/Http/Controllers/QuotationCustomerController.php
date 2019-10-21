@@ -69,6 +69,8 @@ class QuotationCustomerController extends Controller
     //ENDFile upload handling process
     public function store(StoreQuotationCustomerRequest $request)
     {
+        $app_name = config('app.name');
+        
         if($request->hasFile('file')){
             $this->upload_process($request);
         }
@@ -77,8 +79,11 @@ class QuotationCustomerController extends Controller
         $today = date('Y-m-d');
         
         $this_month = substr($today, 0, 7);
-
-        $qc_format = "BMKN-QC-".substr($this_month, 2, 2)."-".substr($this_month, 5, 2)."-";
+        $suffix = "BMKN-QC";
+        if($app_name == 'BMN Accounting'){
+            $suffix = "BMN-SPH";
+        }
+        $qc_format = "$suffix-".substr($this_month, 2, 2)."-".substr($this_month, 5, 2)."-";
         
         $next_quotation_customer_number = "";
         $quotation_customers = \DB::table('quotation_customers')->where('created_at', 'like', "%$this_month%");
@@ -113,12 +118,13 @@ class QuotationCustomerController extends Controller
 
         $result = "";
         $check = \DB::table('quotation_customers')->where('code', '=', $qc_format.$qc_num_to_check)->first();
-        if(count($check) == 0){
-            $result = $qc_format.$qc_num_to_check;
-        }
-        else{
+        if($check){
             $int_qc_num_to_check = intval($qc_num_to_check);
             $result = $qc_format.str_pad(($int_qc_num_to_check+1), 3, 0, STR_PAD_LEFT);
+        }
+        else{
+            $result = $qc_format.$qc_num_to_check;
+            
         }
         return $result;
     }
