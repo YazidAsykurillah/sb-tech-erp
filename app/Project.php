@@ -216,14 +216,6 @@ class Project extends Model
         return $result;
     }
 
-
-    
-
-    public function scopeCostMargin($query)
-    {
-        return $query->where('cost_margin', '>', 100);
-    }
-
     protected function total_expense_from_settlement()
     {
         $total_expense_from_settlement = 0;

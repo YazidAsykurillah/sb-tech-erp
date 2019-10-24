@@ -15,7 +15,7 @@ use App\Project;
 use App\PurchaseOrderCustomer;
 use App\User;
 
-class ProjectController extends Controller
+class ProjectControllerBack extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -239,14 +239,11 @@ class ProjectController extends Controller
    //PROJECT datatables
     public function dataTables(Request $request)
     {
-        if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
-            error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
-        }
         \DB::statement(\DB::raw('set @rownum=0'));
         $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
             \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
             'projects.*',
-        ]);
+        ])->get();
         if ($request->get('cost_margin_value')) {
             $projects = Project::with('purchase_order_customer', 'sales', 'purchase_order_customer.customer')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),

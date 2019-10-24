@@ -186,10 +186,10 @@
         { data: 'sales_id', name: 'sales.name' },
         { data: 'purchase_order_customer_id', name: 'purchase_order_customer.code' },
         { data: 'purchase_order_customer_amount', name: 'purchase_order_customer.amount' },
-        { data: 'invoiced', name: 'invoiced'},
+        { data: 'invoiced', name: 'invoiced', orderable:false, searchable:false},
         { data: 'pending_invoice_customer_amount', name: 'pending_invoice_customer_amount', orderable:false, searchable:false },
         { data: 'paid_invoice_customer_amount', name: 'paid_invoice_customer_amount', orderable:false, searchable:false },
-        { data: 'cost_margin', name: 'cost_margin', orderable:true, searchable:true, render:function(data, type, row, meta){
+        { data: 'cost_margin', name: 'cost_margin', orderable:false, searchable:false, render:function(data, type, row, meta){
             if(data != null){
               return data+ '%';
             }else{
@@ -303,12 +303,10 @@
     });
 
     // Setup - add a text input to each header cell
-    $('#searchColumn th').each(function() {
-      
-      if ($(this).index() != 0 && $(this).index() != 14) {
+    $('#searchColumn th').each(function() {      
+      if ($(this).index() != 0 && $(this).index()!=8 && $(this).index() != 11 && $(this).index() != 14) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
-          
     });
     //Block search input and select
     $('#searchColumn input').keyup(function() {

@@ -93,11 +93,7 @@
                   </table>
                 </td>
               </tr>
-               <tr>
-                <td style="width: 20%;"><strong>Amount</strong></td>
-                <td style="width: 1%;">:</td>
-                <td>{{ number_format($po_vendor->amount) }}</td>
-              </tr>
+              
               @if($po_vendor->purchase_request)
               <tr>
                 <td style="width: 20%;"><strong>Discount</strong></td>
@@ -130,6 +126,11 @@
                 <td>{!! $po_vendor->purchase_request->terms !!}</td>
               </tr>
               @endif
+              <tr>
+                <td style="width: 20%;"><strong>Amount</strong></td>
+                <td style="width: 1%;">:</td>
+                <td>{{ number_format($po_vendor->amount) }}</td>
+              </tr>
               <tr>
                 <td style="width: 20%;"><strong>Status</strong></td>
                 <td style="width: 1%;">:</td>
