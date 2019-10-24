@@ -15,7 +15,7 @@ class PurchaseOrderVendor extends Model
 
     protected $fillable = ['vendor_id','code', 'purchase_request_id', 'description', 'amount', 'quotation_vendor_id', 'terms'];
 
-    protected $appends = ['invoice_vendor_due'];
+    protected $appends = ['invoice_vendor_due', 'UnInvoicedAmount'];
 
 
     public function vendor()
@@ -84,6 +84,24 @@ class PurchaseOrderVendor extends Model
         return $result;
     }
 
+
+    public function getUnInvoicedAmountAttribute()
+    {
+        $po_amount = $this->amount;
+        $invoiced_amount = 0;
+        $invoice_vendors = $this->invoice_vendor;
+        if($invoice_vendors->count()){
+            foreach($invoice_vendors as $inv){
+                if($inv->type == 'billing'){
+                    $invoiced_amount+=$inv->bill_amount;    
+                }else{
+                    $invoiced_amount+=$inv->amount;
+                }
+            }
+        }
+        $un_invoiced_amount = $po_amount - $invoiced_amount;
+        return $un_invoiced_amount;
+    }
 
 
 }

@@ -281,6 +281,14 @@
                 </tr>
                 <tr>
                   <td colspan="2">
+                    <strong>Total Uninvoiced Amount</strong>
+                  </td>
+                  <td style="text-align:right;">
+                    <strong>{{ number_format($po_vendor->UnInvoicedAmount, 2) }}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
                     <strong>Invoice Vendor Due</strong>
                   </td>
                   <td style="text-align:right;">

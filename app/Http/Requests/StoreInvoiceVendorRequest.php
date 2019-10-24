@@ -14,13 +14,12 @@ class StoreInvoiceVendorRequest extends Request
         
         $test = function ($_x, $value, $_y) {
             $purchase_order = PurchaseOrderVendor::findOrFail(\Request::get('purchase_order_vendor_id'));
-            //$max = floatval(\Request::get('total_invoice_due'));
-            $cleared_max = $purchase_order->invoice_vendor_due+0.1;
+            $cleared_max = $purchase_order->UnInvoicedAmount+0.1;
             $cleared_value = floatval(preg_replace('#[^0-9.]#', '', $value));
             //echo $cleared_value;exit();
             return $cleared_value < $cleared_max;
         };
-        $errorMessage = "Can not more than invoice vendor due";
+        $errorMessage = "Can not more than total un invoiced amount";
 
         $factory->extend($name, $test, $errorMessage);
     }
