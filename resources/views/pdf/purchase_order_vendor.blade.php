@@ -36,7 +36,7 @@
 			<tr>
 				<td style="width:60%;">
 					<img src="img/{{ $logo }}" class="img-circle" width="200px;"/>
-					<p>PT. Bintang Mas Karya Nusantara</p>
+					<p>{{ config('app.company_name') }}</p>
 					<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
 					<p>Kecamatan Bekasi Selatan</p>
 					<p>Kelurahan Jaka Setia</p>

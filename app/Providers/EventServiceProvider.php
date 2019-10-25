@@ -38,6 +38,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\RegisterBpjsKetenagakerjaan',
             'App\Listeners\RegisterSettlementPayroll',
         ],
+        'App\Events\PayrollIsApproved' => [
+            'App\Listeners\SetInstallmentToPaid',
+        ],
         'App\Events\ItemPurchaseRequestIsReceived'=>[
             'App\Listeners\RegisterItemPurchaseRequestToProduct',
         ],

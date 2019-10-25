@@ -10,5 +10,9 @@ class CashbondInstallment extends Model
 
     protected $fillable = ['cashbond_id', 'amount', 'installment_schedule', 'status'];
 
+    public function cashbond()
+    {
+    	return $this->belongsTo('App\Cashbond');
+    }
     
 }

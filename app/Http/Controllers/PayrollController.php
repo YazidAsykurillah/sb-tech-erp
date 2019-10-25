@@ -13,6 +13,7 @@ use Yajra\Datatables\Datatables;
 use Event;
 use App\Events\PayrollIsDeleted;
 use App\Events\PayrollIsCreated;
+use App\Events\PayrollIsApproved;
 
 use App\Payroll;
 use App\User;
@@ -240,7 +241,10 @@ class PayrollController extends Controller
 
         
         //get user's cashbonds
-        $cashbonds = Cashbond::select('id')->where('user_id', '=', $user->id)->get();
+        $cashbonds = Cashbond::select('id')
+            ->where('user_id', '=', $user->id)
+            ->where('cut_from_salary', TRUE)
+            ->get();
         $cashbond_ids = [];
         $cash_advances = [];
         if(count($cashbonds)){
@@ -249,7 +253,7 @@ class PayrollController extends Controller
         if(count($cashbond_ids)){
             $cash_advances =  CashbondInstallment::whereIn('cashbond_id',$cashbond_ids)
                             ->whereBetween('installment_schedule', [$period->start_date, $period->end_date])
-                            ->where('cashbond_installments.status', '=', 'unpaid')
+                            
                             ->get();
         }
         
@@ -559,7 +563,10 @@ class PayrollController extends Controller
 
         //collect_total_amount from CashbondInstallments
         $total_amount_from_cashbond_installments = 0;
-        $cashbonds = Cashbond::select('id')->where('user_id', '=', $user->id)->get();
+        $cashbonds = Cashbond::select('id')
+            ->where('user_id', '=', $user->id)
+            ->where('cut_from_salary', TRUE)
+            ->get();
         $cashbond_ids = [];
         if(count($cashbonds)){
             $cashbond_ids = array_flatten($cashbonds->toArray());
@@ -567,7 +574,7 @@ class PayrollController extends Controller
         if(count($cashbond_ids)){
             $total_amount_from_cashbond_installments =  CashbondInstallment::whereIn('cashbond_id',$cashbond_ids)
                             ->whereBetween('installment_schedule', [$period->start_date, $period->end_date])
-                            ->where('cashbond_installments.status', '=', 'unpaid')
+                            
                             ->sum('amount');
         }
 
@@ -696,9 +703,13 @@ class PayrollController extends Controller
 
     public function changeStatus(Request $request)
     {
+
         //dd($request->all());
         $payroll = Payroll::findOrFail($request->payroll_id_to_change);
         $payroll->status = $request->new_payroll_status;
+        if($request->new_payroll_status == 'approved'){
+            Event::fire(new PayrollIsApproved($payroll));
+        }
         $payroll->save();
         return redirect()->back();
     }

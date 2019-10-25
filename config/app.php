@@ -3,7 +3,9 @@
 return [
     //Application id (define background intro)
     'intro-id'=>env('APP_INTRO_ID', 'application-intro-id'),
-
+    //Company Name
+    'company_name'=>env('APP_COMPANY_NAME', 'My Company'),
+    
     //Application Name
     'name'=>env('APP_NAME', 'My Application Name'),
     
