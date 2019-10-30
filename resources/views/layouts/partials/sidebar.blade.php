@@ -119,18 +119,28 @@
       </li>
       @endif
       
-      @if(\Auth::user()->can('index-purchase-order-customer') && \Auth::user()->can('index-purchase-order-vendor'))
+      
       <li class="treeview {{{ (Request::is('purchase-order*') ? 'active':'') }}}">
         <a href="#">
           <i class="fa fa-bookmark-o"></i>
           <span>Purchase Order</span>
         </a>
         <ul class="treeview-menu">
-          <li class="{{{ (Request::is('purchase-order-customer*') ? 'active':'') }}}"><a href="{{ URL::to('purchase-order-customer') }}"><i class="fa fa-circle-o"></i> PO Customer</a></li>
-          <li class="{{{ (Request::is('purchase-order-vendor*') ? 'active':'') }}}"><a href="{{ url('purchase-order-vendor') }}"><i class="fa fa-circle-o"></i> PO Vendor</a></li>
+          @if(\Auth::user()->can('index-purchase-order-customer') && \Auth::user()->can('index-purchase-order-vendor'))
+          <li class="{{{ (Request::is('purchase-order-customer*') ? 'active':'') }}}">
+            <a href="{{ URL::to('purchase-order-customer') }}"><i class="fa fa-circle-o"></i> PO Customer</a>
+          </li>
+          <li class="{{{ (Request::is('purchase-order-vendor*') ? 'active':'') }}}">
+            <a href="{{ url('purchase-order-vendor') }}"><i class="fa fa-circle-o"></i> PO Vendor</a>
+          </li>
+          @elseif(\Auth::user()->can('index-purchase-order-vendor')))
+          <li class="{{{ (Request::is('purchase-order-vendor*') ? 'active':'') }}}">
+            <a href="{{ url('purchase-order-vendor') }}"><i class="fa fa-circle-o"></i> PO Vendor</a>
+          </li>
+          @endif
         </ul>
       </li>
-      @endif
+      
 
       @if(\Auth::user()->can('access-delivery-order'))
       <li {{{ (Request::is('delivery-order*') ? 'class=active' : '') }}}>

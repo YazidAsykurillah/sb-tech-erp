@@ -25,9 +25,11 @@
         <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">PO Vendor</h3>
+              @if(\Auth::user()->can('create-purchase-order-vendor'))
               <a href="{{ URL::to('purchase-order-vendor/create')}}" class="btn btn-primary pull-right" title="Create new PO Vendor">
                 <i class="fa fa-plus"></i>&nbsp;Add New
               </a>
+              @endif
             </div><!-- /.box-header -->
             <div class="box-body">
               <div class="table-responsive">

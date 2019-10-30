@@ -303,11 +303,24 @@ class PurchaseOrderVendorController extends Controller
     //PURCHASE ORDER VENDOR datatables
     public function dataTables(Request $request)
     {
+        $user_role = \Auth::user()->roles->first()->code;
+        
         \DB::statement(\DB::raw('set @rownum=0'));
-        $po_vendors = PurchaseOrderVendor::with('vendor', 'purchase_request', 'purchase_request.project', 'purchase_request.migo', 'quotation_vendor')->select([
-            \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-            'purchase_order_vendors.*'
-        ]);
+        if($user_role == "SUP" || $user_role == "ADM" || $user_role == "FIN"){
+            $po_vendors = PurchaseOrderVendor::with('vendor', 'purchase_request', 'purchase_request.project', 'purchase_request.migo', 'quotation_vendor')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_order_vendors.*'
+            ]);    
+        }else{
+            $po_vendors = PurchaseOrderVendor::with('vendor', 'purchase_request', 'purchase_request.project', 'purchase_request.migo', 'quotation_vendor')->select([
+                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
+                'purchase_order_vendors.*'
+            ])
+            ->whereHas('purchase_request', function($query){
+                $query->where('user_id', '=', \Auth::user()->id);
+            });
+        }
+        
 
         $data_po_vendors = Datatables::of($po_vendors)
             ->editColumn('vendor_id', function($po_vendors){

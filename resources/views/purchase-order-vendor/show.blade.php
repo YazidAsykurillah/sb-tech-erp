@@ -28,9 +28,11 @@
         <div class="box-header with-border">
           <h3 class="box-title"><i class="fa fa-book"></i>&nbsp;Purchase Order Vendor Detail</h3>
           <span class="pull-right">
+            @if(\Auth::user()->can('edit-purchase-order-vendor'))
             <a href="{{ URL::to('purchase-order-vendor/'.$po_vendor->id.'/edit')}}" class="btn btn-success btn-xs" title="Edit">
               <i class="fa fa-edit"></i>&nbsp;Edit
             </a>
+            @endif
             <a href="{{ URL::to('purchase-order-vendor/'.$po_vendor->id.'/print_pdf')}}" class="btn btn-default btn-xs" title="Print PDF">
               <i class="fa fa-print"></i>&nbsp;Print
             </a>
@@ -174,16 +176,36 @@
                 {{ number_format($po_vendor->purchase_request->amount, 2) }}
               @endif
             </p>
-            <strong>Migo</strong>
+          @endif
+        </div><!-- /.box-body -->
+
+      </div>
+      <!--ENDBOX Purchase Request Information-->
+
+      <!--BOX Migo-->
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title"><i class="fa fa-book"></i> Migo</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          @if($po_vendor->purchase_request->migo)
+            <p>Code</p>
             <p class="text-muted">
-              @if($po_vendor->purchase_request->migo)
-                {{ $po_vendor->purchase_request->migo->code }}
-              @endif
+              {{ $po_vendor->purchase_request->migo->code }}
             </p>
+            <p>Description</p>
+            <p class="text-muted">
+              {{ $po_vendor->purchase_request->migo->description }}
+            </p>
+          @else
+            <p class="text text-warning"><i class="fa fa-info-circle"></i> Not Registered</p>
+            <a href="javascript::void();" id="btn-register-migo" class="btn btn-default btn-sm">
+              Register
+            </a>
           @endif
         </div><!-- /.box-body -->
       </div>
-      <!--ENDBOX Purchase Request Information-->
+      <!--ENDBOX Migo-->
 
       <!--Box Project Information-->
       <div class="box">
@@ -336,6 +358,39 @@
     </div>
   </div>
 <!--ENDModal CHANGE STATUS-->
+
+<!--Modal register migo-->
+  <div class="modal fade" id="modal-register-migo" tabindex="-1" role="dialog" aria-labelledby="modal-register-migoLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+      {!! Form::open(['route'=>'migo.store','role'=>'form','class'=>'form-horizontal','id'=>'form-create-migo','files'=>true]) !!}
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modal-register-migoLabel">Register Migo</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+            {!! Form::label('description', 'Description', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-10">
+              {!! Form::textarea('description',null,['class'=>'form-control', 'placeholder'=>'Migo description', 'id'=>'description']) !!}
+              @if ($errors->has('description'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('description') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="pr_id" name="pr_id" value="{{$po_vendor->purchase_request->id}}"/>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-register-migo">Register</button>
+        </div>
+      {!! Form::close() !!}
+      </div>
+    </div>
+  </div>
+  <!--ENDModal register migo-->
 @endsection
 
 @section('additional_scripts')
@@ -370,5 +425,13 @@
         }
       });
     });
+
+    //Block Register migo handling
+    $('#btn-register-migo').on('click', function(event){
+      event.preventDefault();
+      $('#modal-register-migo').modal('show');
+    });
+    //EndBlock Register migo handling
+
   </script>
 @endsection
