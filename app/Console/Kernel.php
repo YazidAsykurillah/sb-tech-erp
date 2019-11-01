@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\FixMigration::class,
         Commands\UpdatePayrollGrossAmount::class,
         Commands\MapPurchaseOrderVendorWithQuotationVendor::class,
+        Commands\BackupDatabase::class,
     ];
 
     /**
@@ -29,5 +30,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        $schedule->command('service:backup-database')->everyMinute();
     }
 }
