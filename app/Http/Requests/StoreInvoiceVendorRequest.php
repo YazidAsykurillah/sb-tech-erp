@@ -14,7 +14,7 @@ class StoreInvoiceVendorRequest extends Request
         
         $test = function ($_x, $value, $_y) {
             $purchase_order = PurchaseOrderVendor::findOrFail(\Request::get('purchase_order_vendor_id'));
-            $cleared_max = $purchase_order->UnInvoicedAmount+1000;
+            $cleared_max = $purchase_order->UnInvoicedAmount+100000;
             $cleared_value = floatval(preg_replace('#[^0-9.]#', '', $value));
             //echo $cleared_value;exit();
             return $cleared_value < $cleared_max;
