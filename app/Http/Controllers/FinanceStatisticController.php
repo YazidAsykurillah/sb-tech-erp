@@ -23,7 +23,7 @@ class FinanceStatisticController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    /*public function index_back20191005()
     {
         //total invoice due from projects
         $tot_not_invoiced_from_pro = $this->tot_not_invoiced_from_pro();
@@ -66,6 +66,42 @@ class FinanceStatisticController extends Controller
             ->with('tot_invoice_customer_tax_amount', $tot_invoice_customer_tax_amount)
             ->with('tot_invoice_vendor_tax_amount', $tot_invoice_vendor_tax_amount)
             ->with('tax_balance', $tax_balance)
+            ->with('balance', $balance);
+
+    }*/
+
+    public function index()
+    {
+        //total invoice due from projects
+        $tot_not_invoiced_from_pro = $this->tot_not_invoiced_from_pro();
+
+
+        //total invoice customer with status of pending
+        $tot_pending_invoice_customer = $this->tot_pending_invoice_customer();
+
+        //total invoice vendor with status of pending
+        $tot_pending_invoice_vendor = $this->tot_pending_invoice_vendor();
+
+        //total amount of purchase order vendor that has no invoice vendor
+        $tot_purchase_order_vendor_amount = $this->tot_purchase_order_vendor_amount();
+        $tot_invoice_vendor_amount = $this->tot_invoice_vendor_amount();
+        $tot_un_invoiced_po_vendor = $this->tot_un_invoiced_po_vendor();
+
+        //total amount from all cashes
+        $tot_cash_amounts = $this->tot_cash_amounts();
+
+    
+        //now get the balance
+        $balance = $tot_not_invoiced_from_pro+$tot_cash_amounts-$tot_pending_invoice_vendor-$tot_un_invoiced_po_vendor+$tot_pending_invoice_customer;
+
+        return view('finance-statistic.index')
+            ->with('tot_not_invoiced_from_pro', $tot_not_invoiced_from_pro)
+            ->with('tot_pending_invoice_customer', $tot_pending_invoice_customer)
+            ->with('tot_pending_invoice_vendor', $tot_pending_invoice_vendor)
+            ->with('tot_invoice_vendor_amount', $tot_invoice_vendor_amount)
+            ->with('tot_purchase_order_vendor_amount', $tot_purchase_order_vendor_amount)
+            ->with('tot_un_invoiced_po_vendor', $tot_un_invoiced_po_vendor)
+            ->with('tot_cash_amounts', $tot_cash_amounts)
             ->with('balance', $balance);
 
     }

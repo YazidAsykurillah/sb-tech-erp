@@ -103,7 +103,25 @@
           </ul>
           <!--ENDList Group Cash-->
 
-          
+          <!--List Group TAXES-->
+          <ul class="list-group">
+            <li class="list-group-item">
+              <strong>F. TAXES</strong>
+            </li>
+            <li class="list-group-item">
+              <span class="badge bg-green">{{ number_format($tot_invoice_customer_tax_amount, 2) }}</span>
+              Invoice Customer Taxes Amount
+            </li>
+            <li class="list-group-item">
+              <span class="badge bg-green">{{ number_format($tot_invoice_vendor_tax_amount, 2) }}</span>
+              Invoice Vendor Taxes Amount
+            </li>
+            <li class="list-group-item">
+              <span class="badge bg-green">{{ number_format($tax_balance, 2) }}</span>
+              Tax Balance
+            </li>
+          </ul>
+          <!--ENDList Group TAXES-->
           <hr>
 
           <ul class="list-group">
