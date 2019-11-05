@@ -35,7 +35,7 @@
 	<table style="width:100%;border:0;">
 		<tr>
 			<td style="width:75%;">
-				<img src="img/bmkn-logo.jpeg" class="img-circle" width="200px;"/>
+				<img src="img/{{ $logo }}" class="img-circle" width="200px;"/>
 				<p>{{ config('app.company_name') }}</p>
 				<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
 				<p>Kecamatan Bekasi Selatan</p>

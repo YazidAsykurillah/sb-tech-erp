@@ -403,6 +403,18 @@ class InvoiceCustomerController extends Controller
         $invoice_customer = InvoiceCustomer::findOrFail($id);
         $data['invoice_customer']= $invoice_customer;
         $data['item_invoice_customer'] = \DB::table('item_invoice_customer')->where('invoice_customer_id','=', $id)->get();
+        $data['logo'] = '';
+        switch (config('app.name')) {
+            case 'BMKN Accounting':
+                $data['logo'] = 'bmkn-logo.jpeg';
+                break;
+            case 'BITMaker ERP':
+                $data['logo'] = 'bitmaker-logo.png';
+                break;
+            default:
+                $data['logo'] = 'bmkn-logo.jpeg';
+                break;
+        }
         $pdf = \PDF::loadView('pdf.invoice_customer', $data)->setPaper('a4', 'portrait')->setWarnings(false);
         return $pdf->stream($invoice_customer->code.'.pdf');
     }
