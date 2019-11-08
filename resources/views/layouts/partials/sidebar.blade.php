@@ -29,62 +29,10 @@
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      @if(\Auth::user()->can('transfer-task'))
-      <li class="treeview {{{ (Request::is('transfer-task*') ? 'active':'') }}}">
-        <a href="#">
-          <i class="fa fa-bookmark-o"></i>
-          <span>Transfer Task</span>
-        </a>
-        <ul class="treeview-menu">
-          @if(\Auth::user()->can('transfer-task-internal-request'))
-            <li class="{{{ (Request::is('transfer-task/internal-request*') ? 'active':'') }}}"><a href="{{ URL::to('transfer-task/internal-request') }}"><i class="fa fa-circle-o"></i> Internal Request</a></li>
-          @endif
-          @if(\Auth::user()->can('transfer-task-invoice-vendor'))
-            <li class="{{{ (Request::is('transfer-task/invoice-vendor*') ? 'active':'') }}}"><a href="{{ URL::to('transfer-task/invoice-vendor') }}"><i class="fa fa-circle-o"></i> Invoice Vendor</a></li>
-          @endif
-          @if(\Auth::user()->can('transfer-task-settlement'))
-            <li class="{{{ (Request::is('transfer-task/settlement*') ? 'active':'') }}}"><a href="{{ URL::to('transfer-task/settlement') }}"><i class="fa fa-circle-o"></i> Settlement</a></li>
-          @endif
-          @if(\Auth::user()->can('transfer-task-cashbond'))
-            <li class="{{{ (Request::is('transfer-task/cashbond*') ? 'active':'') }}}"><a href="{{ URL::to('transfer-task/cashbond') }}"><i class="fa fa-circle-o"></i> Cashbond</a></li>
-          @endif
-          <li class="{{{ (Request::is('transfer-task/payroll*') ? 'active':'') }}}">
-            <a href="{{ URL::to('transfer-task/payroll') }}"><i class="fa fa-circle-o"></i> Payroll</a>
-          </li>
-        </ul>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('tax-list'))
-      <li class="treeview {{{ (Request::is('*-tax') ? 'active':'') }}}">
-        <a href="#">
-          <i class="fa fa-money"></i>
-          <span>Tax Lists</span>
-        </a>
-        <ul class="treeview-menu">
-          @if(\Auth::user()->can('tax-list-invoice-customer'))
-            <li class="{{{ (Request::is('invoice-customer-tax*') ? 'active':'') }}}"><a href="{{ URL::to('invoice-customer-tax') }}"><i class="fa fa-circle-o"></i> Invoice Customer</a></li>
-          @endif
-          @if(\Auth::user()->can('tax-list-invoice-vendor'))
-            <li class="{{{ (Request::is('invoice-vendor-tax*') ? 'active':'') }}}"><a href="{{ URL::to('invoice-vendor-tax') }}"><i class="fa fa-circle-o"></i> Invoice Vendor</a></li>
-          @endif          
-            <li class="{{{ (Request::is('comparation-invoice-tax*') ? 'active':'') }}}"><a href="{{ URL::to('comparation-invoice-tax') }}"><i class="fa fa-circle-o"></i> Comparation</a></li>
-        </ul>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('access-finance-statistic'))
-      <li {{{ (Request::is('finance-statistic*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('finance-statistic') }}">
-          <i class="fa fa-line-chart"></i> <span>Statistik Keuangan</span>
-        </a>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('access-cash-flow'))
-      <li {{{ (Request::is('cash-flow*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('cash-flow') }}">
-          <i class="fa fa-line-chart"></i> <span>Cash Flow</span>
+      @if(\Auth::user()->can('index-project'))
+      <li {{{ (Request::is('project*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('project') }}">
+          <i class="fa fa-legal"></i> <span>Project</span>
         </a>
       </li>
       @endif
@@ -111,15 +59,6 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('index-project'))
-      <li {{{ (Request::is('project*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('project') }}">
-          <i class="fa fa-legal"></i> <span>Project</span>
-        </a>
-      </li>
-      @endif
-      
-      
       <li class="treeview {{{ (Request::is('purchase-order*') ? 'active':'') }}}">
         <a href="#">
           <i class="fa fa-bookmark-o"></i>
@@ -140,36 +79,6 @@
           @endif
         </ul>
       </li>
-      
-
-      @if(\Auth::user()->can('access-delivery-order'))
-      <li {{{ (Request::is('delivery-order*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('delivery-order') }}">
-          <i class="fa fa-truck"></i> <span>Delivery Order</span>
-        </a>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('access-migo'))
-      <li {{{ (Request::is('migo*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('migo') }}">
-          <i class="fa fa-book"></i> <span>Migo</span>
-        </a>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('index-invoice-customer') && \Auth::user()->can('index-invoice-vendor'))
-      <li class="treeview {{{ (Request::is('invoice*') ? 'active':'') }}}">
-        <a href="#">
-          <i class="fa fa-credit-card"></i>
-          <span>Invoice</span>
-        </a>
-        <ul class="treeview-menu">
-          <li {{{ (Request::is('invoice-customer*') ? 'class=active' : '') }}}><a href="{{ url('invoice-customer') }}"><i class="fa fa-circle-o"></i> Invoice Customer</a></li>
-          <li {{{ (Request::is('invoice-vendor*') ? 'class=active' : '') }}}><a href="{{ url('invoice-vendor') }}"><i class="fa fa-circle-o"></i> Invoice Vendor</a></li>
-        </ul>
-      </li>
-      @endif
 
       @if(\Auth::user()->can('index-internal-request'))
       <li {{{ (Request::is('internal-request*') ? 'class=active' : '') }}}>
@@ -195,19 +104,38 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('index-bank-administration'))
-      <li {{{ (Request::is('bank-administration*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('bank-administration') }}">
-          <i class="fa fa-book"></i> <span>Bank Administration</span>
+      @if(\Auth::user()->can('transfer-task'))
+      <li class="treeview {{{ (Request::is('transfer-task*') ? 'active':'') }}}">
+        <a href="#">
+          <i class="fa fa-bookmark-o"></i>
+          <span>Transfer Task</span>
         </a>
+        <ul class="treeview-menu">
+          @if(\Auth::user()->can('transfer-task-internal-request'))
+            <li class="{{{ (Request::is('transfer-task/internal-request*') ? 'active':'') }}}"><a href="{{ URL::to('transfer-task/internal-request') }}"><i class="fa fa-circle-o"></i> Internal Request</a></li>
+          @endif
+          @if(\Auth::user()->can('transfer-task-invoice-vendor'))
+            <li class="{{{ (Request::is('transfer-task/invoice-vendor*') ? 'active':'') }}}"><a href="{{ URL::to('transfer-task/invoice-vendor') }}"><i class="fa fa-circle-o"></i> Invoice Vendor</a></li>
+          @endif
+          @if(\Auth::user()->can('transfer-task-settlement'))
+            <li class="{{{ (Request::is('transfer-task/settlement*') ? 'active':'') }}}"><a href="{{ URL::to('transfer-task/settlement') }}"><i class="fa fa-circle-o"></i> Settlement</a></li>
+          @endif
+          
+        </ul>
       </li>
       @endif
-      
-      @if(\Auth::user()->can('index-bank-account'))
-      <li {{{ (Request::is('bank-account*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('bank-account') }}">
-          <i class="fa fa-building"></i> <span>Member Bank Accounts</span>
+
+
+      @if(\Auth::user()->can('index-invoice-customer') && \Auth::user()->can('index-invoice-vendor'))
+      <li class="treeview {{{ (Request::is('invoice*') ? 'active':'') }}}">
+        <a href="#">
+          <i class="fa fa-credit-card"></i>
+          <span>Invoice</span>
         </a>
+        <ul class="treeview-menu">
+          <li {{{ (Request::is('invoice-customer*') ? 'class=active' : '') }}}><a href="{{ url('invoice-customer') }}"><i class="fa fa-circle-o"></i> Invoice Customer</a></li>
+          <li {{{ (Request::is('invoice-vendor*') ? 'class=active' : '') }}}><a href="{{ url('invoice-vendor') }}"><i class="fa fa-circle-o"></i> Invoice Vendor</a></li>
+        </ul>
       </li>
       @endif
 
@@ -222,48 +150,7 @@
       @if(\Auth::user()->can('index-the-vendor'))
       <li {{{ (Request::is('the-vendor*') ? 'class=active' : '') }}} >
         <a href="{{ URL::to('the-vendor') }}">
-          <i class="fa fa-child"></i> <span>The Vendor</span>
-        </a>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('index-user'))
-      <li class="treeview {{{ (Request::is('user*') ? 'active':'') }}}" >
-        <a href="#">
-          <i class="fa fa-users"></i>
-          <span>Human Resource</span>
-        </a>
-        <ul class="treeview-menu">
-          <li {{{ (Request::is('user/*') ? 'class=active' : '') }}}><a href="{{ url('user/') }}"><i class="fa fa-circle-o"></i>Employee</a></li>
-          @if(\Auth::user()->can('access-payroll'))
-          <li {{{ (Request::is('payroll/') ? 'class=active' : '') }}}><a href="{{ url('payroll/') }}"><i class="fa fa-circle-o"></i>Payroll</a></li>
-          @endif
-        </ul>
-      </li>
-      
-      @endif
-
-      
-      @if(\Auth::user()->can('index-cash-bond'))
-      <li {{{ (Request::is('cash-bond*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('cash-bond') }}">
-          <i class="fa fa-money"></i> <span>Cash Bond</span>
-        </a>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('index-cash-bond-site'))
-      <li {{{ (Request::is('cash-bond-site*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('cash-bond-site') }}">
-          <i class="fa fa-money"></i> <span>Cash Bond Site</span>
-        </a>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('index-period'))
-      <li {{{ (Request::is('period*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('period') }}">
-          <i class="fa fa-clock-o"></i> <span>Period</span>
+          <i class="fa fa-child"></i> <span>Vendor</span>
         </a>
       </li>
       @endif
@@ -294,6 +181,29 @@
         </ul>
       </li>
       @endif
+      
+      @if(\Auth::user()->can('index-bank-account'))
+      <li {{{ (Request::is('bank-account*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('bank-account') }}">
+          <i class="fa fa-building"></i> <span>Member Bank Accounts</span>
+        </a>
+      </li>
+      @endif
+
+      @if(\Auth::user()->can('index-user'))
+      <li class="treeview {{{ (Request::is('user*') ? 'active':'') }}}" >
+        <a href="#">
+          <i class="fa fa-users"></i>
+          <span>Human Resource</span>
+        </a>
+        <ul class="treeview-menu">
+          <li {{{ (Request::is('user/*') ? 'class=active' : '') }}}><a href="{{ url('user/') }}"><i class="fa fa-circle-o"></i>Employee</a></li>
+          @if(\Auth::user()->can('access-payroll'))
+          <li {{{ (Request::is('payroll/') ? 'class=active' : '') }}}><a href="{{ url('payroll/') }}"><i class="fa fa-circle-o"></i>Payroll</a></li>
+          @endif
+        </ul>
+      </li>      
+      @endif
 
       @if(\Auth::user()->can('index-role') && \Auth::user()->can('index-permission'))
       <li class="treeview">
@@ -307,55 +217,7 @@
         </ul>
       </li>
       @endif
-
-      <li {{{ (Request::is('templates*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('templates') }}">
-          <i class="fa fa-server"></i> <span>Template</span>
-        </a>
-      </li>
-      
-      @if(\Auth::user()->can('run-maintenance'))
-      <li class="treeview">
-        <a href="#">
-          <i class="fa fa-cogs"></i>
-          <span>Maintenance</span>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="{{ url('maintenance/db/export') }}"><i class="fa fa-circle-o"></i> DB Export</a></li>
-          <li><a href="{{ url('maintenance/db/backup') }}"><i class="fa fa-circle-o"></i> DB Backup</a></li>
-        </ul>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('access-report'))
-      <li class="treeview">
-        <a href="#">
-          <i class="fa fa-book"></i>
-          <span>Report</span>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="{{ url('report/ppn') }}"><i class="fa fa-circle-o"></i> PPN</a></li>
-        </ul>
-        <ul class="treeview-menu">
-          <li>
-            <a href="{{ url('report/tax-flow') }}">
-              <i class="fa fa-circle-o"></i> Tax Flow
-            </a>
-          </li>
-        </ul>
-        <ul class="treeview-menu">
-          <li>
-            <a href="{{ url('report/cash-flow') }}">
-              <i class="fa fa-circle-o"></i> Cash Flow
-            </a>
-          </li>
-        </ul>
-        <ul class="treeview-menu">
-          <li><a href="{{ url('report/project') }}"><i class="fa fa-circle-o"></i> Project</a></li>
-        </ul>
-      </li>
-      @endif
-
+  
       @if(\Auth::user()->can('access-product-category'))
       <li {{{ (Request::is('product-category/*') ? 'class=active' : '') }}}>
         <a href="{{ URL::to('product-category') }}">
@@ -372,33 +234,7 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('access-ets'))
-      <li class="treeview">
-        <a href="#">
-          <i class="fa fa-book"></i>
-          <span>ETS</span>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="{{ url('ets/site') }}"><i class="fa fa-circle-o"></i> ETS Site</a></li>
-        </ul>
-        <ul class="treeview-menu">
-          <li><a href="{{ url('ets/office') }}"><i class="fa fa-circle-o"></i> ETS Office</a></li>
-        </ul>
-      </li>
-      @endif
-
-      <li {{{ (Request::is('ets/my-ets') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('ets/my-ets') }}">
-          <i class="fa fa-book"></i> <span>My ETS</span>
-        </a>
-      </li>
-      @if(\Auth::user()->can('access-task'))
-      <li {{{ (Request::is('task/*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('task') }}">
-          <i class="fa fa-list"></i> <span>Task</span>
-        </a>
-      </li>
-      @endif
+      
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->

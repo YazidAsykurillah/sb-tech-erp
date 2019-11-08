@@ -196,57 +196,6 @@
     </div>
 
   </div>
-
-  <h3><i class="fa fa-money"></i>&nbsp;Cashbond</h3>
-  <div class="row">
-    <div class="col-md-4">
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h3>{{ count($pending_cashbonds) }}</h3>
-
-          <p>Pending Cashbond</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-hourglass-3"></i>
-        </div>
-        <a href="{{ URL::to('cash-bond/pending') }}" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h3>{{ count($checked_cashbonds) }}</h3>
-
-          <p>Checked Cashbond</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-list-alt"></i>
-        </div>
-        <a href="{{ URL::to('cash-bond/checked') }}" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h3>{{ count($approved_cashbonds) }}</h3>
-
-          <p>Approved Cashbond</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-thumbs-o-up"></i>
-        </div>
-        <a href="{{ URL::to('cash-bond/approved') }}" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
-      </div>
-    </div>
-    
-  </div>
   <!-- END DASHBOARD Super admin, admin, and finance -->
 
   <!-- DASHBOARD Sales -->

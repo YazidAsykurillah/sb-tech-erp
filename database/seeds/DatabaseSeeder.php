@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserTableSeeder::class);
         $this->call(AclTableSeeder::class);
-        $this->call(BankAcountTableSeeder::class);
+        /*$this->call(BankAcountTableSeeder::class);
         $this->call(CustomerTableSeeder::class);
         $this->call(VendorTableSeeder::class);
         $this->call(PurchaseOrderCustomerTableSeeder::class);
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LockConfigurationTableSeeder::class);
         $this->call(PeriodTableSeeder::class);
         $this->call(TimeReportTableSeeder::class);
-        $this->call(ItemInvoiceCustomerTableSeeder::class);
+        $this->call(ItemInvoiceCustomerTableSeeder::class);*/
         
     }
 }
