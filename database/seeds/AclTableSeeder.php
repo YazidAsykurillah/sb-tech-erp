@@ -41,17 +41,6 @@ class AclTableSeeder extends Seeder
             ['role_id'=>7, 'user_id'=>11],
             ['role_id'=>7, 'user_id'=>12],
 
-            //BMKN user trial
-            ['role_id'=>2, 'user_id'=>13],
-            ['role_id'=>2, 'user_id'=>14],
-            ['role_id'=>2, 'user_id'=>15],
-
-            ['role_id'=>7, 'user_id'=>16],
-            ['role_id'=>7, 'user_id'=>17],
-            ['role_id'=>7, 'user_id'=>18],
-            ['role_id'=>7, 'user_id'=>19],
-            ['role_id'=>7, 'user_id'=>20],
-        	['role_id'=>7, 'user_id'=>21],
         ];
         DB::table('role_user')->insert($role_user);
         //ENDBlock table role_user
@@ -59,12 +48,12 @@ class AclTableSeeder extends Seeder
         //Block table permissions
         DB::table('permissions')->delete();
         $permissions = [
-            //Cash module
-            ['slug'=>'index-cash', 'description'=>'View All index cashes'],
-            ['slug'=>'show-cash', 'description'=>'View single cash'],
-            ['slug'=>'create-cash', 'description'=>'Create cash'],
-            ['slug'=>'edit-cash', 'description'=>'Access Cash Edit method'],
-            ['slug'=>'delete-cash', 'description'=>'Access Cash Delete method'],
+            //project module
+            [ 'slug'=>'index-project', 'description'=>'Access Project Index method'],
+            [ 'slug'=>'show-project', 'description'=>'Show single project'],
+            [ 'slug'=>'create-project', 'description'=>'Access Project Create method'],
+            [ 'slug'=>'edit-project', 'description'=>'Access Project Edit method'],
+            [ 'slug'=>'delete-project', 'description'=>'Access Project Delete method'],
 
             //quotation-customer module
             ['slug'=>'index-quotation-customer', 'description'=>'Access Quotation Customer Index method'],
@@ -84,6 +73,13 @@ class AclTableSeeder extends Seeder
             [ 'slug'=>'edit-quotation-vendor', 'description'=>'Access quotation-vendor Edit method'],
             [ 'slug'=>'delete-quotation-vendor', 'description'=>'Access quotation-vendor Delete method'],
 
+            //purchase-request module
+            [ 'slug'=>'index-purchase-request', 'description'=>'Access Purchase Request Index method'],
+            [ 'slug'=>'show-purchase-request', 'description'=>'Access Purchase Request show method'],
+            [ 'slug'=>'create-purchase-request', 'description'=>'Access Purchase Request Create method'],
+            [ 'slug'=>'edit-purchase-request', 'description'=>'Access Purchase Request Edit method'],
+            [ 'slug'=>'delete-purchase-request', 'description'=>'Access Purchase Request Delete method'],
+
             //purchase-order-customer module
             [ 'slug'=>'index-purchase-order-customer', 'description'=>'Access Purchase Order Customer Index method'],
             [ 'slug'=>'show-purchase-order-customer', 'description'=>'Access Purchase Order Customer show method'],
@@ -97,42 +93,6 @@ class AclTableSeeder extends Seeder
             [ 'slug'=>'create-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Create method'],
             [ 'slug'=>'edit-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Edit method'],
             [ 'slug'=>'delete-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Delete method'],
-
-            //project module
-            [ 'slug'=>'index-project', 'description'=>'Access Project Index method'],
-            [ 'slug'=>'show-project', 'description'=>'Show single project'],
-            [ 'slug'=>'create-project', 'description'=>'Access Project Create method'],
-            [ 'slug'=>'edit-project', 'description'=>'Access Project Edit method'],
-            [ 'slug'=>'delete-project', 'description'=>'Access Project Delete method'],
-
-            //purchase-request module
-            [ 'slug'=>'index-purchase-request', 'description'=>'Access Purchase Request Index method'],
-            [ 'slug'=>'show-purchase-request', 'description'=>'Access Purchase Request show method'],
-            [ 'slug'=>'create-purchase-request', 'description'=>'Access Purchase Request Create method'],
-            [ 'slug'=>'edit-purchase-request', 'description'=>'Access Purchase Request Edit method'],
-            [ 'slug'=>'delete-purchase-request', 'description'=>'Access Purchase Request Delete method'],
-        	
-            //vendor module
-            [ 'slug'=>'index-vendor', 'description'=>'Access vendor Index method'],
-            [ 'slug'=>'show-vendor', 'description'=>'Access vendor show method'],
-            [ 'slug'=>'create-vendor', 'description'=>'Access vendor Create method'],
-            [ 'slug'=>'edit-vendor', 'description'=>'Access vendor Edit method'],
-            [ 'slug'=>'delete-vendor', 'description'=>'Access vendor Delete method'],
-
-
-            //invoice-customer module
-            [ 'slug'=>'index-invoice-customer', 'description'=>'Access invoice-customer Index method'],
-            [ 'slug'=>'show-invoice-customer', 'description'=>'Access invoice-customer show method'],
-            [ 'slug'=>'create-invoice-customer', 'description'=>'Access invoice-customer Create method'],
-            [ 'slug'=>'edit-invoice-customer', 'description'=>'Access invoice-customer Edit method'],
-            [ 'slug'=>'delete-invoice-customer', 'description'=>'Access invoice-customer Delete method'],
-
-            //invoice-vendor module
-            [ 'slug'=>'index-invoice-vendor', 'description'=>'Access invoice-vendor Index method'],
-            [ 'slug'=>'show-invoice-vendor', 'description'=>'Access invoice-vendor show method'],
-            [ 'slug'=>'create-invoice-vendor', 'description'=>'Access invoice-vendor Create method'],
-            [ 'slug'=>'edit-invoice-vendor', 'description'=>'Access invoice-vendor Edit method'],
-            [ 'slug'=>'delete-invoice-vendor', 'description'=>'Access invoice-vendor Delete method'],
 
             //internal request module
             [ 'slug'=>'index-internal-request', 'description'=>'View all internal request'],
@@ -153,6 +113,47 @@ class AclTableSeeder extends Seeder
             [ 'slug'=>'edit-settlement', 'description'=>'Edit settlement'],
             [ 'slug'=>'delete-settlement', 'description'=>'Delete settlement'],
 
+            //Cash module
+            ['slug'=>'index-cash', 'description'=>'View All index cashes'],
+            ['slug'=>'show-cash', 'description'=>'View single cash'],
+            ['slug'=>'create-cash', 'description'=>'Create cash'],
+            ['slug'=>'edit-cash', 'description'=>'Access Cash Edit method'],
+            ['slug'=>'delete-cash', 'description'=>'Access Cash Delete method'],
+            
+            //Transfer Task
+            ['slug'=>'transfer-task', 'description'=>'Access Transfer Task Module'],
+            ['slug'=>'transfer-task-internal-request', 'description'=>'Access Transfer Task Internal Request Module'],
+            ['slug'=>'transfer-task-invoice-vendor', 'description'=>'Access Transfer Task Invoice Vendor'],
+            ['slug'=>'transfer-task-settlement', 'description'=>'Access Transfer Task Settlement module'],
+
+            //invoice-customer module
+            [ 'slug'=>'index-invoice-customer', 'description'=>'Access invoice-customer Index method'],
+            [ 'slug'=>'show-invoice-customer', 'description'=>'Access invoice-customer show method'],
+            [ 'slug'=>'create-invoice-customer', 'description'=>'Access invoice-customer Create method'],
+            [ 'slug'=>'edit-invoice-customer', 'description'=>'Access invoice-customer Edit method'],
+            [ 'slug'=>'delete-invoice-customer', 'description'=>'Access invoice-customer Delete method'],
+
+            //invoice-vendor module
+            [ 'slug'=>'index-invoice-vendor', 'description'=>'Access invoice-vendor Index method'],
+            [ 'slug'=>'show-invoice-vendor', 'description'=>'Access invoice-vendor show method'],
+            [ 'slug'=>'create-invoice-vendor', 'description'=>'Access invoice-vendor Create method'],
+            [ 'slug'=>'edit-invoice-vendor', 'description'=>'Access invoice-vendor Edit method'],
+            [ 'slug'=>'delete-invoice-vendor', 'description'=>'Access invoice-vendor Delete method'],
+        	
+            //Customer
+            [ 'slug'=>'index-customer', 'description'=>'View all customer'],
+            [ 'slug'=>'show-customer', 'description'=>'View single customer'],
+            [ 'slug'=>'create-customer', 'description'=>'Create customer'],
+            [ 'slug'=>'edit-customer', 'description'=>'Edit customer'],
+            [ 'slug'=>'delete-customer', 'description'=>'Delete customer'],
+
+            //vendor module
+            [ 'slug'=>'index-vendor', 'description'=>'Access vendor Index method'],
+            [ 'slug'=>'show-vendor', 'description'=>'Access vendor show method'],
+            [ 'slug'=>'create-vendor', 'description'=>'Access vendor Create method'],
+            [ 'slug'=>'edit-vendor', 'description'=>'Access vendor Edit method'],
+            [ 'slug'=>'delete-vendor', 'description'=>'Access vendor Delete method'],
+
             //Bank Administration
             [ 'slug'=>'index-bank-administration', 'description'=>'View all bank-administration'],
             [ 'slug'=>'show-bank-administration', 'description'=>'View single bank-administration'],
@@ -160,19 +161,8 @@ class AclTableSeeder extends Seeder
             [ 'slug'=>'edit-bank-administration', 'description'=>'Edit bank-administration'],
             [ 'slug'=>'delete-bank-administration', 'description'=>'Delete bank-administration'],
 
-            //Bank Account
-            [ 'slug'=>'index-bank-account', 'description'=>'View all bank-account'],
-            [ 'slug'=>'show-bank-account', 'description'=>'View single bank-account'],
-            [ 'slug'=>'create-bank-account', 'description'=>'Create bank-account'],
-            [ 'slug'=>'edit-bank-account', 'description'=>'Edit bank-account'],
-            [ 'slug'=>'delete-bank-account', 'description'=>'Delete bank-account'],
-
-            //Customer
-            [ 'slug'=>'index-customer', 'description'=>'View all customer'],
-            [ 'slug'=>'show-customer', 'description'=>'View single customer'],
-            [ 'slug'=>'create-customer', 'description'=>'Create customer'],
-            [ 'slug'=>'edit-customer', 'description'=>'Edit customer'],
-            [ 'slug'=>'delete-customer', 'description'=>'Delete customer'],
+            
+            
             
             //The Vendor
             [ 'slug'=>'index-the-vendor', 'description'=>'View all the-vendor'],
@@ -181,12 +171,36 @@ class AclTableSeeder extends Seeder
             [ 'slug'=>'edit-the-vendor', 'description'=>'Edit the-vendor'],
             [ 'slug'=>'delete-the-vendor', 'description'=>'Delete the-vendor'],
 
+            //Master Data
+            [ 'slug'=>'access-master-data', 'description'=>'View Master Data Menu'],
+
+            //Bank Account
+            [ 'slug'=>'index-bank-account', 'description'=>'View all bank-account'],
+            [ 'slug'=>'show-bank-account', 'description'=>'View single bank-account'],
+            [ 'slug'=>'create-bank-account', 'description'=>'Create bank-account'],
+            [ 'slug'=>'edit-bank-account', 'description'=>'Edit bank-account'],
+            [ 'slug'=>'delete-bank-account', 'description'=>'Delete bank-account'],
+
             //User
             [ 'slug'=>'index-user', 'description'=>'View all user'],
             [ 'slug'=>'show-user', 'description'=>'View single user'],
             [ 'slug'=>'create-user', 'description'=>'Create user'],
             [ 'slug'=>'edit-user', 'description'=>'Edit user'],
             [ 'slug'=>'delete-user', 'description'=>'Delete user'],
+
+            //Role
+            [ 'slug'=>'index-role', 'description'=>'View all role'],
+            [ 'slug'=>'show-role', 'description'=>'View single role'],
+            [ 'slug'=>'create-role', 'description'=>'Create role'],
+            [ 'slug'=>'edit-role', 'description'=>'Edit role'],
+            [ 'slug'=>'delete-role', 'description'=>'Delete role'],
+
+            //Permission
+            [ 'slug'=>'index-permission', 'description'=>'View all permission'],
+            [ 'slug'=>'show-permission', 'description'=>'View single permission'],
+            [ 'slug'=>'create-permission', 'description'=>'Create permission'],
+            [ 'slug'=>'edit-permission', 'description'=>'Edit permission'],
+            [ 'slug'=>'delete-permission', 'description'=>'Delete permission'],
 
             //Cash Bond
             [ 'slug'=>'index-cash-bond', 'description'=>'View all cash-bond'],
@@ -203,22 +217,9 @@ class AclTableSeeder extends Seeder
             [ 'slug'=>'edit-period', 'description'=>'Edit period'],
             [ 'slug'=>'delete-period', 'description'=>'Delete period'],
 
-            //Role
-            [ 'slug'=>'index-role', 'description'=>'View all role'],
-            [ 'slug'=>'show-role', 'description'=>'View single role'],
-            [ 'slug'=>'create-role', 'description'=>'Create role'],
-            [ 'slug'=>'edit-role', 'description'=>'Edit role'],
-            [ 'slug'=>'delete-role', 'description'=>'Delete role'],
+            
 
-            //Permission
-            [ 'slug'=>'index-permission', 'description'=>'View all permission'],
-            [ 'slug'=>'show-permission', 'description'=>'View single permission'],
-            [ 'slug'=>'create-permission', 'description'=>'Create permission'],
-            [ 'slug'=>'edit-permission', 'description'=>'Edit permission'],
-            [ 'slug'=>'delete-permission', 'description'=>'Delete permission'],
-
-            //Master Data
-            [ 'slug'=>'access-master-data', 'description'=>'View Master Data Menu'],
+            
 
             //Finance Statistic
             [ 'slug'=>'access-finance-statistic', 'description'=>'View Master Finance Statistic menu']

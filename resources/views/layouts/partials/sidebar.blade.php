@@ -44,7 +44,6 @@
           <span>Quotation</span>
         </a>
         <ul class="treeview-menu">
-          
           <li class="{{{ (Request::is('quotation-customer*') ? 'active':'') }}}"><a href="{{ URL::to('quotation-customer') }}"><i class="fa fa-circle-o"></i> Quotation Customer</a></li>  
           <li class="{{{ (Request::is('quotation-vendor*') ? 'active':'') }}}"><a href="{{ url('quotation-vendor') }}"><i class="fa fa-circle-o"></i> Quotation Vendor</a></li>
         </ul>
