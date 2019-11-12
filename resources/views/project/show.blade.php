@@ -366,43 +366,7 @@
       </div>
       <!--ENDBOX PO Customer Information-->
 
-      <!--BOX Man Hour-->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title"><i class="fa fa-users"></i>&nbsp;Man Hour Information</h3>
-        </div>
-        <div class="box-body">
-          <strong>Normal</strong>
-          <p class="text-muted">{{ $man_hour_information->total_normal }}</p>
-          <strong>I</strong>
-          <p class="text-muted">{{ $man_hour_information->total_I }}</p>
-          <strong>II</strong>
-          <p class="text-muted">{{ $man_hour_information->total_II }}</p>
-          <strong>III</strong>
-          <p class="text-muted">{{ $man_hour_information->total_III }}</p>
-          <strong>IV</strong>
-          <p class="text-muted">{{ $man_hour_information->total_IV }}</p>
-          <strong>Total Hour</strong>
-          <p class="text-muted">{{ $man_hour_information->grand_total }} hours</p>
-        </div>
-      </div>
-      <!--ENDBOX Man Hour-->
-      <!--BOX Cost from manhour-->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title"><i class="fa fa-money"></i>&nbsp;Man Hour Cost</h3>
-          <div class="pull-right">
-            <button id="btn-generate-manhour-cost" class="btn btn-default btn-xs" title="Generate manhour cost">
-              <i class="fa fa-shuffle"></i>&nbsp;Generate
-            </button>  
-          </div>
-        </div>
-        <div class="box-body">
-          <strong>Total Man hour Cost</strong>
-          <p class="text-muted" id="total_manhour_cost"></p>
-        </div>
-      </div>
-      <!--ENDBOX Cost from manhour-->
+      
     </div>
   </div>
 

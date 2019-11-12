@@ -29,15 +29,8 @@
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
       </li>
-      @if(\Auth::user()->can('index-project'))
-      <li {{{ (Request::is('project*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('project') }}">
-          <i class="fa fa-legal"></i> <span>Project</span>
-        </a>
-      </li>
-      @endif
-
-      @if(\Auth::user()->can('index-quotation-customer') && \Auth::user()->can('index-quotation-vendor'))
+      
+      @if(\Auth::user()->can('view-quotation-customer') && \Auth::user()->can('view-quotation-vendor'))
       <li class="treeview {{{ (Request::is('quotation*') ? 'active':'') }}}">
         <a href="#">
           <i class="fa fa-archive"></i>
@@ -50,28 +43,20 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('index-purchase-request'))
-      <li {{{ (Request::is('purchase-request*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('purchase-request') }}">
-          <i class="fa fa-tag"></i> <span>Purchase Request</span>
-        </a>
-      </li>
-      @endif
-
       <li class="treeview {{{ (Request::is('purchase-order*') ? 'active':'') }}}">
         <a href="#">
           <i class="fa fa-bookmark-o"></i>
           <span>Purchase Order</span>
         </a>
         <ul class="treeview-menu">
-          @if(\Auth::user()->can('index-purchase-order-customer') && \Auth::user()->can('index-purchase-order-vendor'))
+          @if(\Auth::user()->can('view-purchase-order-customer') && \Auth::user()->can('view-purchase-order-vendor'))
           <li class="{{{ (Request::is('purchase-order-customer*') ? 'active':'') }}}">
             <a href="{{ URL::to('purchase-order-customer') }}"><i class="fa fa-circle-o"></i> PO Customer</a>
           </li>
           <li class="{{{ (Request::is('purchase-order-vendor*') ? 'active':'') }}}">
             <a href="{{ url('purchase-order-vendor') }}"><i class="fa fa-circle-o"></i> PO Vendor</a>
           </li>
-          @elseif(\Auth::user()->can('index-purchase-order-vendor')))
+          @elseif(\Auth::user()->can('view-purchase-order-vendor')))
           <li class="{{{ (Request::is('purchase-order-vendor*') ? 'active':'') }}}">
             <a href="{{ url('purchase-order-vendor') }}"><i class="fa fa-circle-o"></i> PO Vendor</a>
           </li>
@@ -79,7 +64,17 @@
         </ul>
       </li>
 
-      @if(\Auth::user()->can('index-internal-request'))
+      @if(\Auth::user()->can('view-purchase-request'))
+      <li {{{ (Request::is('purchase-request*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('purchase-request') }}">
+          <i class="fa fa-tag"></i> <span>Purchase Request</span>
+        </a>
+      </li>
+      @endif
+
+      
+
+      @if(\Auth::user()->can('view-internal-request'))
       <li {{{ (Request::is('internal-request*') ? 'class=active' : '') }}}>
         <a href="{{ URL::to('internal-request') }}">
           <i class="fa fa-tag"></i> <span>Internal Request</span>
@@ -87,7 +82,7 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('index-settlement'))
+      @if(\Auth::user()->can('view-settlement'))
       <li {{{ (Request::is('settlement*') ? 'class=active' : '') }}}>
         <a href="{{ URL::to('settlement') }}">
           <i class="fa fa-retweet"></i> <span>Settlement</span>
@@ -95,14 +90,14 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('access-cash'))
-      <li {{{ (Request::is('cash*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('cash') }}">
-          <i class="fa fa-cube"></i> <span>Cash</span>
+      @if(\Auth::user()->can('view-project'))
+      <li {{{ (Request::is('project*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('project') }}">
+          <i class="fa fa-legal"></i> <span>Project</span>
         </a>
       </li>
       @endif
-
+      
       @if(\Auth::user()->can('transfer-task'))
       <li class="treeview {{{ (Request::is('transfer-task*') ? 'active':'') }}}">
         <a href="#">
@@ -125,7 +120,7 @@
       @endif
 
 
-      @if(\Auth::user()->can('index-invoice-customer') && \Auth::user()->can('index-invoice-vendor'))
+      @if(\Auth::user()->can('view-invoice-customer') && \Auth::user()->can('view-invoice-vendor'))
       <li class="treeview {{{ (Request::is('invoice*') ? 'active':'') }}}">
         <a href="#">
           <i class="fa fa-credit-card"></i>
@@ -138,7 +133,15 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('index-customer'))
+      @if(\Auth::user()->can('view-cash'))
+      <li {{{ (Request::is('cash*') ? 'class=active' : '') }}}>
+        <a href="{{ URL::to('cash') }}">
+          <i class="fa fa-cube"></i> <span>Cash</span>
+        </a>
+      </li>
+      @endif
+
+      @if(\Auth::user()->can('view-customer'))
       <li {{{ (Request::is('customer*') ? 'class=active' : '') }}}>
         <a href="{{ URL::to('customer') }}">
           <i class="fa fa-briefcase"></i> <span>Customer</span>
@@ -146,13 +149,29 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('index-the-vendor'))
+      @if(\Auth::user()->can('view-the-vendor'))
       <li {{{ (Request::is('the-vendor*') ? 'class=active' : '') }}} >
         <a href="{{ URL::to('the-vendor') }}">
           <i class="fa fa-child"></i> <span>Vendor</span>
         </a>
       </li>
       @endif
+
+      @if(\Auth::user()->can('view-user'))
+      <li class="treeview {{{ (Request::is('user*') ? 'active':'') }}}" >
+        <a href="#">
+          <i class="fa fa-users"></i>
+          <span>Human Resource</span>
+        </a>
+        <ul class="treeview-menu">
+          <li {{{ (Request::is('user/*') ? 'class=active' : '') }}}><a href="{{ url('user/') }}"><i class="fa fa-circle-o"></i>Employee</a></li>
+          @if(\Auth::user()->can('access-payroll'))
+          <li {{{ (Request::is('payroll/') ? 'class=active' : '') }}}><a href="{{ url('payroll/') }}"><i class="fa fa-circle-o"></i>Payroll</a></li>
+          @endif
+        </ul>
+      </li>      
+      @endif
+      
 
       @if(\Auth::user()->can('access-master-data'))
       <li class="treeview {{{ (Request::is('master-data/*') ? 'class=active' : '') }}} ">
@@ -171,7 +190,7 @@
       </li>
       @endif
       
-      @if(\Auth::user()->can('index-bank-account'))
+      @if(\Auth::user()->can('view-bank-account'))
       <li {{{ (Request::is('bank-account*') ? 'class=active' : '') }}}>
         <a href="{{ URL::to('bank-account') }}">
           <i class="fa fa-building"></i> <span>Member Bank Accounts</span>
@@ -179,22 +198,9 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('index-user'))
-      <li class="treeview {{{ (Request::is('user*') ? 'active':'') }}}" >
-        <a href="#">
-          <i class="fa fa-users"></i>
-          <span>Human Resource</span>
-        </a>
-        <ul class="treeview-menu">
-          <li {{{ (Request::is('user/*') ? 'class=active' : '') }}}><a href="{{ url('user/') }}"><i class="fa fa-circle-o"></i>Employee</a></li>
-          @if(\Auth::user()->can('access-payroll'))
-          <li {{{ (Request::is('payroll/') ? 'class=active' : '') }}}><a href="{{ url('payroll/') }}"><i class="fa fa-circle-o"></i>Payroll</a></li>
-          @endif
-        </ul>
-      </li>      
-      @endif
+      
 
-      @if(\Auth::user()->can('index-role') && \Auth::user()->can('index-permission'))
+      @if(\Auth::user()->can('view-role') && \Auth::user()->can('view-permission'))
       <li class="treeview">
         <a href="#">
           <i class="fa fa-lock"></i>

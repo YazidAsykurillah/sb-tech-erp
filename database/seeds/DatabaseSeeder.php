@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AclTableSeeder::class);
         $this->call(CustomerTableSeeder::class);
         $this->call(VendorTableSeeder::class);
+        $this->call(ConfigurationTableSeeder::class);
         //$this->call(BankAcountTableSeeder::class);
         //$this->call(PurchaseOrderCustomerTableSeeder::class);
         //$this->call(ProjectTablesSeeder::class);

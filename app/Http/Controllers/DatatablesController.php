@@ -1102,7 +1102,7 @@ class DatatablesController extends Controller
     {
 
         \DB::statement(\DB::raw('set @rownum=0'));
-        if(\Auth::user()->can('index-cash')){       //show all cashes , wheter the type is bank or petty cash
+        if(\Auth::user()->can('view-cash')){       //show all cashes , wheter the type is bank or petty cash
             if($request->status=='enabled'){
                 $cashes = Cash::select([
                     \DB::raw('@rownum  := @rownum  + 1 AS rownum'),

@@ -302,7 +302,7 @@ class QuotationCustomerController extends Controller
     {
         \DB::statement(\DB::raw('set @rownum=0'));
         $user_role = \Auth::user()->roles->first()->code;
-        if($user_role == 'SUP' || $user_role == 'ADM' || $user_role=='FIN'){
+        if($user_role == 'SUP' || $user_role == 'ADM'){
             $quotation_customers = QuotationCustomer::with('customer', 'sales', 'po_customer')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'quotation_customers.*',

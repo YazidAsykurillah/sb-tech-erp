@@ -96,7 +96,7 @@ class ProjectController extends Controller
     public function show($id)
     {
         
-        if(\Auth::user()->can('show-project')){
+        if(\Auth::user()->can('view-project')){
             $project = Project::findOrFail($id);
             $total_paid_invoice = $project->paid_invoice_customer();
             $total_pending_invoice = $project->pending_invoice_customer();
