@@ -79,11 +79,9 @@ class SettlementController extends Controller
         $settlement->internal_request_id = $request->internal_request_id;
         $settlement->transaction_date = $request->transaction_date;
         $settlement->description = $request->description;
-        $settlement->category_id = $request->category_id;
-        $settlement->sub_category_id = $request->sub_category_id;
         $settlement->amount =floatval(preg_replace('#[^0-9.]#', '', $request->amount));
         $settlement->last_updater_id = \Auth::user()->id;
-        $settlement->result = $request->result;
+        $settlement->result = $request->has('result') ? $request->result : 'clear';
         $settlement->save();
         $last_id = $settlement->id;
 
@@ -309,7 +307,7 @@ class SettlementController extends Controller
                 }
             })
             ->editColumn('category', function($settlements){
-                return $settlements->category->name;
+                return $settlements->category ? $settlements->category->name : NULL;
             })
             ->editColumn('sub_category', function($settlements){
                 return $settlements->sub_category ? $settlements->sub_category->name : NULL;

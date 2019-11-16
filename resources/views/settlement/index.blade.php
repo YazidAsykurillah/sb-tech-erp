@@ -46,9 +46,6 @@
                       <th>Member</th>
                       <th>Transaction Date</th>
                       <th style="text-align:right;">Amount</th>
-                      <th>Category</th>
-                      <th>Sub Category</th>
-                      <th>Result</th>
                       <th>Created Date</th>
                       <th>Status</th>
                       <th>Balance</th>
@@ -58,9 +55,6 @@
                   </thead>
                   <thead id="searchColumn">
                     <tr>
-                      <th></th>
-                      <th></th>
-                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -155,9 +149,6 @@
         { data: 'member_name', name: 'internal_request.requester.name'},
         { data: 'transaction_date', name: 'transaction_date' },
         { data: 'amount', name: 'amount', className:'dt-body-right' },
-        { data: 'category', name: 'category.name' },
-        { data: 'sub_category', name: 'sub_category.name' },
-        { data: 'result', name: 'result' },
         { data: 'created_at', name: 'created_at' },
         { data: 'status', name: 'status' },
         { data: 'balance', name: 'balance', searchable:false, orderable:false },

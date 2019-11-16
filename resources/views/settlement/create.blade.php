@@ -82,40 +82,7 @@
               @endif
             </div>
           </div>
-          <div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
-            {!! Form::label('category_id', 'Category', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {{ Form::select('category_id', $category_opts, null, ['class'=>'form-control', 'placeholder'=>'Select Category', 'id'=>'category_id']) }}
-              @if ($errors->has('category_id'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('category_id') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
-          <div class="form-group{{ $errors->has('sub_category_id') ? ' has-error' : '' }}">
-            {!! Form::label('sub_category_id', 'Sub Category', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {{ Form::select('sub_category_id', $sub_category_opts, null, ['class'=>'form-control', 'placeholder'=>'Select Sub Category', 'id'=>'sub_category_id']) }}
-              @if ($errors->has('sub_category_id'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('sub_category_id') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
           
-          <div class="form-group{{ $errors->has('result') ? ' has-error' : '' }}">
-            {!! Form::label('result', 'Result', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {{ Form::select('result', $result_opts, 'clear', ['class'=>'form-control', 'placeholder'=>'Select Result', 'id'=>'result']) }}
-              @if ($errors->has('result'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('result') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
           
           <div class="form-group">
               {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}

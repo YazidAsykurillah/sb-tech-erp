@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"><head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,19 +26,16 @@
 		    padding: 0;
 		}
     </style>
-</head>
-
-<body>
+</head><body>
 	<table class="table table-borderless">
 		<tbody>
 			<tr>
 				<td style="width:60%;">
-					<img src="img/{{ $logo }}" class="img-circle" width="200px;"/>
+					<img src="img/logo-sbt.jpeg" class="img-circle" width="200px;"/>
 					<p>{{ config('app.company_name') }}</p>
-					<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
-					<p>Kecamatan Bekasi Selatan</p>
-					<p>Kelurahan Jaka Setia</p>
-					<p>Phone (021-82732142)</p>
+					<div>
+						{!! nl2br($company_office) !!}
+					</div>
 				</td>
 				<td>
 					<table class="table table-borderless">
@@ -144,6 +139,4 @@
 			@endif
 		</tbody>
 	</table>
-</body>
-
-</html>
+</body></html>

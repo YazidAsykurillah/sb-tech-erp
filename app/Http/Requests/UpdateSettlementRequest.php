@@ -27,10 +27,7 @@ class UpdateSettlementRequest extends Request
             'internal_request_id'=>'required|integer|exists:internal_requests,id',
             'transaction_date'=>'required',
             'description'=>'required',
-            'category_id'=>'required|integer|exists:categories,id',
-            'sub_category_id'=>'required|integer|exists:sub_categories,id',
             'amount'=>'required',
-            'result'=>'required',
         ];
     }
 }

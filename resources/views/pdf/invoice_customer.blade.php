@@ -1,25 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>INVOICE</title>
-
-    <!-- Bootstrap Core CSS -->
-    
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
-    
-    <style type="text/css">
+<html><head>
+	<title></title>
+	<link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+	<style type="text/css">
     	table{
     		font-size: 10px;
     	}
-
     	#table-items{
     		border-top: 1px solid;
     		border-bottom: 1px solid;
@@ -29,18 +15,15 @@
     	}
 
     </style>
-</head>
-
-<body>
+</head><body>
 	<table style="width:100%;border:0;">
 		<tr>
 			<td style="width:75%;">
-				<img src="img/{{ $logo }}" class="img-circle" width="200px;"/>
+				<img src="img/logo-sbt.jpeg" class="img-circle" width="200px;"/>
 				<p>{{ config('app.company_name') }}</p>
-				<p>Ruko Grand Galaxy City, RSN 3 No. 50</p>
-				<p>Kecamatan Bekasi Selatan</p>
-				<p>Kelurahan Jaka Setia</p>
-				<p>Phone (021-82732142)</p>
+				<div>
+					{!! nl2br($company_office) !!}
+				</div>
 			</td>
 			<td>
 				<p><strong>INVOICE</strong></p>
@@ -65,6 +48,7 @@
 		</tr>
 		<tr>
 			<td style="width:75%;">
+				<p>&nbsp;</p>
 				<p><strong>Invoice For:</strong></p>
 				<p>{{ $invoice_customer->project->purchase_order_customer->customer->name }}</p>
 				<div>
@@ -147,27 +131,12 @@
 
 	<table class="table">
 		<tr>
-			<td style="width:20%;text-align:left;">
-				Prepared By
-				@if($invoice_customer->preparator)
-				<p>&nbsp;</p>
-				<p>&nbsp;</p>
-				<p><strong>{{ $invoice_customer->preparator->name }}</strong></p>
-				<p><strong>({{ $invoice_customer->preparator->position }})</strong></p>
-				@endif
-			</td>
-		</tr>
-		<tr>
 			<td>
 				<p>Please transfer to our account:</p>
-				<p>Payment term</p>
-				<p>Currency: IDR</p>
-				<p>Account transfer to: PT. Bintang Mas Karya Nusantara</p>
-				<p>Bank Mandiri Cabang Bintara No. Rek: 167-00-0113889-9</p>
-				<p>THANK YOU FOR YOUR BUSINESS</p>
+				<div>
+					{!! nl2br($company_bank_account) !!}
+				</div>
 			</td>
 		</tr>
 	</table>
-</body>
-
-</html>
+</body></html>

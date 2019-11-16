@@ -79,10 +79,7 @@ class QuotationCustomerController extends Controller
         $today = date('Y-m-d');
         
         $this_month = substr($today, 0, 7);
-        $suffix = "BMKN-QC";
-        if($app_name == 'BMN Accounting'){
-            $suffix = "BMN-SPH";
-        }
+        $suffix = "QC";
         $qc_format = "$suffix-".substr($this_month, 2, 2)."-".substr($this_month, 5, 2)."-";
         
         $next_quotation_customer_number = "";

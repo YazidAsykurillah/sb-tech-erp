@@ -14,7 +14,7 @@ class UpdateInvoiceCustomerRequest extends Request
     {
         $name = 'is_max_amount'; // a name for our custom rule, to be referenced in `rules` below
         
-        $test = function ($_, $value, $_) {
+        $test = function ($_x, $value, $_y) {
             $max = floatval(\Request::get('total_invoice_due'));
             //echo $max;exit();
             $cleared_max = $max+floatval(0.01);

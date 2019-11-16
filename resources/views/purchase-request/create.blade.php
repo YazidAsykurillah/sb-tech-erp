@@ -541,6 +541,7 @@
 
     //Block function to remove additional row
     function remove_row(obj){
+      console.log('remove row called');
       $(obj).parent().parent().remove();
       fill_total_sub_amount();
       update_after_discount_value();
@@ -551,16 +552,18 @@
 
     //Block Function to fill total_sub_amount
     function fill_total_sub_amount(){
-      
+      console.log('fill_total_sub_amount is called');
       var sum = 0;
       $(".sub_amount").each(function(){
           sum += +$(this).val().replace(/,/g, '');
       });
+      console.log(sum);
       $("#total_sub_amount").val(sum);
       $('#total_sub_amount').autoNumeric('update',{
           aSep:',',
           aDec:'.'
       });
+      
     }
     //ENDBlock Function to fill total_sub_amount
 

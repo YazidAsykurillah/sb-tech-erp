@@ -55,11 +55,6 @@
                 <td>{!! nl2br($settlement->description) !!}</td>
               </tr>
               <tr>
-                <td style="width: 20%;">Result</td>
-                <td style="width: 1%;">:</td>
-                <td>{{ $settlement->result }}</td>
-              </tr>
-              <tr>
                 <td style="width: 20%;">Created Date</td>
                 <td style="width: 1%;">:</td>
                 <td>{{ jakarta_date_time($settlement->created_at) }}</td>

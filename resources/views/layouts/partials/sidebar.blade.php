@@ -30,44 +30,55 @@
         </a>
       </li>
       
-      @if(\Auth::user()->can('view-quotation-customer') && \Auth::user()->can('view-quotation-vendor'))
+      @if(\Auth::user()->can('view-quotation-customer') || \Auth::user()->can('view-quotation-vendor'))
       <li class="treeview {{{ (Request::is('quotation*') ? 'active':'') }}}">
         <a href="#">
-          <i class="fa fa-archive"></i>
+          <i class="fa fa-ticket"></i>
           <span>Quotation</span>
         </a>
         <ul class="treeview-menu">
-          <li class="{{{ (Request::is('quotation-customer*') ? 'active':'') }}}"><a href="{{ URL::to('quotation-customer') }}"><i class="fa fa-circle-o"></i> Quotation Customer</a></li>  
-          <li class="{{{ (Request::is('quotation-vendor*') ? 'active':'') }}}"><a href="{{ url('quotation-vendor') }}"><i class="fa fa-circle-o"></i> Quotation Vendor</a></li>
+          @if(\Auth::user()->can('view-quotation-customer'))
+          <li class="{{{ (Request::is('quotation-customer*') ? 'active':'') }}}">
+            <a href="{{ URL::to('quotation-customer') }}">
+              <i class="fa fa-circle-o"></i> Quotation Customer
+            </a>
+          </li>
+          @endif
+          @if(\Auth::user()->can('view-quotation-vendor'))
+          <li class="{{{ (Request::is('quotation-vendor*') ? 'active':'') }}}">
+            <a href="{{ url('quotation-vendor') }}">
+              <i class="fa fa-circle-o"></i> Quotation Vendor
+            </a>
+          </li>
+          @endif
         </ul>
       </li>
       @endif
 
+      @if(\Auth::user()->can('view-purchase-order-customer') || \Auth()->user()->can('view-purchase-order-vendor'))
       <li class="treeview {{{ (Request::is('purchase-order*') ? 'active':'') }}}">
         <a href="#">
-          <i class="fa fa-bookmark-o"></i>
+          <i class="fa fa-sticky-note"></i>
           <span>Purchase Order</span>
         </a>
         <ul class="treeview-menu">
-          @if(\Auth::user()->can('view-purchase-order-customer') && \Auth::user()->can('view-purchase-order-vendor'))
+          @if(\Auth::user()->can('view-purchase-order-customer'))
           <li class="{{{ (Request::is('purchase-order-customer*') ? 'active':'') }}}">
             <a href="{{ URL::to('purchase-order-customer') }}"><i class="fa fa-circle-o"></i> PO Customer</a>
           </li>
-          <li class="{{{ (Request::is('purchase-order-vendor*') ? 'active':'') }}}">
-            <a href="{{ url('purchase-order-vendor') }}"><i class="fa fa-circle-o"></i> PO Vendor</a>
-          </li>
-          @elseif(\Auth::user()->can('view-purchase-order-vendor')))
+          @endif
+          @if(\Auth()->user()->can('view-purchase-order-vendor'))
           <li class="{{{ (Request::is('purchase-order-vendor*') ? 'active':'') }}}">
             <a href="{{ url('purchase-order-vendor') }}"><i class="fa fa-circle-o"></i> PO Vendor</a>
           </li>
           @endif
         </ul>
       </li>
-
+      @endif
       @if(\Auth::user()->can('view-purchase-request'))
       <li {{{ (Request::is('purchase-request*') ? 'class=active' : '') }}}>
         <a href="{{ URL::to('purchase-request') }}">
-          <i class="fa fa-tag"></i> <span>Purchase Request</span>
+          <i class="fa fa-sticky-note-o"></i> <span>Purchase Request</span>
         </a>
       </li>
       @endif
@@ -190,16 +201,7 @@
       </li>
       @endif
       
-      @if(\Auth::user()->can('view-bank-account'))
-      <li {{{ (Request::is('bank-account*') ? 'class=active' : '') }}}>
-        <a href="{{ URL::to('bank-account') }}">
-          <i class="fa fa-building"></i> <span>Member Bank Accounts</span>
-        </a>
-      </li>
-      @endif
-
       
-
       @if(\Auth::user()->can('view-role') && \Auth::user()->can('view-permission'))
       <li class="treeview">
         <a href="#">

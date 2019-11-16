@@ -108,7 +108,7 @@ class InvoiceCustomerController extends Controller
         $ivc_format = substr($this_month, 2, 2)."-".substr($this_month, 5, 2);
         
         $next_invoice_customer_number = "";
-        $invoice_customers = \DB::table('invoice_customers')->where('created_at', 'like', "%$this_month%")->where('code','like',"%BMKN-%");
+        $invoice_customers = \DB::table('invoice_customers')->where('created_at', 'like', "%$this_month%")->where('code','like',"%INV-%");
         //if counted invoice_customers created in this month is 0, simply make it 001 to the next invoice_customer number param.
         if($invoice_customers->count() == 0){
             $next_invoice_customer_number = str_pad(1, 3, 0, STR_PAD_LEFT);
@@ -121,7 +121,7 @@ class InvoiceCustomerController extends Controller
         /*echo $next_invoice_customer_number;
         exit();*/
         $invoice_customer = new InvoiceCustomer;
-        $invoice_customer->code = "BMKN-INV-".$ivc_format."-".$next_invoice_customer_number;
+        $invoice_customer->code = "INV-".$ivc_format."-".$next_invoice_customer_number;
         $invoice_customer->project_id = $request->project_id;
         $invoice_customer->sub_amount = floatval(preg_replace('#[^0-9.]#', '',$request->total_sub_amount));
         $invoice_customer->vat = floatval(preg_replace('#[^0-9.]#', '',$request->vat));
@@ -403,18 +403,8 @@ class InvoiceCustomerController extends Controller
         $invoice_customer = InvoiceCustomer::findOrFail($id);
         $data['invoice_customer']= $invoice_customer;
         $data['item_invoice_customer'] = \DB::table('item_invoice_customer')->where('invoice_customer_id','=', $id)->get();
-        $data['logo'] = '';
-        switch (config('app.name')) {
-            case 'BMKN Accounting':
-                $data['logo'] = 'bmkn-logo.jpeg';
-                break;
-            case 'BITMaker ERP':
-                $data['logo'] = 'bitmaker-logo.png';
-                break;
-            default:
-                $data['logo'] = 'bmkn-logo.jpeg';
-                break;
-        }
+        $data['company_office'] = \DB::table('configurations')->where('name', '=', 'company-office')->first()->value;
+        $data['company_bank_account'] = \DB::table('configurations')->where('name', '=', 'company-bank-account')->first()->value;
         $pdf = \PDF::loadView('pdf.invoice_customer', $data)->setPaper('a4', 'portrait')->setWarnings(false);
         return $pdf->stream($invoice_customer->code.'.pdf');
     }
