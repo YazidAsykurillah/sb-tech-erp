@@ -19,8 +19,8 @@
 
 @section('content')
   
-  <!-- DASHBOARD Super admin, admin & finance -->
-  @if(\Auth::user()->roles->first()->code == 'SUP' || \Auth::user()->roles->first()->code == 'ADM' || \Auth::user()->roles->first()->code == 'FIN')
+  <!-- DASHBOARD Super admin and Admin -->
+  @if(\Auth::user()->roles->first()->code == 'SUP' || \Auth::user()->roles->first()->code == 'ADM')
   <h3><i class="fa fa-credit-card"></i>&nbsp;Invoice Customer</h3>
   <div class="row">
     <div class="col-md-6">
@@ -196,10 +196,10 @@
     </div>
 
   </div>
-  <!-- END DASHBOARD Super admin, admin, and finance -->
+  <!-- END DASHBOARD Super admin and Admin -->
 
-  <!-- DASHBOARD Sales -->
-  @elseif(\Auth::user()->roles->first()->code == 'SAL')
+  <!-- DASHBOARD Other roles  -->
+  @else
   <div class="row">
     <div class="col-md-6">
       <!-- small box -->
@@ -213,62 +213,6 @@
           <i class="fa fa-credit-card"></i>
         </div>
         <a href="{{ URL::to('internal-request') }}" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-md-6">
-      <!-- small box -->
-      <div class="small-box bg-red">
-        <div class="inner">
-          <h3>Cashbond</h3>
-
-          <p>Cashbond</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-credit-card"></i>
-        </div>
-        <a href="{{ URL::to('cash-bond') }}" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
-      </div>
-    </div>
-    <!-- ./col -->
-  </div>
-  <!-- ENDDASHBOARD Sales -->
-  <!-- DASHBOARD Engineer -->
-  @elseif(\Auth::user()->roles->first()->code == 'ENG')
-  <div class="row">
-    <div class="col-md-6">
-      <!-- small box -->
-      <div class="small-box bg-red">
-        <div class="inner">
-          <h3>Internal Request</h3>
-
-          <p>Internal Request</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-credit-card"></i>
-        </div>
-        <a href="{{ URL::to('internal-request') }}" class="small-box-footer">
-          More info <i class="fa fa-arrow-circle-right"></i>
-        </a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-md-6">
-      <!-- small box -->
-      <div class="small-box bg-red">
-        <div class="inner">
-          <h3>Cashbond</h3>
-
-          <p>Cashbond</p>
-        </div>
-        <div class="icon">
-          <i class="fa fa-credit-card"></i>
-        </div>
-        <a href="{{ URL::to('cash-bond') }}" class="small-box-footer">
           More info <i class="fa fa-arrow-circle-right"></i>
         </a>
       </div>

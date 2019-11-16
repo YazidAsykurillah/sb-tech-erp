@@ -49,148 +49,144 @@ class AclTableSeeder extends Seeder
         DB::table('permissions')->delete();
         $permissions = [
             //quotation-customer module
-            ['slug'=>'view-quotation-customer', 'description'=>'View Quotation Customer'],
-            ['slug'=>'create-quotation-customer', 'description'=>'Access Quotation Customer Create method'],
-            ['slug'=>'edit-quotation-customer', 'description'=>'Access Quotation Customer Edit method'],
-            ['slug'=>'delete-quotation-customer', 'description'=>'Access Quotation Customer Delete method'],
-            ['slug'=>'change-quotation-customer-status', 'description'=>'Change quotation customer status'],
-            ['slug'=>'pending-quotation-customer', 'description'=>'Change quotation customer to pending'],
-            ['slug'=>'submit-quotation-customer', 'description'=>'Change quotation customer to submitted'],
-            ['slug'=>'reject-quotation-customer', 'description'=>'Change quotation customer to rejected'],
+            ['id'=>1, 'slug'=>'view-quotation-customer', 'description'=>'View Quotation Customer'],
+            ['id'=>2, 'slug'=>'create-quotation-customer', 'description'=>'Access Quotation Customer Create method'],
+            ['id'=>3, 'slug'=>'edit-quotation-customer', 'description'=>'Access Quotation Customer Edit method'],
+            ['id'=>4, 'slug'=>'delete-quotation-customer', 'description'=>'Access Quotation Customer Delete method'],
+            ['id'=>5, 'slug'=>'change-quotation-customer-status', 'description'=>'Change quotation customer status'],
+            ['id'=>6, 'slug'=>'pending-quotation-customer', 'description'=>'Change quotation customer to pending'],
+            ['id'=>7, 'slug'=>'submit-quotation-customer', 'description'=>'Change quotation customer to submitted'],
+            ['id'=>8, 'slug'=>'reject-quotation-customer', 'description'=>'Change quotation customer to rejected'],
 
             //quotation-vendor module
-            [ 'slug'=>'view-quotation-vendor', 'description'=>'View Quotation Vendor'],
-            [ 'slug'=>'create-quotation-vendor', 'description'=>'Access Quotation Vendor Create method'],
-            [ 'slug'=>'edit-quotation-vendor', 'description'=>'Access Quotation Vendor Edit method'],
-            [ 'slug'=>'delete-quotation-vendor', 'description'=>'Access Quotation Vendor Delete method'],
+            ['id'=>9, 'slug'=>'view-quotation-vendor', 'description'=>'View Quotation Vendor'],
+            ['id'=>10, 'slug'=>'create-quotation-vendor', 'description'=>'Access Quotation Vendor Create method'],
+            ['id'=>11, 'slug'=>'edit-quotation-vendor', 'description'=>'Access Quotation Vendor Edit method'],
+            ['id'=>12, 'slug'=>'delete-quotation-vendor', 'description'=>'Access Quotation Vendor Delete method'],
 
             
 
             //purchase-order-customer module
-            [ 'slug'=>'view-purchase-order-customer', 'description'=>'View Purchase Order Customer'],
-            [ 'slug'=>'create-purchase-order-customer', 'description'=>'Access Purchase Order Customer Create method'],
-            [ 'slug'=>'edit-purchase-order-customer', 'description'=>'Access Purchase Order Customer Edit method'],
-            [ 'slug'=>'delete-purchase-order-customer', 'description'=>'Access Purchase Order Customer Delete method'],
+            ['id'=>13, 'slug'=>'view-purchase-order-customer', 'description'=>'View Purchase Order Customer'],
+            ['id'=>14, 'slug'=>'create-purchase-order-customer', 'description'=>'Access Purchase Order Customer Create method'],
+            ['id'=>15, 'slug'=>'edit-purchase-order-customer', 'description'=>'Access Purchase Order Customer Edit method'],
+            ['id'=>16, 'slug'=>'delete-purchase-order-customer', 'description'=>'Access Purchase Order Customer Delete method'],
 
             //purchase-order-vendor module
-            [ 'slug'=>'view-purchase-order-vendor', 'description'=>'View Purchase Order Vendor'],
-            [ 'slug'=>'create-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Create method'],
-            [ 'slug'=>'edit-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Edit method'],
-            [ 'slug'=>'delete-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Delete method'],
+            ['id'=>17, 'slug'=>'view-purchase-order-vendor', 'description'=>'View Purchase Order Vendor'],
+            ['id'=>18, 'slug'=>'create-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Create method'],
+            ['id'=>19, 'slug'=>'edit-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Edit method'],
+            ['id'=>20, 'slug'=>'delete-purchase-order-vendor', 'description'=>'Access Purchase Order Vendor Delete method'],
 
             //purchase-request module
-            [ 'slug'=>'view-purchase-request', 'description'=>'View Purchase Request'],
-            [ 'slug'=>'create-purchase-request', 'description'=>'Access Purchase Request Create method'],
-            [ 'slug'=>'edit-purchase-request', 'description'=>'Access Purchase Request Edit method'],
-            [ 'slug'=>'delete-purchase-request', 'description'=>'Access Purchase Request Delete method'],
+            ['id'=>21, 'slug'=>'view-purchase-request', 'description'=>'View Purchase Request'],
+            ['id'=>22, 'slug'=>'create-purchase-request', 'description'=>'Access Purchase Request Create method'],
+            ['id'=>23, 'slug'=>'edit-purchase-request', 'description'=>'Access Purchase Request Edit method'],
+            ['id'=>24, 'slug'=>'delete-purchase-request', 'description'=>'Access Purchase Request Delete method'],
 
             //internal request module
-            [ 'slug'=>'view-internal-request', 'description'=>'View Internal request'],
-            [ 'slug'=>'create-internal-request', 'description'=>'Create internal request'],
-            [ 'slug'=>'edit-internal-request', 'description'=>'Edit internal request'],
-            [ 'slug'=>'delete-internal-request', 'description'=>'Delete internal request'],
-            [ 'slug'=>'create-internal-request-to-other', 'description'=>'Create internal request for other member'],
-            [ 'slug'=>'change-status-internal-request', 'description'=>'Change status internal request'],
-            [ 'slug'=>'check-internal-request', 'description'=>'Change internal request status to Checked'],
-            [ 'slug'=>'approve-internal-request', 'description'=>'Change internal request status to Approved'],
-            [ 'slug'=>'reject-internal-request', 'description'=>'Change internal request status to Rejected'],
+            ['id'=>25, 'slug'=>'view-internal-request', 'description'=>'View Internal request'],
+            ['id'=>26, 'slug'=>'create-internal-request', 'description'=>'Create internal request'],
+            ['id'=>27, 'slug'=>'edit-internal-request', 'description'=>'Edit internal request'],
+            ['id'=>28, 'slug'=>'delete-internal-request', 'description'=>'Delete internal request'],
+            ['id'=>29, 'slug'=>'create-internal-request-to-other', 'description'=>'Create internal request for other member'],
+            ['id'=>30, 'slug'=>'change-status-internal-request', 'description'=>'Change status internal request'],
+            ['id'=>31, 'slug'=>'check-internal-request', 'description'=>'Change internal request status to Checked'],
+            ['id'=>32, 'slug'=>'approve-internal-request', 'description'=>'Change internal request status to Approved'],
+            ['id'=>33, 'slug'=>'reject-internal-request', 'description'=>'Change internal request status to Rejected'],
 
             //Settlement
-            [ 'slug'=>'view-settlement', 'description'=>'View settlement'],
-            [ 'slug'=>'create-settlement', 'description'=>'Create settlement'],
-            [ 'slug'=>'edit-settlement', 'description'=>'Edit settlement'],
-            [ 'slug'=>'delete-settlement', 'description'=>'Delete settlement'],
+            ['id'=>34, 'slug'=>'view-settlement', 'description'=>'View settlement'],
+            ['id'=>35, 'slug'=>'create-settlement', 'description'=>'Create settlement'],
+            ['id'=>36, 'slug'=>'edit-settlement', 'description'=>'Edit settlement'],
+            ['id'=>37, 'slug'=>'delete-settlement', 'description'=>'Delete settlement'],
 
             //project module
-            [ 'slug'=>'view-project', 'description'=>'View project'],
-            [ 'slug'=>'create-project', 'description'=>'Access Project Create method'],
-            [ 'slug'=>'edit-project', 'description'=>'Access Project Edit method'],
-            [ 'slug'=>'delete-project', 'description'=>'Access Project Delete method'],
+            ['id'=>38, 'slug'=>'view-project', 'description'=>'View project'],
+            ['id'=>39, 'slug'=>'create-project', 'description'=>'Access Project Create method'],
+            ['id'=>40, 'slug'=>'edit-project', 'description'=>'Access Project Edit method'],
+            ['id'=>41, 'slug'=>'delete-project', 'description'=>'Access Project Delete method'],
 
             //Transfer Task
-            ['slug'=>'transfer-task', 'description'=>'Access Transfer Task Module'],
-            ['slug'=>'transfer-task-internal-request', 'description'=>'Access Transfer Task Internal Request Module'],
-            ['slug'=>'transfer-task-invoice-vendor', 'description'=>'Access Transfer Task Invoice Vendor'],
-            ['slug'=>'transfer-task-settlement', 'description'=>'Access Transfer Task Settlement module'],
+            ['id'=>42, 'slug'=>'transfer-task', 'description'=>'Access Transfer Task Module'],
+            ['id'=>43, 'slug'=>'transfer-task-internal-request', 'description'=>'Access Transfer Task Internal Request Module'],
+            ['id'=>44, 'slug'=>'transfer-task-invoice-vendor', 'description'=>'Access Transfer Task Invoice Vendor'],
+            ['id'=>45, 'slug'=>'transfer-task-settlement', 'description'=>'Access Transfer Task Settlement module'],
 
             //invoice-customer module
-            [ 'slug'=>'view-invoice-customer', 'description'=>'View Invoice Customer'],
-            [ 'slug'=>'create-invoice-customer', 'description'=>'Access invoice-customer Create method'],
-            [ 'slug'=>'edit-invoice-customer', 'description'=>'Access invoice-customer Edit method'],
-            [ 'slug'=>'delete-invoice-customer', 'description'=>'Access invoice-customer Delete method'],
+            ['id'=>46, 'slug'=>'view-invoice-customer', 'description'=>'View Invoice Customer'],
+            ['id'=>47, 'slug'=>'create-invoice-customer', 'description'=>'Access invoice-customer Create method'],
+            ['id'=>48, 'slug'=>'edit-invoice-customer', 'description'=>'Access invoice-customer Edit method'],
+            ['id'=>49, 'slug'=>'delete-invoice-customer', 'description'=>'Access invoice-customer Delete method'],
 
             //invoice-vendor module
-            [ 'slug'=>'view-invoice-vendor', 'description'=>'View Invoice Vendor'],
-            [ 'slug'=>'create-invoice-vendor', 'description'=>'Access invoice-vendor Create method'],
-            [ 'slug'=>'edit-invoice-vendor', 'description'=>'Access invoice-vendor Edit method'],
-            [ 'slug'=>'delete-invoice-vendor', 'description'=>'Access invoice-vendor Delete method'],
+            ['id'=>50, 'slug'=>'view-invoice-vendor', 'description'=>'View Invoice Vendor'],
+            ['id'=>51, 'slug'=>'create-invoice-vendor', 'description'=>'Access invoice-vendor Create method'],
+            ['id'=>52, 'slug'=>'edit-invoice-vendor', 'description'=>'Access invoice-vendor Edit method'],
+            ['id'=>53, 'slug'=>'delete-invoice-vendor', 'description'=>'Access invoice-vendor Delete method'],
 
             //Cash module
-            ['slug'=>'view-cash', 'description'=>'View cash'],
-            ['slug'=>'create-cash', 'description'=>'Create cash'],
-            ['slug'=>'edit-cash', 'description'=>'Edit Cash'],
-            ['slug'=>'delete-cash', 'description'=>'Delete Cash'],
+            ['id'=>54, 'slug'=>'view-cash', 'description'=>'View cash'],
+            ['id'=>55, 'slug'=>'create-cash', 'description'=>'Create cash'],
+            ['id'=>56, 'slug'=>'edit-cash', 'description'=>'Edit Cash'],
+            ['id'=>57, 'slug'=>'delete-cash', 'description'=>'Delete Cash'],
                 	
             //Customer
-            [ 'slug'=>'view-customer', 'description'=>'View customer'],
-            [ 'slug'=>'create-customer', 'description'=>'Create customer'],
-            [ 'slug'=>'edit-customer', 'description'=>'Edit customer'],
-            [ 'slug'=>'delete-customer', 'description'=>'Delete customer'],
+            ['id'=>58, 'slug'=>'view-customer', 'description'=>'View customer'],
+            ['id'=>59, 'slug'=>'create-customer', 'description'=>'Create customer'],
+            ['id'=>60, 'slug'=>'edit-customer', 'description'=>'Edit customer'],
+            ['id'=>61, 'slug'=>'delete-customer', 'description'=>'Delete customer'],
 
             //The Vendor
-            [ 'slug'=>'view-the-vendor', 'description'=>'View Vendor'],
-            [ 'slug'=>'create-the-vendor', 'description'=>'Create the-vendor'],
-            [ 'slug'=>'edit-the-vendor', 'description'=>'Edit the-vendor'],
-            [ 'slug'=>'delete-the-vendor', 'description'=>'Delete the-vendor'],
+            ['id'=>62, 'slug'=>'view-the-vendor', 'description'=>'View Vendor'],
+            ['id'=>63, 'slug'=>'create-the-vendor', 'description'=>'Create the-vendor'],
+            ['id'=>64, 'slug'=>'edit-the-vendor', 'description'=>'Edit the-vendor'],
+            ['id'=>65, 'slug'=>'delete-the-vendor', 'description'=>'Delete the-vendor'],
             
 
             //Master Data
-            [ 'slug'=>'access-master-data', 'description'=>'View Master Data Menu'],
+            ['id'=>66, 'slug'=>'access-master-data', 'description'=>'View Master Data Menu'],
 
             //Bank Account
-            [ 'slug'=>'view-bank-account', 'description'=>'View Member Bank Account'],
-            [ 'slug'=>'create-bank-account', 'description'=>'Create Member Bank Account'],
-            [ 'slug'=>'edit-bank-account', 'description'=>'Edit Member Bank Account'],
-            [ 'slug'=>'delete-bank-account', 'description'=>'Delete Member Bank Account'],
+            ['id'=>67, 'slug'=>'view-bank-account', 'description'=>'View Member Bank Account'],
+            ['id'=>68, 'slug'=>'create-bank-account', 'description'=>'Create Member Bank Account'],
+            ['id'=>69, 'slug'=>'edit-bank-account', 'description'=>'Edit Member Bank Account'],
+            ['id'=>70, 'slug'=>'delete-bank-account', 'description'=>'Delete Member Bank Account'],
 
             //User
-            [ 'slug'=>'view-user', 'description'=>'View User'],
-            [ 'slug'=>'create-user', 'description'=>'Create user'],
-            [ 'slug'=>'edit-user', 'description'=>'Edit user'],
-            [ 'slug'=>'delete-user', 'description'=>'Delete user'],
+            ['id'=>71, 'slug'=>'view-user', 'description'=>'View User'],
+            ['id'=>72, 'slug'=>'create-user', 'description'=>'Create user'],
+            ['id'=>73, 'slug'=>'edit-user', 'description'=>'Edit user'],
+            ['id'=>74, 'slug'=>'delete-user', 'description'=>'Delete user'],
 
             //Role
-            [ 'slug'=>'view-role', 'description'=>'View Role'],
-            [ 'slug'=>'create-role', 'description'=>'Create role'],
-            [ 'slug'=>'edit-role', 'description'=>'Edit role'],
-            [ 'slug'=>'delete-role', 'description'=>'Delete role'],
+            ['id'=>75, 'slug'=>'view-role', 'description'=>'View Role'],
+            ['id'=>76, 'slug'=>'create-role', 'description'=>'Create role'],
+            ['id'=>77, 'slug'=>'edit-role', 'description'=>'Edit role'],
+            ['id'=>78, 'slug'=>'delete-role', 'description'=>'Delete role'],
 
             //Permission
-            [ 'slug'=>'view-permission', 'description'=>'View Permission'],
-            [ 'slug'=>'create-permission', 'description'=>'Create permission'],
-            [ 'slug'=>'edit-permission', 'description'=>'Edit permission'],
-            [ 'slug'=>'delete-permission', 'description'=>'Delete permission'],
+            ['id'=>79, 'slug'=>'view-permission', 'description'=>'View Permission'],
+            ['id'=>80, 'slug'=>'create-permission', 'description'=>'Create permission'],
+            ['id'=>81, 'slug'=>'edit-permission', 'description'=>'Edit permission'],
+            ['id'=>82, 'slug'=>'delete-permission', 'description'=>'Delete permission'],
 
             //Cash Bond
-            [ 'slug'=>'view-cash-bond', 'description'=>'View Cashbonnd'],
-            [ 'slug'=>'create-cash-bond', 'description'=>'Create cash-bond'],
-            [ 'slug'=>'edit-cash-bond', 'description'=>'Edit cash-bond'],
-            [ 'slug'=>'delete-cash-bond', 'description'=>'Delete cash-bond'],
-            [ 'slug'=>'change-cash-bond-status', 'description'=>'Change cashbond status'],
+            ['id'=>83, 'slug'=>'view-cash-bond', 'description'=>'View Cashbonnd'],
+            ['id'=>84, 'slug'=>'create-cash-bond', 'description'=>'Create cash-bond'],
+            ['id'=>85, 'slug'=>'edit-cash-bond', 'description'=>'Edit cash-bond'],
+            ['id'=>86, 'slug'=>'delete-cash-bond', 'description'=>'Delete cash-bond'],
+            ['id'=>87, 'slug'=>'change-cash-bond-status', 'description'=>'Change cashbond status'],
 
             //Period
-            [ 'slug'=>'index-period', 'description'=>'View all period'],
-            [ 'slug'=>'show-period', 'description'=>'View single period'],
-            [ 'slug'=>'create-period', 'description'=>'Create period'],
-            [ 'slug'=>'edit-period', 'description'=>'Edit period'],
-            [ 'slug'=>'delete-period', 'description'=>'Delete period'],
-
+            ['id'=>88, 'slug'=>'index-period', 'description'=>'View all period'],
+            ['id'=>89, 'slug'=>'show-period', 'description'=>'View single period'],
+            ['id'=>90, 'slug'=>'create-period', 'description'=>'Create period'],
+            ['id'=>91, 'slug'=>'edit-period', 'description'=>'Edit period'],
+            ['id'=>92, 'slug'=>'delete-period', 'description'=>'Delete period'],
             
-
-            
-
             //Finance Statistic
-            [ 'slug'=>'access-finance-statistic', 'description'=>'View Master Finance Statistic menu']
+            ['id'=>93, 'slug'=>'access-finance-statistic', 'description'=>'View Master Finance Statistic menu']
         ];
         DB::table('permissions')->insert($permissions);
         //ENDBlock table permissions
