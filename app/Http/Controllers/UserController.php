@@ -408,7 +408,7 @@ class UserController extends Controller
     {
         $user = User::find($request->user_id);
         if($user){
-            $user->password = bcrypt('bmkn');
+            $user->password = bcrypt('12345');
             $user->save();
             return redirect('user/'.$request->user_id)
             ->with('successMessage', "User password has been resetted");

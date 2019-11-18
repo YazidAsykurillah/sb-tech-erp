@@ -182,7 +182,7 @@
                 <td style="width: 1%;">:</td>
                 <td>{!! nl2br($invoice_customer->description) !!}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td style="width: 20%;">Prepared By</td>
                 <td style="width: 1%;">:</td>
                 <td>
@@ -190,7 +190,7 @@
                     {{ $invoice_customer->preparator->name }}
                   @endif
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td style="width: 20%;">File</td>
                 <td style="width: 1%;">:</td>

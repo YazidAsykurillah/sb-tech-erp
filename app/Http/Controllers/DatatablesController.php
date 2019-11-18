@@ -161,7 +161,7 @@ class DatatablesController extends Controller
     {
         \DB::statement(\DB::raw('set @rownum=0'));
         $user_role = \Auth::user()->roles->first()->code;
-        if($user_role == 'SUP' || $user_role == 'ADM' || $user_role =='FIN'){
+        if($user_role == 'SUP' || $user_role == 'ADM'){
            $purchase_requests = PurchaseRequest::with('project', 'project.purchase_order_customer.customer', 'user', 'quotation_vendor', 'quotation_vendor.vendor', 'purchase_order_vendor')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'purchase_requests.*',

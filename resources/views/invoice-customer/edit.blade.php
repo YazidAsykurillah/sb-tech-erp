@@ -318,18 +318,6 @@
             </div>
           </div>
 
-          <div class="form-group{{ $errors->has('prepared_by') ? ' has-error' : '' }}">
-            {!! Form::label('prepared_by', 'Prepared By', ['class'=>'col-sm-2 control-label']) !!}
-            <div class="col-sm-10">
-              {!! Form::select('prepared_by', $preparator_opts, null, ['placeholder'=>'Select preparator', 'id'=>'prepared_by', 'class'=>'form-control']) !!}
-              @if ($errors->has('prepared_by'))
-                <span class="help-block">
-                  <strong>{{ $errors->first('prepared_by') }}</strong>
-                </span>
-              @endif
-            </div>
-          </div>
-
           <div class="form-group">
             {!! Form::label('', '', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">

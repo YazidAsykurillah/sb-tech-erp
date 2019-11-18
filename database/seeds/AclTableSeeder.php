@@ -50,9 +50,9 @@ class AclTableSeeder extends Seeder
         $permissions = [
             //quotation-customer module
             ['id'=>1, 'slug'=>'view-quotation-customer', 'description'=>'View Quotation Customer'],
-            ['id'=>2, 'slug'=>'create-quotation-customer', 'description'=>'Access Quotation Customer Create method'],
-            ['id'=>3, 'slug'=>'edit-quotation-customer', 'description'=>'Access Quotation Customer Edit method'],
-            ['id'=>4, 'slug'=>'delete-quotation-customer', 'description'=>'Access Quotation Customer Delete method'],
+            ['id'=>2, 'slug'=>'create-quotation-customer', 'description'=>'Create Quotation Customer '],
+            ['id'=>3, 'slug'=>'edit-quotation-customer', 'description'=>'Edit Quotation Customer'],
+            ['id'=>4, 'slug'=>'delete-quotation-customer', 'description'=>'Delete Quotation Customer'],
             ['id'=>5, 'slug'=>'change-quotation-customer-status', 'description'=>'Change quotation customer status'],
             ['id'=>6, 'slug'=>'pending-quotation-customer', 'description'=>'Change quotation customer to pending'],
             ['id'=>7, 'slug'=>'submit-quotation-customer', 'description'=>'Change quotation customer to submitted'],
@@ -177,22 +177,18 @@ class AclTableSeeder extends Seeder
             ['id'=>85, 'slug'=>'edit-cash-bond', 'description'=>'Edit cash-bond'],
             ['id'=>86, 'slug'=>'delete-cash-bond', 'description'=>'Delete cash-bond'],
             ['id'=>87, 'slug'=>'change-cash-bond-status', 'description'=>'Change cashbond status'],
-
-            //Period
-            ['id'=>88, 'slug'=>'index-period', 'description'=>'View all period'],
-            ['id'=>89, 'slug'=>'show-period', 'description'=>'View single period'],
-            ['id'=>90, 'slug'=>'create-period', 'description'=>'Create period'],
-            ['id'=>91, 'slug'=>'edit-period', 'description'=>'Edit period'],
-            ['id'=>92, 'slug'=>'delete-period', 'description'=>'Delete period'],
             
             //Finance Statistic
-            ['id'=>93, 'slug'=>'access-finance-statistic', 'description'=>'View Master Finance Statistic menu']
+            ['id'=>93, 'slug'=>'access-finance-statistic', 'description'=>'View Master Finance Statistic menu'],
+            
+            //Reset User Password
+            ['id'=>94, 'slug'=>'reset-user-password', 'description'=>'Reset User Password'],
         ];
         DB::table('permissions')->insert($permissions);
         //ENDBlock table permissions
 
         //Block table permission_role
-        DB::table('permission_role')->delete();
+        /*DB::table('permission_role')->delete();
         $permission_role = [
         	//Administrator privilleges
         	['permission_id'=>1, 'role_id'=>2],
@@ -200,7 +196,7 @@ class AclTableSeeder extends Seeder
         	['permission_id'=>3, 'role_id'=>2],
         	['permission_id'=>4, 'role_id'=>2],
         ];
-        DB::table('permission_role')->insert($permission_role);
+        DB::table('permission_role')->insert($permission_role);*/
         //ENDBlock table permission_role
     }
 }

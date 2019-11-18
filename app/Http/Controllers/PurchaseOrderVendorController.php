@@ -295,7 +295,7 @@ class PurchaseOrderVendorController extends Controller
         $user_role = \Auth::user()->roles->first()->code;
         
         \DB::statement(\DB::raw('set @rownum=0'));
-        if($user_role == "SUP" || $user_role == "ADM" || $user_role == "FIN" || $user_role = "008"){
+        if($user_role == "SUP" || $user_role == "ADM"){
             $po_vendors = PurchaseOrderVendor::with('vendor', 'purchase_request', 'purchase_request.project', 'purchase_request.migo', 'quotation_vendor')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'purchase_order_vendors.*'
