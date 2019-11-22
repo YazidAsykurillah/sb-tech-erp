@@ -298,14 +298,12 @@ class QuotationCustomerController extends Controller
     public function dataTables(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        $user_role = \Auth::user()->roles->first()->code;
-        if($user_role == 'SUP' || $user_role == 'ADM'){
+        if(\Auth::user()->can('view-all-quotation-customer')){
             $quotation_customers = QuotationCustomer::with('customer', 'sales', 'po_customer')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'quotation_customers.*',
             ]);
-        }
-        else{
+        }else{
             $quotation_customers = QuotationCustomer::with('customer', 'sales', 'po_customer')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'quotation_customers.*',

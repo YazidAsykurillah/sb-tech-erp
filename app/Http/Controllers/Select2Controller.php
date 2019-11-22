@@ -396,10 +396,9 @@ class Select2Controller extends Controller
     //ENDBLock Select2 project for purchase request
 
 
-    //BLock Select2 Project Back UP
     public function select2Project(Request $request)
     {
-        $estimated_configuration_limit = Configuration::whereName('estimated-cost-margin-limit')->first()->value;
+        
         
         $data = [];
         if($request->has('q')){
@@ -407,23 +406,9 @@ class Select2Controller extends Controller
             $data = Project::where('code','like',"%$search%")
                     ->where('enabled', TRUE)
                     ->get();
-
         }
         else{
-            $search = $request->q;
-            $projects = Project::where('enabled', TRUE)->get();
-            foreach($projects as $project){
-                if($project->estimated_cost_margin >= $estimated_configuration_limit){
-                    array_push($data,
-                        [
-                            'code'=>$project->code,
-                            'name'=>$project->name,
-                            'id'=>$project->id,
-                        ]
-                    );
-                }
-                
-            }
+            $data = Project::where('enabled', TRUE)->get();
         }
 
         return response()->json($data);

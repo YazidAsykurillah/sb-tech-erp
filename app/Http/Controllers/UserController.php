@@ -422,24 +422,10 @@ class UserController extends Controller
     public function dataTables(Request $request)
     {
         \DB::statement(\DB::raw('set @rownum=0'));
-        if(\Auth::user()->can('index-user-office') && \Auth::user()->can('index-user-outsource')){
-            $users = User::with('roles')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'users.*'
-            ]);    
-        }else if(\Auth::user()->can('index-user-outsource')){
-            $users = User::with('roles')->select([
-                \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
-                'users.*'
-            ])
-            ->where('users.type', '=', 'outsource');
-        }
-        else{
-            $users = User::with('roles')->select([
+        $users = User::with('roles')->select([
                 \DB::raw('@rownum  := @rownum  + 1 AS rownum'),
                 'users.*'
             ]);
-        }
         
         $data_users = Datatables::of($users)
             ->editColumn('salary', function($users){

@@ -168,14 +168,18 @@
       </li>
       @endif
 
-      @if(\Auth::user()->can('view-user'))
+      @if(\Auth::user()->can('view-user') || \Auth::user()->can('access-payroll'))
       <li class="treeview {{{ (Request::is('user*') ? 'active':'') }}}" >
         <a href="#">
           <i class="fa fa-users"></i>
           <span>Human Resource</span>
         </a>
         <ul class="treeview-menu">
-          <li {{{ (Request::is('user/*') ? 'class=active' : '') }}}><a href="{{ url('user/') }}"><i class="fa fa-circle-o"></i>Employee</a></li>
+          @if(\Auth::user()->can('view-user'))
+          <li {{{ (Request::is('user/*') ? 'class=active' : '') }}}>
+            <a href="{{ url('user/') }}"><i class="fa fa-circle-o"></i>Employee</a>
+          </li>
+          @endif
           @if(\Auth::user()->can('access-payroll'))
           <li {{{ (Request::is('payroll/') ? 'class=active' : '') }}}><a href="{{ url('payroll/') }}"><i class="fa fa-circle-o"></i>Payroll</a></li>
           @endif

@@ -183,6 +183,10 @@ class AclTableSeeder extends Seeder
             
             //Reset User Password
             ['id'=>94, 'slug'=>'reset-user-password', 'description'=>'Reset User Password'],
+
+            //VIEW ALL Quotation Customer
+            ['id'=>95, 'slug'=>'view-all-quotation-customer', 'description'=>'View All Quotation Customer'],
+
         ];
         DB::table('permissions')->insert($permissions);
         //ENDBlock table permissions
