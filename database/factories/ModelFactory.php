@@ -23,7 +23,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 //Customer 
 $factory->define(App\Customer::class, function(Faker\Generator $faker){
 	return [
-		'name'=>$faker->company,
+		'name'=>$faker->company." (DUMMY)",
 		'address'=>$faker->address,
 		'contact_number'=>$faker->phoneNumber
 	];
@@ -32,7 +32,7 @@ $factory->define(App\Customer::class, function(Faker\Generator $faker){
 //Vendor
 $factory->define(App\Vendor::class, function(Faker\Generator $faker){
 	return [
-		'name'=>$faker->company,
+		'name'=>$faker->company." (DUMMY)",
 		'product_name'=>$faker->word,
 		'phone'=>$faker->phoneNumber,
 		'address'=>$faker->address,
