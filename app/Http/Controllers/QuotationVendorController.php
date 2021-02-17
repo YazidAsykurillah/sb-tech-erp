@@ -167,7 +167,12 @@ class QuotationVendorController extends Controller
                 
             })
             ->editColumn('vendor', function($quotation_vendors){
-                return $quotation_vendors->vendor->name;
+                if($quotation_vendors->vendor){
+                    return $quotation_vendors->vendor->name;    
+                }else{
+                    return NULL;
+                }
+                
             })
             ->editColumn('amount', function($quotation_vendors){
                 return number_format($quotation_vendors->amount, 2);

@@ -304,7 +304,10 @@ class PurchaseRequestController extends Controller
             })
             ->addColumn('vendor_name', function($purchase_requests){
                 if($purchase_requests->quotation_vendor){
-                    return $purchase_requests->quotation_vendor->vendor->name;
+                    if($purchase_requests->quotation_vendor->vendor){
+                        return $purchase_requests->quotation_vendor->vendor->name;    
+                    }
+                    
                 }else{
                     return NULL;
                 }
