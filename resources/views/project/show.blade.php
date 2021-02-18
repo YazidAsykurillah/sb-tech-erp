@@ -69,7 +69,7 @@
                 </td>
               </tr>
               <tr>
-                <td style="width: 20%;">Created Date</td>
+                <td style="width: 20%;">Project Date</td>
                 <td style="width: 1%;">:</td>
                 <td>
                   @if($project->created_at)
