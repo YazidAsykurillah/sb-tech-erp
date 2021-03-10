@@ -100,9 +100,9 @@
                 </td>
               </tr>
               <tr>
-                <td style="width: 20%;"><strong>Sub Total</strong></td>
+                <td style="width: 20%;"><strong>Sub Totale</strong></td>
                 <td style="width: 1%;">:</td>
-                <td>{{ number_format($purchase_request->after_discount) }}</td>
+                <td>{{ number_format($purchase_request->sub_amount) }}</td>
               </tr>
               <tr>
                 <td style="width: 20%;"><strong>Discount</strong></td>

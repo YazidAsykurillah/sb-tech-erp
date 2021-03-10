@@ -74,14 +74,13 @@ class PurchaseOrderVendorController extends Controller
 
     public function store(StorePurchaseOrderVendorRequest $request)
     {
-        
-
         $purchase_request = PurchaseRequest::findOrFail($request->purchase_request_id);
         $quotation_vendor_id = $purchase_request->quotation_vendor ? $purchase_request->quotation_vendor->id : NULL;
         $quotation_vendor = $quotation_vendor_id ? QuotationVendor::findOrFail($quotation_vendor_id) : NULL;
 
         $purchase_order_vendor = new PurchaseOrderVendor;
         $purchase_order_vendor->code = $request->code;
+        $purchase_order_vendor->date = $request->date;
         $purchase_order_vendor->vendor_id = $quotation_vendor ? $quotation_vendor->vendor->id : NULL;
         $purchase_order_vendor->quotation_vendor_id = $quotation_vendor ? $quotation_vendor->id : NULL;
         $purchase_order_vendor->purchase_request_id = $request->purchase_request_id;
@@ -195,6 +194,7 @@ class PurchaseOrderVendorController extends Controller
 
         $purchase_order_vendor = PurchaseOrderVendor::findOrFail($id);
         $purchase_order_vendor->code = $request->code;
+        $purchase_order_vendor->date = $request->date;
         $purchase_order_vendor->vendor_id = $quotation_vendor_id != NULL ? $quotation_vendor->vendor->id : NULL;
         $purchase_order_vendor->purchase_request_id = $request->purchase_request_id;
         $purchase_order_vendor->description = $request->description;

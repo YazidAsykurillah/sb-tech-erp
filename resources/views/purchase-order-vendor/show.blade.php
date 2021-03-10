@@ -47,6 +47,12 @@
                 <td style="width: 1%;">:</td>
                 <td>{{ $po_vendor->code }}</td>
               </tr>
+
+              <tr>
+                <td style="width: 20%;"><strong>Tanggal</strong></td>
+                <td style="width: 1%;">:</td>
+                <td>{{ $po_vendor->date }}</td>
+              </tr>
               <tr>
                 <td style="width: 20%;"><strong>Vendor Name</strong></td>
                 <td style="width: 1%;">:</td>
@@ -96,38 +102,39 @@
                 </td>
               </tr>
               
-              @if($po_vendor->purchase_request)
-              <tr>
-                <td style="width: 20%;"><strong>Discount</strong></td>
-                <td style="width: 1%;">:</td>
-                <td>{{ $po_vendor->purchase_request->discount }} %</td>
-              </tr>
               <tr>
                 <td style="width: 20%;"><strong>Sub Total</strong></td>
                 <td style="width: 1%;">:</td>
-                <td>{{ number_format($po_vendor->purchase_request->after_discount) }}</td>
-              </tr> 
+                <td>{{ number_format($po_vendor->sub_amount) }}</td>
+              </tr>
+
+              <tr>
+                <td style="width: 20%;"><strong>Discount</strong></td>
+                <td style="width: 1%;">:</td>
+                <td>{{ $po_vendor->discount }} %</td>
+              </tr>
+
               <tr>
                 <td style="width: 20%;"><strong>After Discount</strong></td>
                 <td style="width: 1%;">:</td>
-                <td>{{ number_format($po_vendor->purchase_request->after_discount) }}</td>
+                <td>{{ number_format($po_vendor->after_discount) }}</td>
               </tr>
+
               <tr>
                 <td style="width: 20%;"><strong>VAT {{ $po_vendor->purchase_request->vat }} %</strong></td>
                 <td style="width: 1%;">:</td>
-                <td>{{ number_format($po_vendor->purchase_request->vat_value()) }}</td>
+                <td>{{ number_format($po_vendor->vat_value) }}</td>
               </tr>
               <tr>
                 <td style="width: 20%;"><strong>WHT</strong></td>
                 <td style="width: 1%;">:</td>
-                <td>{{ number_format($po_vendor->purchase_request->wht) }}</td>
+                <td>{{ number_format($po_vendor->wht) }}</td>
               </tr>
               <tr>
                 <td style="width: 20%;"><strong>Terms</strong></td>
                 <td style="width: 1%;">:</td>
                 <td>{!! $po_vendor->purchase_request->terms !!}</td>
               </tr>
-              @endif
               <tr>
                 <td style="width: 20%;"><strong>Amount</strong></td>
                 <td style="width: 1%;">:</td>

@@ -13,9 +13,15 @@ class PurchaseOrderVendor extends Model
 {
     protected $table = 'purchase_order_vendors';
 
-    protected $fillable = ['vendor_id','code', 'purchase_request_id', 'description', 'amount', 'quotation_vendor_id', 'terms'];
+    protected $fillable = [
+        'vendor_id','code', 'date', 'purchase_request_id', 'description', 'amount',
+        'sub_amount', 'vat', 'wht', 'discount', 'after_discount',
+        'quotation_vendor_id', 'terms'
+    ];
 
-    protected $appends = ['invoice_vendor_due', 'UnInvoicedAmount'];
+    protected $appends = [
+        'invoice_vendor_due', 'UnInvoicedAmount', 'vat_value'
+    ];
 
 
     public function vendor()
@@ -104,4 +110,13 @@ class PurchaseOrderVendor extends Model
     }
 
 
+    public function getVatValueAttribute()
+    {
+        $result = 0;
+        $vat = $this->vat;
+        $after_discount = $this->after_discount;
+        $result = $this->vat / 100 * $after_discount;
+        return $result;
+
+    }
 }

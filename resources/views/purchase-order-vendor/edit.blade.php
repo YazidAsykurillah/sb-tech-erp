@@ -4,6 +4,10 @@
     Purchase Order Vendor
 @endsection
 
+@section('additional_styles')
+  {!! Html::style('css/datepicker/datepicker3.css') !!}
+@endsection
+
 @section('page_header')
   <h1>
     Purchase Order Vendor
@@ -37,6 +41,18 @@
               @if ($errors->has('code'))
                 <span class="help-block">
                   <strong>{{ $errors->first('code') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+
+          <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
+            {!! Form::label('date', 'Tanggal', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('date',null,['class'=>'form-control', 'id'=>'date', 'placeholder'=>'Date of PO Vendor']) !!}
+              @if ($errors->has('date'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('date') }}</strong>
                 </span>
               @endif
             </div>
@@ -186,6 +202,7 @@
 @endsection
 
 @section('additional_scripts')
+  {!! Html::script('js/datepicker/bootstrap-datepicker.js') !!}
   {!! Html::script('js/autoNumeric.js') !!}
   <script type="text/javascript">
 
@@ -194,6 +211,16 @@
         aSep:',',
         aDec:'.'
     });
+
+    //Block DATE
+    $('#date').on('keydown', function(event){
+      event.preventDefault();
+    });
+    $('#date').datepicker({
+      format : 'yyyy-mm-dd'
+    });
+    //ENDBlock DATE
+    
     //Block Purchase request selection
     $('#purchase_request_id').select2({
       placeholder: 'Select Purchase Request',

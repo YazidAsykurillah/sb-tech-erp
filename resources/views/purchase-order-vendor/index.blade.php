@@ -38,6 +38,7 @@
                     <tr>
                       <th style="width:5%;">#</th>
                       <th style="width:10%;">PO Number</th>
+                      <th style="width:10%;">Tanggal</th>
                       <th style="width:10%;">Project Code</th>
                       <th style="width:10%;">Project Name</th>
                       <th style="width:10%;">Vendor</th>
@@ -66,6 +67,7 @@
                       <th></th>
                       <th></th>
                       <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   
@@ -74,6 +76,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -136,6 +139,7 @@
       columns :[
         {data: 'rownum', name: 'rownum', searchable:false, orderable:true},
         { data: 'code', name: 'code' },
+        { data: 'date', name: 'date' },
         { data: 'project_code', name: 'purchase_request.project.code' },
         { data: 'project_name', name: 'purchase_request.project.name' },
         { data: 'vendor_id', name: 'vendor.name' },
@@ -150,7 +154,7 @@
         { data: 'created_at', name: 'created_at', visible:false, sortable:true},
       ],
       order : [
-        [13, 'desc']
+        [14, 'desc']
       ],
       footerCallback: function( tfoot, data, start, end, display ) {
         var api = this.api();
@@ -164,19 +168,6 @@
 
         // Total amount from current page
         total_amount = api
-            .column(8)
-            .data()
-            .reduce( function (a, b) {
-                return theFloat(a) + theFloat(b);
-            }, 0 );
-        
-        $( api.column(8).footer() ).html(
-            total_amount.toLocaleString()
-        );
-        // ENDTotal amount from current page
-
-        // Total paid from current page
-        total_paid = api
             .column(9)
             .data()
             .reduce( function (a, b) {
@@ -184,6 +175,19 @@
             }, 0 );
         
         $( api.column(9).footer() ).html(
+            total_amount.toLocaleString()
+        );
+        // ENDTotal amount from current page
+
+        // Total paid from current page
+        total_paid = api
+            .column(10)
+            .data()
+            .reduce( function (a, b) {
+                return theFloat(a) + theFloat(b);
+            }, 0 );
+        
+        $( api.column(10).footer() ).html(
             total_paid.toLocaleString()
         );
         // ENDTotal paid from current page
@@ -213,7 +217,7 @@
 
     // Setup - add a text input to each header cell
     $('#searchColumn th').each(function() {
-      if ($(this).index() != 0 && $(this).index() != 12) {
+      if ($(this).index() != 0 && $(this).index() != 13) {
         $(this).html('<input class="form-control" type="text" placeholder="Search" data-id="' + $(this).index() + '" />');
       }
           
