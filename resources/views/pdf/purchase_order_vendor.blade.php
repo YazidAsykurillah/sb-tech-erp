@@ -48,7 +48,7 @@
 							<tr>
 								<td style="width:40%;">Date</td>
 								<td style="width:1%;">:</td>
-								<td>{{ $purchase_order_vendor->created_at }}</td>
+								<td>{{ $purchase_order_vendor->date }}</td>
 							</tr>
 							<tr>
 								<td style="width:40%;">P.O Number</td>
