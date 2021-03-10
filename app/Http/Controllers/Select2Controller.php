@@ -327,10 +327,9 @@ class Select2Controller extends Controller
                     ->get();
         }
         else{
-            $search = $request->q;
             $data = PurchaseRequest::with('quotation_vendor','quotation_vendor.vendor', 'purchase_order_vendor', 'project')
                     ->where('purchase_requests.status', 'approved')
-                    ->whereDoesntHave('purchase_order_vendor')
+                    //->whereDoesntHave('purchase_order_vendor')
                     ->get();
         }
         return response()->json($data);

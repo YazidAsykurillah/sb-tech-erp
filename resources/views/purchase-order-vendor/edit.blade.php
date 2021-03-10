@@ -29,6 +29,19 @@
         </div><!-- /.box-header -->
         <div class="box-body">
           {!! Form::model($purchase_order_vendor, ['route'=>['purchase-order-vendor.update', $purchase_order_vendor->id], 'class'=>'form-horizontal','id'=>'form-edit-purchase-order-vendor', 'method'=>'put', 'files'=>true]) !!}
+
+          <div class="form-group{{ $errors->has('code') ? ' has-error' : '' }}">
+            {!! Form::label('code', 'PO Code', ['class'=>'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('code',null,['class'=>'form-control', 'placeholder'=>'Code of the PO Vendor', 'id'=>'code']) !!}
+              @if ($errors->has('code'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('code') }}</strong>
+                </span>
+              @endif
+            </div>
+          </div>
+          
           <div class="form-group{{ $errors->has('purchase_request_id') ? ' has-error' : '' }}">
             {!! Form::label('purchase_request_id', 'Purchase Request', ['class'=>'col-sm-2 control-label']) !!}
             <div class="col-sm-10">

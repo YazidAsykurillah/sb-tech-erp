@@ -24,6 +24,7 @@ class StorePurchaseOrderVendorRequest extends Request
     public function rules()
     {
         $rules = [
+            'code'=>'required|unique:purchase_order_vendors,code',
             'purchase_request_id'=>'required|integer',
             //'quotation_vendor_id'=>'required|integer|exists:quotation_vendors,id|unique:purchase_order_vendors,quotation_vendor_id',
             'description'=>'required',

@@ -75,31 +75,13 @@ class PurchaseOrderVendorController extends Controller
     public function store(StorePurchaseOrderVendorRequest $request)
     {
         
-        //Block build next purchase_order_vendor code
-        //2017-06-13
-        $today = date('Y-m-d');
-        
-        $this_month = substr($today, 0, 7);
 
-        $pov_format = substr($this_month, 2, 2)."-".substr($this_month, 5, 2);
-        
-        $next_purchase_order_vendor_number = "";
-        $purchase_order_vendors = \DB::table('purchase_order_vendors')->where('created_at', 'like', "%$this_month%");
-        //if counted purchase_order_vendors created in this month is 0, simply make it 001 to the next purchase_order_vendor number param.
-        if($purchase_order_vendors->count() == 0){
-            $next_purchase_order_vendor_number = str_pad(1, 3, 0, STR_PAD_LEFT);
-        }
-        else{
-            $max = $purchase_order_vendors->max('code');
-            $int_max = ltrim(substr($max, -3), '0');
-            $next_purchase_order_vendor_number = str_pad(($int_max+1), 3, 0, STR_PAD_LEFT);
-        }
         $purchase_request = PurchaseRequest::findOrFail($request->purchase_request_id);
         $quotation_vendor_id = $purchase_request->quotation_vendor ? $purchase_request->quotation_vendor->id : NULL;
         $quotation_vendor = $quotation_vendor_id ? QuotationVendor::findOrFail($quotation_vendor_id) : NULL;
 
         $purchase_order_vendor = new PurchaseOrderVendor;
-        $purchase_order_vendor->code = "POV-".$pov_format."-".$next_purchase_order_vendor_number;
+        $purchase_order_vendor->code = $request->code;
         $purchase_order_vendor->vendor_id = $quotation_vendor ? $quotation_vendor->vendor->id : NULL;
         $purchase_order_vendor->quotation_vendor_id = $quotation_vendor ? $quotation_vendor->id : NULL;
         $purchase_order_vendor->purchase_request_id = $request->purchase_request_id;
@@ -212,6 +194,7 @@ class PurchaseOrderVendorController extends Controller
         $quotation_vendor = $quotation_vendor_id != NULL ? QuotationVendor::findOrFail($quotation_vendor_id) : NULL;
 
         $purchase_order_vendor = PurchaseOrderVendor::findOrFail($id);
+        $purchase_order_vendor->code = $request->code;
         $purchase_order_vendor->vendor_id = $quotation_vendor_id != NULL ? $quotation_vendor->vendor->id : NULL;
         $purchase_order_vendor->purchase_request_id = $request->purchase_request_id;
         $purchase_order_vendor->description = $request->description;
