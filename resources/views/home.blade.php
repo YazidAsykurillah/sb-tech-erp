@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Dashboard
+  Dashboard SB TECH
 @endsection
 
 @section('page_header')
