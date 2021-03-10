@@ -7,7 +7,7 @@ return [
     'company_name'=>env('COMPANY_NAME', ''),
     
     //Application Name
-    'name'=>env('APP_NAME', 'My Application Name'),
+    'name'=>env('APP_NAME', 'SB TECH'),
     
     /*
     |--------------------------------------------------------------------------
